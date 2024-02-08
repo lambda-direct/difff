@@ -15,7 +15,6 @@
     <a
         href="https://github.com/lambda-direct/difff"
         target="_blank"
-        rel="noopener"
         title="Diff GitHub repository"
         class="github-link"
     >
