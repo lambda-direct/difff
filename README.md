@@ -1,12 +1,12 @@
 # difff.app - json comparison, conversion and formatting
 
-[difff.app](difff.app) - is an open-source free tool to compare texts online, format and convert between formats. It supports JSON, XML, YAML and plain text.  
+[difff.app](https://difff.app/) - is an open-source free tool to compare texts online, format and convert between formats. It supports JSON, XML, YAML and plain text.  
 It lets you efficiently analyze differences between json texts, validate and format them.  
   
 Difff app supports plain text fields, files and download via URL(API request). Compatible with Windows, Mac, Linux, Chrome, Firefox, Safari, and Microsoft Edge.
 
 ### Semantic JSON Comparison
-[Difff](difff.app) provides line-by-line comparisons with a semantic approach that highlights differences in object structures, key-value pairs, and nesting levels for easier analysis.
+[Difff](https://difff.app/) provides line-by-line comparisons with a semantic approach that highlights differences in object structures, key-value pairs, and nesting levels for easier analysis.
 
 ### Validation and Testing
 Use JSON Compare for testing and validation, ensuring that the output from different code paths or systems generates the expected JSON structure
