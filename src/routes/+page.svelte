@@ -92,7 +92,7 @@
     <a
         href="https://github.com/lambda-direct/difff"
         target="_blank"
-        title="Diff GitHub repository"
+        title="Difff GitHub repository"
         class="github-link"
     >
         <GitHubIcon />
