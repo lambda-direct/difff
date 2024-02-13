@@ -32,6 +32,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@types/node": "^20.11.16"
+		"@codemirror/lang-javascript": "^6.2.1",
+		"@types/node": "^20.11.16",
+		"svelte-codemirror-editor": "^1.2.0"
 	}
 }
