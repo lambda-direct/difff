@@ -125,6 +125,26 @@ export const rightSample = `{"Aidan Gillen": {"array": ["Game of Thrones","The W
 "object": {"foo": "bar"}},"Amy Ryan": ["In Treatment","The Wire"],"Annie Fitzgerald": ["True Blood","Big Love","The Sopranos","Oz"],
 "Anwan Glover": ["Treme","The Wire"], "Alexander Skarsgrd": ["Generation Kill","True Blood"],"Alice Farmer": ["The Corner", "Oz","The Wire"], "Fitzz": ["Big Love", "11"] }`;
 
-export const formatJson = (input: string) => {
-	return input;
+export const formatJson = (input1: string | null, input2: string | null) => {
+	if (!input1 || !input2) {
+		alert(`Please enter JSON data to ${!input1 && !input2 ? "both fields" : !input1 ? "left field" : "right field"}.`);
+		return null;
+	}
+	try {
+		const parsedJson1 = JSON.parse(input1);
+		const parsedJson2 = JSON.parse(input2);
+		if (typeof parsedJson1 !== "object" || parsedJson1 === null) {
+			alert("Invalid JSON format at left field. Please enter a valid JSON object.");
+			return null;
+		}
+		if (typeof parsedJson2 !== "object" || parsedJson2 === null) {
+			alert("Invalid JSON format at right field. Please enter a valid JSON object.");
+			return null;
+		}
+
+		return { left: JSON.stringify(parsedJson1, null, 2), right: JSON.stringify(parsedJson2, null, 2) };
+	} catch (error) {
+		alert(`Invalid JSON format. ${(error as Error).message}`);
+		return null;
+	}
 };

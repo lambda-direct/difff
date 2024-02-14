@@ -1,10 +1,9 @@
 <script lang="ts">
     import CodeMirror from "svelte-codemirror-editor";
-    import LeftArrowIcon from "$lib/icons/Left.svelte";
-    import RightArrowIcon from "$lib/icons/Right.svelte";
     import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
     import CheckBox from "$lib/shared/CheckBox.svelte";
     import InputField from "$lib/shared/InputField.svelte";
+    import DiffMessages from "$lib/shared/DiffContent.svelte";
     import { javascript } from "@codemirror/lang-javascript";
     import { compareJson, formatJson, leftSample, rightSample } from "../utils/index";
 
@@ -20,43 +19,9 @@
     let totalDifferences: number;
     let diffMessages: string[];
 
-    let currentDiffMessage: number = 0;
-
     let showMissingProperties: boolean = true;
     let showIncorrectTypes: boolean = true;
     let showUnequalValues: boolean = true;
-
-    const clickRight = () => {
-        if (currentDiffMessage + 2 > totalDifferences) {
-            currentDiffMessage = 0;
-        } else {
-            currentDiffMessage += 1;
-        }
-    };
-    const clickLeft = () => {
-        if (currentDiffMessage - 1 < 0) {
-            currentDiffMessage = totalDifferences - 1;
-        } else {
-            currentDiffMessage -= 1;
-        }
-    };
-    const handleFileChange = (event: Event) => {
-        const fileInput = event.target as HTMLInputElement;
-        const file = fileInput.files?.[0];
-        const reader = new FileReader();
-        if (file) {
-            reader.onload = (e) => {
-                if (e.target && typeof e.target.result === "string") {
-                    if (fileInput.id === "leftField") {
-                        fileContentLeft = e.target.result;
-                    } else {
-                        fileContentRight = e.target.result;
-                    }
-                }
-            };
-            reader.readAsText(file);
-        }
-    };
 
     const trySample = () => {
         fileContentLeft = leftSample;
@@ -64,19 +29,20 @@
     };
 
     const getResults = async () => {
-        if (fileContentLeft && fileContentRight) {
+        const formatted = formatJson(fileContentLeft, fileContentRight);
+
+        if (formatted) {
+            resultContentLeft = formatted.left;
+            resultContentRight = formatted.right;
             const { diffKey, diffTypes, diffValues, messages } = compareJson(
-                fileContentLeft,
-                fileContentRight
+                resultContentLeft,
+                resultContentRight
             );
             missingProperties = diffKey;
             incorrectTypes = diffTypes;
             unequalValues = diffValues;
             totalDifferences = diffKey + diffTypes + diffValues;
             diffMessages = messages;
-
-            resultContentLeft = await formatJson(fileContentLeft);
-            resultContentRight = await formatJson(fileContentRight);
         }
     };
 </script>
@@ -139,16 +105,7 @@
                     }}
                 />
             </div>
-            <div class="diff-messages">
-                <div class="diff-message-header">
-                    <button on:click={clickLeft} class="arrows"
-                        ><LeftArrowIcon margin={"2px 0 0"} /></button
-                    >
-                    {currentDiffMessage + 1} of {totalDifferences}
-                    <button on:click={clickRight} class="arrows"><RightArrowIcon /></button>
-                </div>
-                <div class="diff-messages-message">{diffMessages[currentDiffMessage]}</div>
-            </div>
+            <DiffMessages total={totalDifferences} messages={diffMessages} />
             <div style="width:40%">
                 <CodeMirror
                     bind:value={resultContentRight}
@@ -165,55 +122,18 @@
         </section>
     {:else}
         <section class="compare-jsons_fields">
-            <InputField id={"leftField"} value={fileContentLeft} change={handleFileChange} />
+            <InputField id={"leftField"} bind:userValue={fileContentLeft} />
             <div class="center">
                 <button on:click={getResults} class="compare-btn">Compare</button>
                 <span class="secondary"> or</span>
                 <button on:click={trySample} class="sample-btn"> try sample data </button>
             </div>
-            <InputField id={"rightField"} value={fileContentRight} change={handleFileChange} />
+            <InputField id={"rightField"} bind:userValue={fileContentRight} />
         </section>
     {/if}
 </main>
 
 <style>
-    .diff-messages-message {
-        margin: 8px;
-        width: 70%;
-        padding: 8px;
-        background-color: #3239581a;
-        border-radius: 4px;
-        border: thin solid lightgray;
-        font-size: 14px;
-        font-weight: 500;
-        color: #000;
-        line-height: 18px;
-    }
-    .diff-message-header {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-around;
-        width: 70%;
-        padding: 8px 0;
-    }
-    .diff-messages {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 20%;
-    }
-
-    .arrows {
-        background: transparent;
-        border: none;
-        display: flex;
-    }
-    .arrows:hover {
-        background: #e1e1e1;
-        border-radius: 6px;
-    }
-
     .sample-btn {
         background: transparent;
         border: none;

@@ -1,19 +1,32 @@
 <script lang="ts">
-    export let value: string | null;
+    export let userValue: string | null;
     export let id: string;
-    export let change = (event: Event) => {};
+
+    const handleFileChange = (event: Event) => {
+        const fileInput = event.target as HTMLInputElement;
+        const file = fileInput.files?.[0];
+        const reader = new FileReader();
+        if (file) {
+            reader.onload = (e) => {
+                if (e.target && typeof e.target.result === "string") {
+                    userValue = e.target.result;
+                }
+            };
+            reader.readAsText(file);
+        }
+    };
 </script>
 
 <div class="input-cards">
     <textarea
-        bind:value
+        bind:value={userValue}
         placeholder="Enter JSON to compare, enter an URL to JSON"
         spellcheck="false"
         {id}
     />
     <div class="input-container">
         <label class="label-for-file" for={id}>Or upload file</label>
-        <input class="for-file" type="file" {id} on:change={change} />
+        <input class="for-file" type="file" {id} on:change={handleFileChange} />
     </div>
 </div>
 
