@@ -1,5 +1,3 @@
-import { Rome, Distribution } from "@biomejs/js-api";
-
 class CompareJson {
 	private ifValuesJSObject = (value1: unknown, value2: unknown): boolean => {
 		return (
@@ -171,13 +169,12 @@ class CompareJson {
 	};
 
 	format = async () => {
-		try {
-			const rome = await Rome.create({ distribution: Distribution.WEB });
-			console.log("rome:", rome);
-		} catch (err) {
-			console.log(err);
-		}
-
+		// try {
+		// 	const rome = await Rome.create({ distribution: Distribution.WEB });
+		// 	console.log("rome:", rome);
+		// } catch (err) {
+		// 	console.log(err);
+		// }
 		// const formatted = rome.formatContent(
 		// 	'{ "lorem": "ipsum", "foo": false, "bar": 23, "lorem": "ipsum", "foo": false, "bar": 23 }',
 		// 	{
