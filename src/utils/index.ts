@@ -125,67 +125,6 @@ export const rightSample = `{"Aidan Gillen": {"array": ["Game of Thrones","The W
 "object": {"foo": "bar"}},"Amy Ryan": ["In Treatment","The Wire"],"Annie Fitzgerald": ["True Blood","Big Love","The Sopranos","Oz"],
 "Anwan Glover": ["Treme","The Wire"], "Alexander Skarsgrd": ["Generation Kill","True Blood"],"Alice Farmer": ["The Corner", "Oz","The Wire"], "Fitzz": ["Big Love", "11"] }`;
 
-export const formatJson = (json: string) => {
-	let newJson = "";
-	let indentLevel = 0;
-	let inString = false;
-
-	for (let i = 0; i < json.length; i++) {
-		const currentChar = json.charAt(i);
-
-		switch (currentChar) {
-			case "{":
-			case "[":
-				if (!inString) {
-					newJson += `${currentChar}\n${repeat("    ", ++indentLevel)}`;
-				} else {
-					newJson += currentChar;
-				}
-				break;
-			case "}":
-			case "]":
-				if (!inString) {
-					newJson += `\n${repeat("    ", --indentLevel)}${currentChar}`;
-				} else {
-					newJson += currentChar;
-				}
-				break;
-			case ",":
-				if (!inString) {
-					newJson += `,\n${repeat("    ", indentLevel)}`;
-				} else {
-					newJson += currentChar;
-				}
-				break;
-			case ":":
-				if (!inString) {
-					newJson += ": ";
-				} else {
-					newJson += currentChar;
-				}
-				break;
-			case " ":
-			case "\n":
-			case "\t":
-				if (inString) {
-					newJson += currentChar;
-				}
-				break;
-			case '"':
-				if (i > 0 && json.charAt(i - 1) !== "\\") {
-					inString = !inString;
-				}
-				newJson += currentChar;
-				break;
-			default:
-				newJson += currentChar;
-				break;
-		}
-	}
-
-	return newJson;
-};
-
-const repeat = (s: string, count: number) => {
-	return new Array(count + 1).join(s);
+export const formatJson = (input: string) => {
+	return input;
 };

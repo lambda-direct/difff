@@ -3,6 +3,8 @@
     import LeftArrowIcon from "$lib/icons/Left.svelte";
     import RightArrowIcon from "$lib/icons/Right.svelte";
     import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
+    import CheckBox from "$lib/shared/CheckBox.svelte";
+    import InputField from "$lib/shared/InputField.svelte";
     import { javascript } from "@codemirror/lang-javascript";
     import { compareJson, formatJson, leftSample, rightSample } from "../utils/index";
 
@@ -61,7 +63,7 @@
         fileContentRight = rightSample;
     };
 
-    const getResults = () => {
+    const getResults = async () => {
         if (fileContentLeft && fileContentRight) {
             const { diffKey, diffTypes, diffValues, messages } = compareJson(
                 fileContentLeft,
@@ -73,8 +75,8 @@
             totalDifferences = diffKey + diffTypes + diffValues;
             diffMessages = messages;
 
-            resultContentLeft = formatJson(fileContentLeft);
-            resultContentRight = formatJson(fileContentRight);
+            resultContentLeft = await formatJson(fileContentLeft);
+            resultContentRight = await formatJson(fileContentRight);
         }
     };
 </script>
@@ -103,48 +105,23 @@
         <h2>Check JSONs differences</h2>
         <div class="results">
             <p class="title">Found {totalDifferences} differences</p>
-            <div class="radio-input">
+            <div class="check-box-input">
                 <p class="title">Show:</p>
-                <div class="radio-pick">
-                    <input
-                        class="radio"
-                        type="checkbox"
-                        id="missing"
-                        name="missing properties"
-                        value="missingProperties"
-                        checked={showMissingProperties}
-                        on:click={() => (showMissingProperties = !showMissingProperties)}
-                    />
-                    <label class="for-radio" for="missing"
-                        >{missingProperties} missing properties</label
-                    >
-                </div>
-                <div class="radio-pick">
-                    <input
-                        class="radio"
-                        type="checkbox"
-                        id="incorrect"
-                        name="incorrect types"
-                        value="incorrectTypes"
-                        checked={showIncorrectTypes}
-                        on:click={() => (showIncorrectTypes = !showIncorrectTypes)}
-                    />
-                    <label class="for-radio" for="incorrect"
-                        >{incorrectTypes} incorrect types
-                    </label>
-                </div>
-                <div class="radio-pick">
-                    <input
-                        class="radio"
-                        type="checkbox"
-                        id="unequal"
-                        name="unequal values"
-                        value="unequalValues"
-                        checked={showUnequalValues}
-                        on:click={() => (showUnequalValues = !showUnequalValues)}
-                    />
-                    <label class="for-radio" for="unequal">{unequalValues} unequal values</label>
-                </div>
+                <CheckBox
+                    name="missingProperties"
+                    prop={showMissingProperties}
+                    label={`${missingProperties} missing properties`}
+                />
+                <CheckBox
+                    name="incorrectTypes"
+                    prop={showIncorrectTypes}
+                    label={`${incorrectTypes} incorrect types`}
+                />
+                <CheckBox
+                    name="unequalValues"
+                    prop={showUnequalValues}
+                    label={`${unequalValues} unequal values`}
+                />
             </div>
         </div>
         <section class="result-fields">
@@ -188,46 +165,13 @@
         </section>
     {:else}
         <section class="compare-jsons_fields">
-            <div class="input-cards">
-                <textarea
-                    bind:value={fileContentLeft}
-                    placeholder="Enter JSON to compare, enter an URL to JSON"
-                    spellcheck="false"
-                    id="textAreaLeft"
-                />
-                <div class="input-container">
-                    <label class="label-for-file" for="leftField">Or upload file</label>
-                    <input
-                        class="for-file"
-                        type="file"
-                        id="leftField"
-                        on:change={handleFileChange}
-                    />
-                </div>
-            </div>
+            <InputField id={"leftField"} value={fileContentLeft} change={handleFileChange} />
             <div class="center">
                 <button on:click={getResults} class="compare-btn">Compare</button>
                 <span class="secondary"> or</span>
                 <button on:click={trySample} class="sample-btn"> try sample data </button>
             </div>
-            <div class="input-cards">
-                <textarea
-                    bind:value={fileContentRight}
-                    placeholder="Enter JSON to compare, enter an URL to JSON"
-                    spellcheck="false"
-                    id="textAreaRight"
-                />
-
-                <div class="input-container">
-                    <label class="label-for-file" for="rightField">Or upload file</label>
-                    <input
-                        class="for-file"
-                        type="file"
-                        id="rightField"
-                        on:change={handleFileChange}
-                    />
-                </div>
-            </div>
+            <InputField id={"rightField"} value={fileContentRight} change={handleFileChange} />
         </section>
     {/if}
 </main>
@@ -259,25 +203,7 @@
         align-items: center;
         width: 20%;
     }
-    .radio {
-        border-radius: 2px !important;
-        border: 2px solid #507299;
-        cursor: pointer;
-        width: 15px;
-        height: 14px;
-        appearance: none;
-        accent-color: #507299;
-        margin-right: 4px;
-    }
-    .radio:checked {
-        border-radius: 2px !important;
-        cursor: pointer;
-        width: 15px;
-        height: 14px;
-        appearance: auto;
-        accent-color: #507299;
-        margin-right: 4px;
-    }
+
     .arrows {
         background: transparent;
         border: none;
@@ -287,31 +213,7 @@
         background: #e1e1e1;
         border-radius: 6px;
     }
-    .for-radio {
-        cursor: pointer;
-    }
-    .for-file,
-    .for-radio {
-        font-size: 14px;
-        font-weight: 500;
-        color: #000;
-    }
-    .label-for-file {
-        padding: 4px;
-        font-size: 14px;
-    }
-    textarea::placeholder {
-        font-size: 12px;
-        color: #545454;
-    }
-    textarea {
-        min-height: 450px;
-        padding: 6px;
-        resize: vertical;
-        background: #e1e1e1;
-        border: 1px solid #676767;
-        border-radius: 4px;
-    }
+
     .sample-btn {
         background: transparent;
         border: none;
@@ -341,12 +243,6 @@
         font-weight: 500;
         color: #808080;
     }
-    .input-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 8px;
-    }
     .results {
         display: flex;
         flex-direction: column;
@@ -371,16 +267,10 @@
         top: 0;
         right: 0;
     }
-    .radio-input {
+    .check-box-input {
         display: flex;
         flex-direction: row;
         align-items: center;
-    }
-    .radio-pick {
-        display: flex;
-        align-items: center;
-        padding: 4px;
-        font-weight: 600;
     }
     .compare-jsons_main {
         text-align: center;
@@ -399,11 +289,7 @@
         justify-content: space-around;
         text-align: left;
     }
-    .input-cards {
-        display: flex;
-        flex-direction: column;
-        width: 40%;
-    }
+
     .center {
         display: flex;
         flex-direction: column;
