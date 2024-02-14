@@ -1,3 +1,5 @@
+import { Distribution, Biome } from "@biomejs/js-api";
+
 class CompareJson {
 	private ifValuesJSObject = (value1: unknown, value2: unknown): boolean => {
 		return (
@@ -138,7 +140,7 @@ class CompareJson {
 		};
 	};
 
-	compareJson = (input1: string, input2: string) => {
+	compareJson = async (input1: string, input2: string) => {
 		const json1 = JSON.parse(input1);
 		const json2 = JSON.parse(input2);
 		return this.compare(json1, json2);
@@ -168,20 +170,15 @@ class CompareJson {
 		}
 	};
 
-	format = async () => {
-		// try {
-		// 	const rome = await Rome.create({ distribution: Distribution.WEB });
-		// 	console.log("rome:", rome);
-		// } catch (err) {
-		// 	console.log(err);
-		// }
-		// const formatted = rome.formatContent(
-		// 	'{ "lorem": "ipsum", "foo": false, "bar": 23, "lorem": "ipsum", "foo": false, "bar": 23 }',
-		// 	{
-		// 		filePath: "example.json",
-		// 	}
-		// );
-		// console.log("Formatted content: ", formatted.content);
+	format = async (json: string) => {
+		const biome = await Biome.create({ distribution: Distribution.BUNDLER });
+		const { content } = biome.formatContent(
+			json,
+			{
+				filePath: "format.json",
+			}
+		);
+		return content;
 	};
 }
 

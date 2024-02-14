@@ -6,7 +6,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 
 export default defineConfig({
 	optimizeDeps: {
-		exclude: ["@biomejs/wasm-web", "@codemirror/*", "@syntect/wasm"],
+		exclude: ["@biomejs/wasm-bundler", "@codemirror/*"],
 	},
 	plugins: [sveltekit(), wasm(), topLevelAwait()],
 	resolve: {
