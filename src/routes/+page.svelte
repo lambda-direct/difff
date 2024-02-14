@@ -5,7 +5,8 @@
     import InputField from "$lib/shared/InputField.svelte";
     import DiffMessages from "$lib/shared/DiffContent.svelte";
     import { javascript } from "@codemirror/lang-javascript";
-    import { compareJson, formatJson, leftSample, rightSample } from "../utils/index";
+    import CompareJson from "../utils/index";
+    import { leftSample, rightSample } from "../utils/samples";
 
     let fileContentLeft: string | null = null;
     let fileContentRight: string | null = null;
@@ -29,12 +30,12 @@
     };
 
     const getResults = async () => {
-        const formatted = formatJson(fileContentLeft, fileContentRight);
+        const formatted = CompareJson.isValid(fileContentLeft, fileContentRight);
 
         if (formatted) {
             resultContentLeft = formatted.left;
             resultContentRight = formatted.right;
-            const { diffKey, diffTypes, diffValues, messages } = compareJson(
+            const { diffKey, diffTypes, diffValues, messages } = CompareJson.compareJson(
                 resultContentLeft,
                 resultContentRight
             );
