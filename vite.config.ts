@@ -1,12 +1,14 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 import path from "path";
 import { defineConfig } from "vite";
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
 
 export default defineConfig({
 	optimizeDeps: {
-		exclude: ["@codemirror/state", "@codemirror/lang-markdown", "@codemirror/view", "@codemirror/lang-javascript"],
+		exclude: ["@biomejs/wasm-web", "@codemirror/*", "@syntect/wasm"],
 	},
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), wasm(), topLevelAwait()],
 	resolve: {
 		alias: {
 			"~": path.resolve("./src"),

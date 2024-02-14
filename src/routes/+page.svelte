@@ -1,12 +1,12 @@
 <script lang="ts">
-    import CodeMirror from "svelte-codemirror-editor";
-    import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
-    import CheckBox from "$lib/shared/CheckBox.svelte";
-    import InputField from "$lib/shared/InputField.svelte";
-    import DiffMessages from "$lib/shared/DiffContent.svelte";
-    import { javascript } from "@codemirror/lang-javascript";
     import CompareJson from "../utils/index";
     import { leftSample, rightSample } from "../utils/samples";
+    import CheckBox from "$lib/shared/CheckBox.svelte";
+    import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
+    import InputField from "$lib/shared/InputField.svelte";
+    import DiffMessages from "$lib/shared/DiffContent.svelte";
+    import CodeMirror from "svelte-codemirror-editor";
+    import { javascript } from "@codemirror/lang-javascript";
 
     let fileContentLeft: string | null = null;
     let fileContentRight: string | null = null;
@@ -31,7 +31,6 @@
 
     const getResults = async () => {
         const formatted = CompareJson.isValid(fileContentLeft, fileContentRight);
-
         if (formatted) {
             resultContentLeft = formatted.left;
             resultContentRight = formatted.right;
@@ -70,27 +69,29 @@
 <main class="compare-jsons_main">
     {#if resultContentLeft && resultContentRight}
         <h2>Check JSONs differences</h2>
-        <div class="results">
-            <p class="title">Found {totalDifferences} differences</p>
-            <div class="check-box-input">
-                <p class="title">Show:</p>
-                <CheckBox
-                    name="missingProperties"
-                    prop={showMissingProperties}
-                    label={`${missingProperties} missing properties`}
-                />
-                <CheckBox
-                    name="incorrectTypes"
-                    prop={showIncorrectTypes}
-                    label={`${incorrectTypes} incorrect types`}
-                />
-                <CheckBox
-                    name="unequalValues"
-                    prop={showUnequalValues}
-                    label={`${unequalValues} unequal values`}
-                />
+        {#if totalDifferences && diffMessages.length}
+            <div class="results">
+                <p class="title">Found {totalDifferences} differences</p>
+                <div class="check-box-input">
+                    <p class="title">Show:</p>
+                    <CheckBox
+                        name="missingProperties"
+                        prop={showMissingProperties}
+                        label={`${missingProperties} missing properties`}
+                    />
+                    <CheckBox
+                        name="incorrectTypes"
+                        prop={showIncorrectTypes}
+                        label={`${incorrectTypes} incorrect types`}
+                    />
+                    <CheckBox
+                        name="unequalValues"
+                        prop={showUnequalValues}
+                        label={`${unequalValues} unequal values`}
+                    />
+                </div>
             </div>
-        </div>
+        {/if}
         <section class="result-fields">
             <div style="width:40%">
                 <CodeMirror

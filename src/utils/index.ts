@@ -1,3 +1,5 @@
+import { Rome, Distribution } from "@biomejs/js-api";
+
 class CompareJson {
 	private ifValuesJSObject = (value1: unknown, value2: unknown): boolean => {
 		return (
@@ -84,9 +86,11 @@ class CompareJson {
 		if (this.ifValuesJSObject(value1, value2)) {
 			return this.compare(value1 as object, value2 as object, key);
 		}
-		if (value1 !== value2) {
-			messages.push(`Value ${value1} are not the same as  ${value2}`);
-			diffValues += 1;
+		if (!this.ifValuesJSObject(value1, value2) && !Array.isArray(value1) && !Array.isArray(value2)) {
+			if (value1 !== value2) {
+				messages.push(`Value ${value1} are not the same as  ${value2}`);
+				diffValues += 1;
+			}
 		}
 
 		return {
@@ -164,6 +168,23 @@ class CompareJson {
 			alert(`Invalid JSON format. ${(error as Error).message}`);
 			return null;
 		}
+	};
+
+	format = async () => {
+		try {
+			const rome = await Rome.create({ distribution: Distribution.WEB });
+			console.log("rome:", rome);
+		} catch (err) {
+			console.log(err);
+		}
+
+		// const formatted = rome.formatContent(
+		// 	'{ "lorem": "ipsum", "foo": false, "bar": 23, "lorem": "ipsum", "foo": false, "bar": 23 }',
+		// 	{
+		// 		filePath: "example.json",
+		// 	}
+		// );
+		// console.log("Formatted content: ", formatted.content);
 	};
 }
 

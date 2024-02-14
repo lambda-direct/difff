@@ -24,15 +24,42 @@
 </script>
 
 <div class="diff-messages">
-    <div class="diff-message-header">
-        <button on:click={clickLeft} class="arrows"><LeftArrowIcon margin={"2px 0 0"} /></button>
-        {currentDiffMessage + 1} of {total}
-        <button on:click={clickRight} class="arrows"><RightArrowIcon /></button>
-    </div>
-    <div class="diff-messages-message">{messages[currentDiffMessage]}</div>
+    {#if total && messages.length}
+        <div class="diff-message-header">
+            <button on:click={clickLeft} class="arrows"><LeftArrowIcon margin={"2px 0 0"} /></button
+            >
+            {currentDiffMessage + 1} of {total}
+            <button on:click={clickRight} class="arrows"><RightArrowIcon /></button>
+        </div>
+        <div class="diff-messages-message">{messages[currentDiffMessage]}</div>
+    {:else}
+        <p class="title">There is no differences between this two objects.</p>
+        <button class="another-compare-btn">Another compare</button>
+    {/if}
 </div>
 
 <style>
+    .another-compare-btn {
+        height: 36px;
+        padding: 0 8px;
+        background: transparent;
+        border: 1px solid #676767;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .another-compare-btn:hover {
+        background: #e1e1e1;
+        border: 1px solid #e1e1e1;
+    }
+    .title {
+        margin: 0;
+        padding: 16px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #000;
+    }
     .diff-messages-message {
         margin: 8px;
         width: 70%;
