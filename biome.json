@@ -6,7 +6,18 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"all": true
+		}
+	},
+	"formatter": {
+		"indentStyle": "tab",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"formatWithErrors": false
+	},
+	"json": {
+		"parser": {
+			"allowTrailingCommas": true
 		}
 	}
 }

@@ -1,4 +1,6 @@
-import { Distribution, Biome } from "@biomejs/js-api";
+import * as prettier from "prettier/standalone";
+import parserBabel from "prettier/plugins/babel";
+import * as prettierPluginEstree from "prettier/plugins/estree";
 
 class CompareJson {
 	private ifValuesJSObject = (value1: unknown, value2: unknown): boolean => {
@@ -140,7 +142,7 @@ class CompareJson {
 		};
 	};
 
-	compareJson = async (input1: string, input2: string) => {
+	compareJson = (input1: string, input2: string) => {
 		const json1 = JSON.parse(input1);
 		const json2 = JSON.parse(input2);
 		return this.compare(json1, json2);
@@ -171,14 +173,17 @@ class CompareJson {
 	};
 
 	format = async (json: string) => {
-		const biome = await Biome.create({ distribution: Distribution.BUNDLER });
-		const { content } = biome.formatContent(
-			json,
-			{
-				filePath: "format.json",
-			}
-		);
-		return content;
+		return await prettier.format(json, {
+			tabWidth: 4,
+			semi: true,
+			useTabs: false,
+			singleQuote: false,
+			trailingComma: "none",
+			endOfLine: "lf",
+			printWidth: 100,
+			parser: "json",
+			plugins: [parserBabel, prettierPluginEstree],
+		});
 	};
 }
 

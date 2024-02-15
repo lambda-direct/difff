@@ -34,7 +34,7 @@
         if (formatted) {
             resultContentLeft = formatted.left;
             resultContentRight = formatted.right;
-            const { diffKey, diffTypes, diffValues, messages } = CompareJson.compareJson(
+            const { diffKey, diffTypes, diffValues, messages } = await CompareJson.compareJson(
                 resultContentLeft,
                 resultContentRight
             );
