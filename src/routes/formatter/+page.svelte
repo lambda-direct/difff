@@ -1,17 +1,8 @@
 <script lang="ts">
     import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
     import InputField from "$lib/shared/InputField.svelte";
-    import CompareJson from "../../utils/index";
 
     let userInput: string | null = null;
-    const formater = async (input: string) => {
-        userInput = await CompareJson.format(input);
-    };
-    $: {
-        if (userInput) {
-            formater(userInput);
-        }
-    }
 </script>
 
 <svelte:head>
@@ -32,6 +23,7 @@
         <GitHubIcon />
     </a>
 </header>
+
 <h1>JSON Formatter Online</h1>
 <main>
     <h2>Validate, Format & Prettify your JSON</h2>

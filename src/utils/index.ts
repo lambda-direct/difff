@@ -172,7 +172,10 @@ class CompareJson {
 		}
 	};
 
-	format = async (json: string) => {
+	format = async (json: string | null) => {
+		if (!json) {
+			throw new Error("Invalid");
+		}
 		return await prettier.format(json, {
 			tabWidth: 4,
 			semi: true,

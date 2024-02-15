@@ -1,4 +1,8 @@
 <script lang="ts">
+    import CompareJson from "../../utils/index";
+    import ErrorModal from "$lib/shared/ErrorModal.svelte";
+    import { showError } from "$lib/storages";
+
     export let userValue: string | null;
     export let id: string;
 
@@ -18,12 +22,24 @@
 </script>
 
 <div class="input-cards">
-    <textarea
-        bind:value={userValue}
-        placeholder="Enter JSON to compare, enter an URL to JSON"
-        spellcheck="false"
-        {id}
-    />
+    <div class="wrapper">
+        {#if $showError}<ErrorModal />{/if}
+        <textarea
+            bind:value={userValue}
+            on:input={async () => {
+                try {
+                    userValue = await CompareJson.format(userValue);
+                    $showError = false;
+                } catch (err) {
+                    $showError = true;
+                }
+            }}
+            placeholder="Enter JSON to compare, enter an URL to JSON"
+            spellcheck="false"
+            {id}
+        />
+    </div>
+
     <div class="input-container">
         <label class="label-for-file" for={id}>Or upload file</label>
         <input class="for-file" type="file" {id} on:change={handleFileChange} />
@@ -46,6 +62,7 @@
     }
     textarea {
         min-height: 450px;
+        width: 100%;
         padding: 6px;
         resize: vertical;
         background: #e1e1e1;
@@ -62,5 +79,8 @@
         display: flex;
         flex-direction: column;
         width: 40%;
+    }
+    .wrapper {
+        position: relative;
     }
 </style>
