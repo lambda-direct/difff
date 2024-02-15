@@ -1,17 +1,15 @@
 <script lang="ts">
-    import CompareJson from "../../utils/index";
     import ErrorModal from "$lib/shared/ErrorModal.svelte";
     import { showError } from "$lib/storages";
-    import CodeMirror from "svelte-codemirror-editor";
-    import { json } from "@codemirror/lang-json";
+    import CompareJson from "../../utils/index";
 
     export let userValue: string | null;
     export let id: string;
 </script>
 
-<div class="wrapper">
-    {#if $showError}<ErrorModal />{/if}
+<div class="field_wrapper">
     <textarea
+        {...$$restProps}
         bind:value={userValue}
         on:input={async () => {
             try {
@@ -21,32 +19,34 @@
                 $showError = true;
             }
         }}
-        placeholder="Enter JSON to compare, enter an URL to JSON"
         spellcheck="false"
+        class="field"
         {id}
     />
+    {#if $showError}
+        <ErrorModal />
+    {/if}
 </div>
 
 <style>
-    textarea::placeholder {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 21.12px;
-        color: #e2e8f0;
+    .field_wrapper {
+        position: relative;
     }
-
-    textarea {
+    .field {
         width: 925px;
         height: 500px;
-        padding: 6px;
+        padding: 16px;
         resize: none;
         background: #202830;
         border: 1px solid #202830;
-        border-radius: 4px;
-    }
+        border-radius: 12px;
+        font-family: "JetBrains Mono", monospace;
 
-    .wrapper {
-        position: relative;
+        &::placeholder {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 16px;
+            font-weight: 400;
+            color: #e2e8f0a1;
+        }
     }
 </style>
