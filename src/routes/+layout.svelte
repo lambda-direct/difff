@@ -3,5 +3,6 @@
     import "~/styles/index.css";
 </script>
 
+<header class=""></header>
 <slot />
 <Footer />

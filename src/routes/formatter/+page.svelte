@@ -1,5 +1,4 @@
 <script lang="ts">
-    import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
     import InputField from "$lib/shared/InputField.svelte";
 
     let userInput: string | null = null;
@@ -13,20 +12,11 @@
         content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files effortlessly."
     />
 </svelte:head>
-<header>
-    <a
-        href="https://github.com/lambda-direct/difff"
-        target="_blank"
-        title="Difff GitHub repository"
-        class="github-link"
-    >
-        <GitHubIcon />
-    </a>
-</header>
 
-<h1>JSON Formatter Online</h1>
-<main>
+<main class="main">
+    <h1>JSON Formatter Online</h1>
     <h2>Validate, Format & Prettify your JSON</h2>
+
     <InputField id={"leftField"} bind:userValue={userInput} />
     <article>
         <h2>How to Format JSON Using an Online Tool (Easy Method)</h2>
@@ -39,3 +29,20 @@
         </p>
     </article>
 </main>
+
+<style>
+    h1 {
+        margin: 24px 0 16px;
+    }
+    h2 {
+        margin: 16px 0 32px;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 32.69px;
+    }
+    .main {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
