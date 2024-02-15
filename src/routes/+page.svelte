@@ -50,10 +50,19 @@
         color: #e2e8f0;
     }
     .article {
-        margin: 32px 0 0;
+        margin: 32px auto 0;
+        width: 925px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .article_title {
+        font-weight: 700;
     }
     .article_text {
         margin: 16px 0 0;
+        text-align: center;
     }
     .formatter_field-wrapper {
         margin: 32px 0 0;

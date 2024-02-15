@@ -5,7 +5,8 @@
 
 <header class="header">You can check our weekly updates here!</header>
 <slot />
-<Footer />
+
+<!-- <Footer /> -->
 
 <style>
     .header {

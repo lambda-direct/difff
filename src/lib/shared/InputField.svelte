@@ -5,20 +5,24 @@
 
     export let userValue: string | null;
     export let id: string;
-</script>
 
-<div class="field_wrapper">
-    <textarea
-        {...$$restProps}
-        bind:value={userValue}
-        on:input={async () => {
+    const formatJSON = async () => {
+        if (userValue) {
             try {
                 userValue = await CompareJson.format(userValue);
                 $showError = false;
             } catch (err) {
                 $showError = true;
             }
-        }}
+        }
+    };
+</script>
+
+<div class="field_wrapper">
+    <textarea
+        {...$$restProps}
+        bind:value={userValue}
+        on:input={formatJSON}
         spellcheck="false"
         class="field"
         {id}

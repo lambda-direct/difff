@@ -16,9 +16,9 @@
         background: #d70000;
         border: 1px solid #9b0000;
         border-radius: 4px;
-        bottom: -5%;
+        bottom: 0%;
         position: absolute;
-        right: -6px;
+        right: 6px;
         z-index: 100;
         animation: floatIn 0.5s ease-in-out 0s forwards;
     }
