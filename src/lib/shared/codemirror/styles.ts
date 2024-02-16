@@ -66,7 +66,7 @@ export const styles = {
         "justify-content": "center"
     },
     ".cm-foldGutter span": {
-        padding: "0 1px 8px",
+        padding: "0 1px",
         cursor: "pointer",
         "font-size": "20px"
     },
@@ -118,7 +118,7 @@ export const styles = {
         background: "#f5f5f014"
     },
     ".cm-activeLine": {
-        background: "#f5f5f014"
+        background: "none"
     },
     ".ͼe": {
         color: "#73ba7e"
