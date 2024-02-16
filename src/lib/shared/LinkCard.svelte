@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ArrowIcon from "$lib/icons/Arrow.svelte";
+    import ArrowIcon from "~/lib/icons/ArrowIcon.svelte";
 
     export let name: string;
 </script>

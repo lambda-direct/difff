@@ -1,6 +1,6 @@
 <script lang="ts">
-    import LeftArrowIcon from "$lib/icons/Left.svelte";
-    import RightArrowIcon from "$lib/icons/Right.svelte";
+    import LeftArrowIcon from "~/lib/icons/LeftIcon.svelte";
+    import RightArrowIcon from "~/lib/icons/RightIcon.svelte";
 
     export let total: number;
     export let messages: string[];

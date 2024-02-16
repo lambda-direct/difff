@@ -1,7 +1,5 @@
 <script lang="ts">
-    import InputField from "$lib/shared/InputField.svelte";
-
-    let userInput: string | null = null;
+    import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
 <svelte:head>
@@ -18,11 +16,7 @@
     <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
 
     <section class="formatter_field-wrapper">
-        <InputField
-            id={"leftField"}
-            bind:userValue={userInput}
-            placeholder="Put your JSON, provide a link, or Drag & Drop a file"
-        />
+        <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
     </section>
     <article class="article">
         <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
@@ -31,16 +25,20 @@
             Optimize your JSON formatting effortlessly with our online tool. Simply put your JSON
             text, provide a link to your JSON, or upload a file containing your JSON. Whether your
             JSON is valid or not, our service will identify and display errors if any are present.
-            For valid JSON, it will be formatted using <a href="https://biomejs.dev/">Biome</a>.
+            For valid JSON, it will be formatted using <a href="https://prettier.io/docs/en/"
+                >Prettier</a
+            >.
         </p>
     </article>
 </main>
 
 <style>
     .main {
+        margin: 0 auto;
         display: flex;
         align-items: center;
         flex-direction: column;
+        max-width: 925px;
     }
     .title {
         margin: 28px 0 0;
@@ -51,7 +49,7 @@
     }
     .article {
         margin: 32px auto 0;
-        width: 925px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -63,8 +61,10 @@
     .article_text {
         margin: 16px 0 0;
         text-align: center;
+        font-family: "Noto Sans", sans-serif;
     }
     .formatter_field-wrapper {
+        width: 100%;
         margin: 32px 0 0;
     }
 </style>

@@ -5,18 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@biomejs/js-api':
-    specifier: 0.3.0-nightly.384b31d
-    version: 0.3.0-nightly.384b31d(@biomejs/wasm-bundler@1.5.3-nightly.dca6a7a)
-  '@biomejs/wasm-nodejs':
-    specifier: 1.5.3-nightly.dca6a7a
-    version: 1.5.3-nightly.dca6a7a
-  '@biomejs/wasm-web':
-    specifier: 1.5.3-nightly.dca6a7a
-    version: 1.5.3-nightly.dca6a7a
+  '@codemirror/lang-javascript':
+    specifier: ^6.2.1
+    version: 6.2.1
   '@codemirror/lang-json':
     specifier: ^6.0.1
     version: 6.0.1
+  '@codemirror/lint':
+    specifier: ^6.5.0
+    version: 6.5.0
   '@codemirror/state':
     specifier: ^6.4.0
     version: 6.4.0
@@ -26,6 +23,9 @@ dependencies:
   '@codemirror/view':
     specifier: ^6.24.0
     version: 6.24.0
+  codemirror:
+    specifier: ^6.0.1
+    version: 6.0.1(@lezer/common@1.2.1)
   svelte-codemirror-editor:
     specifier: ^1.2.0
     version: 1.2.0(codemirror@6.0.1)(svelte@4.2.10)
@@ -34,12 +34,6 @@ devDependencies:
   '@babel/parser':
     specifier: ^7.23.9
     version: 7.23.9
-  '@biomejs/biome':
-    specifier: 1.5.3
-    version: 1.5.3
-  '@biomejs/wasm-bundler':
-    specifier: 1.5.3-nightly.dca6a7a
-    version: 1.5.3-nightly.dca6a7a
   '@sveltejs/adapter-auto':
     specifier: ^3.0.0
     version: 3.1.1(@sveltejs/kit@2.5.0)
@@ -142,122 +136,6 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@biomejs/biome@1.5.3:
-    resolution: {integrity: sha512-yvZCa/g3akwTaAQ7PCwPWDCkZs3Qa5ONg/fgOUT9e6wAWsPftCjLQFPXBeGxPK30yZSSpgEmRCfpGTmVbUjGgg==}
-    engines: {node: '>=14.*'}
-    hasBin: true
-    requiresBuild: true
-    optionalDependencies:
-      '@biomejs/cli-darwin-arm64': 1.5.3
-      '@biomejs/cli-darwin-x64': 1.5.3
-      '@biomejs/cli-linux-arm64': 1.5.3
-      '@biomejs/cli-linux-arm64-musl': 1.5.3
-      '@biomejs/cli-linux-x64': 1.5.3
-      '@biomejs/cli-linux-x64-musl': 1.5.3
-      '@biomejs/cli-win32-arm64': 1.5.3
-      '@biomejs/cli-win32-x64': 1.5.3
-    dev: true
-
-  /@biomejs/cli-darwin-arm64@1.5.3:
-    resolution: {integrity: sha512-ImU7mh1HghEDyqNmxEZBoMPr8SxekkZuYcs+gynKlNW+TALQs7swkERiBLkG9NR0K1B3/2uVzlvYowXrmlW8hw==}
-    engines: {node: '>=14.*'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/cli-darwin-x64@1.5.3:
-    resolution: {integrity: sha512-vCdASqYnlpq/swErH7FD6nrFz0czFtK4k/iLgj0/+VmZVjineFPgevOb+Sr9vz0tk0GfdQO60bSpI74zU8M9Dw==}
-    engines: {node: '>=14.*'}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/cli-linux-arm64-musl@1.5.3:
-    resolution: {integrity: sha512-DYuMizUYUBYfS0IHGjDrOP1RGipqWfMGEvNEJ398zdtmCKLXaUvTimiox5dvx4X15mBK5M2m8wgWUgOP1giUpQ==}
-    engines: {node: '>=14.*'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/cli-linux-arm64@1.5.3:
-    resolution: {integrity: sha512-cupBQv0sNF1OKqBfx7EDWMSsKwRrBUZfjXawT4s6hKV6ALq7p0QzWlxr/sDmbKMLOaLQtw2Qgu/77N9rm+f9Rg==}
-    engines: {node: '>=14.*'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/cli-linux-x64-musl@1.5.3:
-    resolution: {integrity: sha512-UUHiAnlDqr2Y/LpvshBFhUYMWkl2/Jn+bi3U6jKuav0qWbbBKU/ByHgR4+NBxpKBYoCtWxhnmatfH1bpPIuZMw==}
-    engines: {node: '>=14.*'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/cli-linux-x64@1.5.3:
-    resolution: {integrity: sha512-YQrSArQvcv4FYsk7Q91Yv4uuu5F8hJyORVcv3zsjCLGkjIjx2RhjYLpTL733SNL7v33GmOlZY0eFR1ko38tuUw==}
-    engines: {node: '>=14.*'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/cli-win32-arm64@1.5.3:
-    resolution: {integrity: sha512-HxatYH7vf/kX9nrD+pDYuV2GI9GV8EFo6cfKkahAecTuZLPxryHx1WEfJthp5eNsE0+09STGkKIKjirP0ufaZA==}
-    engines: {node: '>=14.*'}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/cli-win32-x64@1.5.3:
-    resolution: {integrity: sha512-fMvbSouZEASU7mZH8SIJSANDm5OqsjgtVXlbUqxwed6BP7uuHRSs396Aqwh2+VoW8fwTpp6ybIUoC9FrzB0kyA==}
-    engines: {node: '>=14.*'}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@biomejs/js-api@0.3.0-nightly.384b31d(@biomejs/wasm-bundler@1.5.3-nightly.dca6a7a):
-    resolution: {integrity: sha512-FF3wcxzEDc9CuwLisklJ9PclJ5B+FMP+J2Qg0DeFdCAtShfT1iLmiarietSfgOv+PMqtkkXhOjAGZ03P5595uA==}
-    peerDependencies:
-      '@biomejs/wasm-bundler': ^1.5.3
-      '@biomejs/wasm-nodejs': ^1.5.3
-      '@biomejs/wasm-web': ^1.5.3
-    peerDependenciesMeta:
-      '@biomejs/wasm-bundler':
-        optional: true
-      '@biomejs/wasm-nodejs':
-        optional: true
-      '@biomejs/wasm-web':
-        optional: true
-    dependencies:
-      '@biomejs/wasm-bundler': 1.5.3-nightly.dca6a7a
-    dev: false
-
-  /@biomejs/wasm-bundler@1.5.3-nightly.dca6a7a:
-    resolution: {integrity: sha512-GDw8DwLShHFXXRkZYpxI7KOQAMllUPxeIZLcDAFOdm+ELaR0ACq4+j5zNPGHUMJH68VhjuFzXzMrfCCoRSObgA==}
-
-  /@biomejs/wasm-nodejs@1.5.3-nightly.dca6a7a:
-    resolution: {integrity: sha512-yN91S6Vp4nr9yZs9GagrrgYuWYxlsN0aWe/uKrP2ZzsNA75JhLD1fAvF1/p7z7i800fWtpQ6XBHQ+6A6xxTN3g==}
-    dev: false
-
-  /@biomejs/wasm-web@1.5.3-nightly.dca6a7a:
-    resolution: {integrity: sha512-3GvgWRX6LnIpMt08ajeuK5lpQ/DCLAcpI0mFb/hWpDnR7QUR5nuDXyPRtcN1dUFOlFsDpHL6dK2t/LiO3pNZfA==}
-    dev: false
-
   /@cloudflare/workers-types@4.20240208.0:
     resolution: {integrity: sha512-MVGTTjZpJu4kJONvai5SdJzWIhOJbuweVZ3goI7FNyG+JdoQH41OoB+nMhLsX626vPLZVWGPIWsiSo/WZHzgQw==}
     dev: true
@@ -283,6 +161,18 @@ packages:
       '@codemirror/state': 6.4.0
       '@codemirror/view': 6.24.0
       '@lezer/common': 1.2.1
+    dev: false
+
+  /@codemirror/lang-javascript@6.2.1:
+    resolution: {integrity: sha512-jlFOXTejVyiQCW3EQwvKH0m99bUYIw40oPmFjSX2VS78yzfe0HELZ+NEo9Yfo1MkGRpGlj3Gnu4rdxV1EnAs5A==}
+    dependencies:
+      '@codemirror/autocomplete': 6.12.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.0)(@codemirror/view@6.24.0)(@lezer/common@1.2.1)
+      '@codemirror/language': 6.10.1
+      '@codemirror/lint': 6.5.0
+      '@codemirror/state': 6.4.0
+      '@codemirror/view': 6.24.0
+      '@lezer/common': 1.2.1
+      '@lezer/javascript': 1.4.13
     dev: false
 
   /@codemirror/lang-json@6.0.1:
@@ -637,6 +527,14 @@ packages:
     resolution: {integrity: sha512-WrS5Mw51sGrpqjlh3d4/fOwpEV2Hd3YOkp9DBt4k8XZQcoTHZFB7sx030A6OcahF4J1nDQAa3jXlTVVYH50IFA==}
     dependencies:
       '@lezer/common': 1.2.1
+    dev: false
+
+  /@lezer/javascript@1.4.13:
+    resolution: {integrity: sha512-5IBr8LIO3xJdJH1e9aj/ZNLE4LSbdsx25wFmGRAZsj2zSmwAYjx26JyU/BYOCpRQlu1jcv1z3vy4NB9+UkfRow==}
+    dependencies:
+      '@lezer/common': 1.2.1
+      '@lezer/highlight': 1.2.0
+      '@lezer/lr': 1.4.0
     dev: false
 
   /@lezer/json@1.0.2:
