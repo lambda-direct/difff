@@ -91,9 +91,9 @@
         }
     };
 
-    const executedLineDecoration = Decoration.line({
-        attributes: { class: "cm-execLine" }
-    });
+    // const executedLineDecoration = Decoration.line({
+    //     attributes: { class: "cm-execLine" }
+    // });
 
     // function highlightLine(lineNumber: any[]) {
     //     view.dispatch({
