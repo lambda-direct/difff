@@ -25,8 +25,9 @@
             Optimize your JSON formatting effortlessly with our online tool. Simply put your JSON
             text, provide a link to your JSON, or upload a file containing your JSON. Whether your
             JSON is valid or not, our service will identify and display errors if any are present.
-            For valid JSON, it will be formatted using <a href="https://prettier.io/docs/en/"
-                >Prettier</a
+            For valid JSON, it will be formatted using <a
+                href="https://prettier.io/"
+                target="_blank">Prettier</a
             >.
         </p>
     </article>
