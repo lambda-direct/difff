@@ -1,6 +1,7 @@
 import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
+import { showError } from "~/lib/storages";
 
 class CompareJson {
 	private ifValuesJSObject = (value1: unknown, value2: unknown): boolean => {

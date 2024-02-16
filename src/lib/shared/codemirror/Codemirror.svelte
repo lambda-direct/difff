@@ -78,10 +78,10 @@
     const formatJSON = async (input: string) => {
         if (input) {
             try {
+                const result = await CompareJson.format(input);
                 $showError = false;
-                return await CompareJson.format(value);
+                return result;
             } catch (err) {
-                // highlightLine([err.loc.start.column, err.loc.start.column]);
                 $showError = true;
                 return input;
             }
