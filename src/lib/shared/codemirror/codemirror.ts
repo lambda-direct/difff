@@ -48,75 +48,79 @@
 // });
 
 export const styles = {
-	".cm-execLine": {
-		background: "red",
-	},
-	".cm-gutterElement": {
-		color: "#a3a5ab70",
-	},
-	"::-webkit-scrollbar": {
-		padding: "0",
-		margin: "0",
-		width: "12px",
-		height: "12px",
-	},
-	"::-webkit-scrollbar-corner": {
-		background: "#192026",
-	},
-	"::-webkit-scrollbar-track": {
-		"border-radius": "12px",
-		background: "#192026",
-	},
-	"::-webkit-scrollbar-thumb": {
-		"border-radius": "2px",
-		background: "#4c5259",
-	},
-	"::-webkit-scrollbar-thumb:hover": {
-		background: "#363d44",
-	},
-	".cm-gutters": {
-		position: "relative !important",
-		background: "#202830",
-		"border-right": "none",
-		"flex-shrink": 0,
-		display: "flex",
-		height: "100%",
-		"box-sizing": "border-box",
-		"inset-inline-start": 0,
-	},
-	".cm-scroller::placeholder": {
-		"font-size": "16px",
-		color: "#e2e8f0a1",
-	},
-	".cm-scroller": {
-		height: "500px",
-		resize: "none",
-		background: "#202830",
-		border: "1px solid #202830",
-		"border-radius": "12px",
-	},
-	" .cm-lineNumbers .cm-gutterElement": {
-		"min-width": "24px",
-	},
-	".cm-activeLineGutter": {
-		background: "#f5f5f014",
-	},
-	".cm-activeLine": {
-		background: "#f5f5f014",
-	},
-	".ͼe": {
-		color: "#73ba7e",
-	},
-	".ͼd": {
-		color: "#6fa8dc",
-	},
-	".ͼc": {
-		color: "#e5bde2",
-	},
-	"&.cm-focused .cm-cursor": {
-		borderLeftColor: "#e1e1e1",
-	},
-	"&.cm-focused .cm-selectionBackground, .ͼ4 .cm-line::selection": {
-		backgroundColor: "#3e4451!important",
-	},
+    ".cm-line": {
+        "font-size": "14px"
+    },
+    ".cm-execLine": {
+        background: "red"
+    },
+    ".cm-gutterElement": {
+        color: "#a3a5ab70",
+        "font-size": "14px"
+    },
+    "::-webkit-scrollbar": {
+        padding: "0",
+        margin: "0",
+        width: "12px",
+        height: "12px"
+    },
+    "::-webkit-scrollbar-corner": {
+        background: "#192026"
+    },
+    "::-webkit-scrollbar-track": {
+        "border-radius": "12px",
+        background: "#192026"
+    },
+    "::-webkit-scrollbar-thumb": {
+        "border-radius": "2px",
+        background: "#4c5259"
+    },
+    "::-webkit-scrollbar-thumb:hover": {
+        background: "#363d44"
+    },
+    ".cm-gutters": {
+        position: "relative !important",
+        background: "#202830",
+        "border-right": "none",
+        "flex-shrink": 0,
+        display: "flex",
+        height: "100%",
+        "box-sizing": "border-box",
+        "inset-inline-start": 0
+    },
+    ".cm-scroller::placeholder": {
+        "font-size": "16px",
+        color: "#e2e8f0a1"
+    },
+    ".cm-scroller": {
+        height: "500px",
+        resize: "none",
+        background: "#202830",
+        border: "1px solid #202830",
+        "border-radius": "12px"
+    },
+    " .cm-lineNumbers .cm-gutterElement": {
+        "min-width": "24px"
+    },
+    ".cm-activeLineGutter": {
+        background: "#f5f5f014"
+    },
+    ".cm-activeLine": {
+        background: "#f5f5f014"
+    },
+    ".ͼe": {
+        color: "#73ba7e"
+    },
+    ".ͼd": {
+        color: "#6fa8dc"
+    },
+    ".ͼc": {
+        color: "#e5bde2"
+    },
+    "&.cm-focused .cm-cursor": {
+        borderLeftColor: "#e1e1e1"
+    },
+    "&.cm-focused .cm-selectionBackground, .ͼ4 .cm-line::selection": {
+        backgroundColor: "#3e4451!important"
+    }
 };
