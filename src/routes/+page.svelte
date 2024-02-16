@@ -27,6 +27,7 @@
             JSON is valid or not, our service will identify and display errors if any are present.
             For valid JSON, it will be formatted using <a
                 href="https://prettier.io/"
+                rel="nofollow noopener noreferrer"
                 target="_blank">Prettier</a
             >.
         </p>
