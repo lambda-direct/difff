@@ -7,7 +7,7 @@
     import { basicSetup } from "codemirror";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import CompareJson from "~/utils/index";
-    import { styles } from "./codemirror";
+    import { styles } from "./styles";
 
     export let placeholder: string;
 

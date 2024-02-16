@@ -49,14 +49,26 @@
 
 export const styles = {
     ".cm-line": {
-        "font-size": "14px"
+        "font-size": "14px",
+        "min-height": "24px !important",
+        "line-height": "24px !important",
+        display: "flex",
+        "align-items": "center"
     },
     ".cm-execLine": {
         background: "red"
     },
     ".cm-gutterElement": {
         color: "#a3a5ab70",
-        "font-size": "14px"
+        "font-size": "14px !important",
+        display: "flex",
+        "align-items": "center",
+        "justify-content": "center"
+    },
+    ".cm-foldGutter span": {
+        padding: "0 1px 8px",
+        cursor: "pointer",
+        "font-size": "20px"
     },
     "::-webkit-scrollbar": {
         padding: "0",
@@ -93,7 +105,7 @@ export const styles = {
         color: "#e2e8f0a1"
     },
     ".cm-scroller": {
-        height: "500px",
+        height: "60vh",
         resize: "none",
         background: "#202830",
         border: "1px solid #202830",
