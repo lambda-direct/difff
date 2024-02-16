@@ -1,12 +1,11 @@
 <script lang="ts">
-    import CompareJson from "../../utils/index";
-    import { leftSample, rightSample } from "../../utils/samples";
+    import CompareJson from "~/utils/index";
+    import { leftSample, rightSample } from "~/utils/samples";
     import CheckBox from "$lib/shared/CheckBox.svelte";
     import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
     import InputField from "$lib/shared/InputField.svelte";
     import DiffMessages from "$lib/shared/DiffContent.svelte";
     import CodeMirror from "svelte-codemirror-editor";
-    import { javascript } from "@codemirror/lang-javascript";
 
     let fileContentLeft: string | null = null;
     let fileContentRight: string | null = null;
@@ -96,7 +95,6 @@
             <div style="width:40%">
                 <CodeMirror
                     bind:value={resultContentLeft}
-                    lang={javascript()}
                     readonly={true}
                     styles={{
                         "&": {
@@ -111,7 +109,6 @@
             <div style="width:40%">
                 <CodeMirror
                     bind:value={resultContentRight}
-                    lang={javascript()}
                     readonly={true}
                     styles={{
                         "&": {

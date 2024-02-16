@@ -39,8 +39,10 @@
 	"type": "module",
 	"dependencies": {
 		"@biomejs/js-api": "0.3.0-nightly.384b31d",
-		"@codemirror/lang-javascript": "^6.2.1",
 		"@codemirror/lang-json": "^6.0.1",
+		"@codemirror/state": "^6.4.0",
+		"@codemirror/theme-one-dark": "^6.1.2",
+		"@codemirror/view": "^6.24.0",
 		"svelte-codemirror-editor": "^1.2.0"
 	},
 	"peerDependencies": {

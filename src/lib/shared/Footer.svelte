@@ -1,7 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    // TODO alias imports with ~
-    import { toolsRoutes } from "../../routes/routes";
+    import { toolsRoutes } from "~/routes/routes";
     import NavLink from "$lib/shared/LinkCard.svelte";
     const routesToShow = toolsRoutes.filter((route) => route.path !== $page.url.pathname);
 </script>

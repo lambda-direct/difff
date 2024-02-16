@@ -8,16 +8,4 @@ export const toolsRoutes: ToolsRoute[] = [
 		name: "Formatter",
 		path: "/formatter",
 	},
-	{
-		name: "Formatter",
-		path: "/formatter",
-	},
-	{
-		name: "Formatter",
-		path: "/formatter",
-	},
-	{
-		name: "Formatter",
-		path: "/formatter",
-	},
 ];
