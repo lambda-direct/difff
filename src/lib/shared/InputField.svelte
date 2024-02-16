@@ -33,6 +33,25 @@
 </div>
 
 <style>
+    ::-webkit-scrollbar {
+        padding: 0;
+        margin: 0;
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        border-radius: 12px;
+        background: #192026;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        background: #4c5259;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #363d44;
+    }
     .field_wrapper {
         position: relative;
     }
