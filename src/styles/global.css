@@ -1,13 +1,49 @@
+*,
+* {
+	color: #ffffff;
+	line-height: 120%;
+}
+
+body {
+	font-family: "JetBrains Mono", monospace;
+	background: #121212;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    margin: 0;
-    padding: 0;
+	font-family: "Noto Sans", sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	font-size: 32px;
+}
+
+h2 {
+	font-size: 24px;
+	color: #e2e8f0;
+}
+
+p {
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
 }
 
 button {
-    cursor: pointer;
+	cursor: pointer;
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 1024px;
+	padding: 0 16px;
+	@media (min-width: 768px) {
+		padding: 0 24px;
+	}
 }
