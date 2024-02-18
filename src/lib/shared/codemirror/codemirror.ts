@@ -95,6 +95,14 @@ export const styles = {
 		border: "1px solid #202830",
 		"border-radius": "12px",
 	},
+	"@media (max-width: 768px)": {
+		".cm-content": {
+			"flex-shrink": 1,
+			"white-space": "pre-wrap",
+			"tab-size": "2 !important",
+		},
+	},
+
 	" .cm-lineNumbers .cm-gutterElement": {
 		"min-width": "24px",
 	},
