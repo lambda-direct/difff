@@ -26,6 +26,8 @@ export const highlightLine = (lineNumber: number, view: EditorView) => {
 						});
 					}
 				} // TODO
+			} else {
+				lineHighlights = Decoration.none;
 			}
 			return lineHighlights;
 		},
@@ -41,17 +43,17 @@ export const highlightLine = (lineNumber: number, view: EditorView) => {
 	});
 };
 
-export const ss = (view: EditorView) => {
-	const lineHighlightField = StateField.define<DecorationSet>({
-		create() {
-			return Decoration.none;
-		},
-		update() {
-			return Decoration.none;
-		},
-		provide: f => EditorView.decorations.from(f),
-	});
-	view.dispatch({
-		effects: [StateEffect.appendConfig.of([lineHighlightField])],
-	});
-};
+// export const ss = (view: EditorView) => {
+// 	const lineHighlightField = StateField.define<DecorationSet>({
+// 		create() {
+// 			return Decoration.none;
+// 		},
+// 		update() {
+// 			return Decoration.none;
+// 		},
+// 		provide: f => EditorView.decorations.from(f),
+// 	});
+// 	view.dispatch({
+// 		effects: [StateEffect.appendConfig.of([lineHighlightField])],
+// 	});
+// };
