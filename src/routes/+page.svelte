@@ -68,9 +68,6 @@
     .article-text {
         margin: 16px 0 0;
         text-align: center;
-        @media (max-width: 768px) {
-            margin: 16px 0 32px;
-        }
     }
     .formatter_field-wrapper {
         width: 100%;
