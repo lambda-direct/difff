@@ -70,6 +70,9 @@
         margin: 16px 0 0;
         text-align: center;
         font-family: "Noto Sans", sans-serif;
+        @media (max-width: 768px) {
+            margin: 16px 0;
+        }
     }
     .formatter_field-wrapper {
         width: 100%;
