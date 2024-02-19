@@ -10,6 +10,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
 			outline: "none",
 		},
 	},
+	".cm-selectionMatch": {},
 	"@media (max-width: 768px)": {
 		".cm-content": {
 			"white-space": "pre-wrap",
@@ -132,7 +133,6 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		content: "'' !important",
 	},
 
-	//for tooltip parent
 	".cm-tooltip-lint, :host & .cm-tooltip-lint": {
 		display: "flex",
 		backgroundColor: "var(--tooltip-background, #21252b)",
