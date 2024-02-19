@@ -6,7 +6,7 @@
     import { json } from "@codemirror/lang-json";
     import { EditorState } from "@codemirror/state";
     import { themeExtensions } from "./themes/theme";
-    import { highlightLine, ss } from "./errorHighLight";
+    import { highlightLine } from "./errorHighLight";
     import ErrorModal from "$lib/shared/ErrorModal.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
@@ -75,7 +75,6 @@
         if (input) {
             try {
                 const result = await CompareJson.format(input);
-                ss(view);
                 $showError = false;
                 return result;
             } catch (err) {

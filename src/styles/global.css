@@ -54,7 +54,7 @@ button {
 }
 
 .container {
-	margin: 0 auto 54px;
+	margin: 0 auto;
 	max-width: 1024px;
 	padding: 0 16px;
 	@media (min-width: 768px) {
