@@ -5,7 +5,6 @@
 
 <svelte:head>
     <title>JSON Formatter Online Tool, Beautifier & Validator - Difff</title>
-
     <meta
         name="description"
         content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files effortlessly."
@@ -45,13 +44,14 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        max-width: 925px;
     }
     .title {
         margin: 28px 0 0;
+        text-align: center;
     }
     .subtitle {
         margin: 16px 0 0;
+        text-align: center;
         color: #e2e8f0;
     }
     .article {
@@ -78,8 +78,7 @@
     .back-field {
         height: 500px;
         resize: none;
-        background: #202830;
-        border: 1px solid #202830;
+        background: #030711;
         border-radius: 12px;
     }
 </style>

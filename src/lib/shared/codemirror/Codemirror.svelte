@@ -3,11 +3,12 @@
     import { showError } from "$lib/storages";
     import { json } from "@codemirror/lang-json";
     import { EditorState } from "@codemirror/state";
-    import { Decoration, EditorView, placeholder as placeholderSet } from "@codemirror/view";
+    import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
     import { basicSetup } from "codemirror";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import CompareJson from "~/utils/index";
-    import { styles } from "./styles";
+    import { baseTheme } from "./themes/base";
+    import { themeExtensions } from "./themes/theme";
 
     export let placeholder: string;
 
@@ -18,12 +19,7 @@
     let updateFromProp = false;
     let updateFromState = false;
 
-    const stateExtensions = [
-        basicSetup,
-        json(),
-        EditorView.theme(styles, { dark: true }),
-        placeholderSet(placeholder)
-    ];
+    const stateExtensions = [basicSetup, json(), themeExtensions, placeholderSet(placeholder)];
 
     const dispatch = createEventDispatcher<{ change: string }>();
 
