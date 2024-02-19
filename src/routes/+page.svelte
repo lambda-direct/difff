@@ -24,7 +24,7 @@
     </section>
     <article class="article">
         <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
-        <p class="article_text">
+        <p class="article-text">
             JSON formatter & validator helps to beautify your JSON text and pretty print it.
             Optimize your JSON formatting effortlessly with our online tool. Simply put your JSON
             text, provide a link to your JSON, or upload a file containing your JSON. Whether your
@@ -65,10 +65,9 @@
         text-align: center;
         font-weight: 700;
     }
-    .article_text {
+    .article-text {
         margin: 16px 0 0;
         text-align: center;
-        font-family: "Noto Sans", sans-serif;
         @media (max-width: 768px) {
             margin: 16px 0 32px;
         }
