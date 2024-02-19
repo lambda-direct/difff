@@ -25,10 +25,7 @@ export const highlightLine = (lineNumber: number, view: EditorView) => {
 							add: [lineHighlight.range(view.state.doc.line(line).from, view.state.doc.line(line).to)],
 						});
 					}
-				}
-			} else {
-				// No errors, clear decorations
-				lineHighlights = Decoration.none;
+				} // TODO
 			}
 			return lineHighlights;
 		},
@@ -41,5 +38,20 @@ export const highlightLine = (lineNumber: number, view: EditorView) => {
 				line: lineNumber,
 			}),
 		],
+	});
+};
+
+export const ss = (view: EditorView) => {
+	const lineHighlightField = StateField.define<DecorationSet>({
+		create() {
+			return Decoration.none;
+		},
+		update() {
+			return Decoration.none;
+		},
+		provide: f => EditorView.decorations.from(f),
+	});
+	view.dispatch({
+		effects: [StateEffect.appendConfig.of([lineHighlightField])],
 	});
 };
