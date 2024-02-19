@@ -23,7 +23,6 @@
         font-family: "Noto Sans", sans-serif;
         color: #e2e8f0;
     }
-
     .page-wrapper {
         display: flex;
         justify-content: center;
