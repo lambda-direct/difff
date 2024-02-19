@@ -98,8 +98,7 @@ export const styles = {
 	"@media (max-width: 768px)": {
 		".cm-content": {
 			"flex-shrink": 1,
-			"white-space": "pre-wrap",
-			"tab-size": "2 !important",
+			"tab-size": "4 !important",
 		},
 	},
 

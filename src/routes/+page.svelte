@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { browser } from "$app/environment";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
@@ -16,7 +17,11 @@
     <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
 
     <section class="formatter_field-wrapper">
-        <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+        {#if browser}
+            <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+        {:else}
+            <div class="back-field" />
+        {/if}
     </section>
     <article class="article">
         <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
@@ -58,6 +63,7 @@
     }
 
     .article_title {
+        text-align: center;
         font-weight: 700;
     }
     .article_text {
@@ -68,5 +74,12 @@
     .formatter_field-wrapper {
         width: 100%;
         margin: 32px 0 0;
+    }
+    .back-field {
+        height: 500px;
+        resize: none;
+        background: #202830;
+        border: 1px solid #202830;
+        border-radius: 12px;
     }
 </style>
