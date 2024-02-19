@@ -2,10 +2,15 @@
     import "~/styles/index.css";
 </script>
 
-<header class="header">You can check our weekly updates here!</header>
-<div class="container">
-    <slot />
-    <!-- <Footer /> -->
+<header class="header">
+    <div class="container">
+        <p>🚀 Visit and see how our service has changed over the past week →</p>
+    </div>
+</header>
+<div class="page-wrapper">
+    <div class="container">
+        <slot />
+    </div>
 </div>
 
 <style>
@@ -17,5 +22,11 @@
         border-bottom: 1px solid #303030;
         font-family: "Noto Sans", sans-serif;
         color: #e2e8f0;
+    }
+
+    .page-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>

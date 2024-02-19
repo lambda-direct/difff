@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { styles } from "./codemirror";
-    import { basicSetup } from "codemirror";
-    import CompareJson from "~/utils/index";
+    import ErrorModal from "$lib/shared/ErrorModal.svelte";
     import { showError } from "$lib/storages";
     import { json } from "@codemirror/lang-json";
     import { EditorState } from "@codemirror/state";
-    import ErrorModal from "$lib/shared/ErrorModal.svelte";
-    import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { Decoration, EditorView, placeholder as placeholderSet } from "@codemirror/view";
+    import { basicSetup } from "codemirror";
+    import { createEventDispatcher, onDestroy, onMount } from "svelte";
+    import CompareJson from "~/utils/index";
+    import { styles } from "./styles";
 
     export let placeholder: string;
 
@@ -112,7 +112,5 @@
 <style>
     .field_wrapper {
         position: relative;
-        overflow: hidden;
-        border-radius: 12px;
     }
 </style>
