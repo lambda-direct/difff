@@ -10,7 +10,9 @@ export const baseTheme: Extension = EditorView.baseTheme({
 			outline: "none",
 		},
 	},
-	".cm-selectionMatch": {},
+	".cm-selectionMatch": {
+		background: "#2945938a !important",
+	},
 	"@media (max-width: 768px)": {
 		".cm-content": {
 			"white-space": "pre-wrap",

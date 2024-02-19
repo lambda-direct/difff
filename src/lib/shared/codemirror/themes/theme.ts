@@ -26,7 +26,9 @@ export const theme = [
 			".cm-content": {
 				caretColor: "var(--cursor, #abb2bf)",
 			},
-			"&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground": { backgroundColor: "#3e445157" },
+			"&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground": {
+				backgroundColor: "#3e445157",
+			},
 			".cm-cursor, .cm-dropCursor": {
 				borderLeftColor: "var(--cursor, #abb2bf)",
 			},
