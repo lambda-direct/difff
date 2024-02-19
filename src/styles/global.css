@@ -1,17 +1,16 @@
 *,
 * {
-    color: #ffffff;
-    line-height: 120%;
+	line-height: 120%;
 }
 
 html {
-    height: 100%;
+	height: 100%;
 }
 
 body {
-    font-family: "JetBrains Mono", monospace;
-    background: #121212;
-    height: 100%;
+	font-family: "JetBrains Mono", monospace;
+	background: #121212;
+	height: 100%;
 }
 
 h1,
@@ -20,35 +19,45 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Noto Sans", sans-serif;
-    margin: 0;
-    padding: 0;
+	font-family: "Noto Sans", sans-serif;
+	margin: 0;
+	padding: 0;
 }
 
 h1 {
-    font-size: 32px;
+	color: #ffffff;
+	font-size: 32px;
 }
 
 h2 {
-    font-size: 24px;
-    color: #e2e8f0;
+	font-size: 24px;
+	color: #e2e8f0;
 }
 
 p {
-    margin: 0;
-    padding: 0;
-    font-size: 16px;
+	font-family: "Noto Sans", sans-serif;
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+	color: #ffffff;
 }
-
+a {
+	text-decoration: underline;
+	color: inherit;
+}
 button {
-    cursor: pointer;
+	cursor: pointer;
+}
+.error {
+	line-height: 24px;
+	background: #631515 !important;
 }
 
 .container {
-    margin: 0 auto;
-    max-width: 1024px;
-    padding: 0 16px;
-    @media (min-width: 768px) {
-        padding: 0 24px;
-    }
+	margin: 0 auto 54px;
+	max-width: 1024px;
+	padding: 0 16px;
+	@media (min-width: 768px) {
+		padding: 0 24px;
+	}
 }

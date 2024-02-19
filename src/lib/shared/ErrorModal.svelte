@@ -4,7 +4,7 @@
 
 <div class="modal">
     <p class="title">Invalid JSON</p>
-    <AlertIcon />
+    <AlertIcon color={"#ffffff"} />
 </div>
 
 <style>

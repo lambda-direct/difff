@@ -11,6 +11,9 @@ dependencies:
   '@codemirror/lang-json':
     specifier: ^6.0.1
     version: 6.0.1
+  '@codemirror/language':
+    specifier: ^6.10.1
+    version: 6.10.1
   '@codemirror/lint':
     specifier: ^6.5.0
     version: 6.5.0
@@ -23,6 +26,9 @@ dependencies:
   '@codemirror/view':
     specifier: ^6.24.0
     version: 6.24.0
+  '@lezer/highlight':
+    specifier: ^1.2.0
+    version: 1.2.0
   codemirror:
     specifier: ^6.0.1
     version: 6.0.1(@lezer/common@1.2.1)

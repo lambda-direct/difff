@@ -1,10 +1,10 @@
 <script lang="ts">
+    import { browser } from "$app/environment";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
 <svelte:head>
     <title>JSON Formatter Online Tool, Beautifier & Validator - Difff</title>
-
     <meta
         name="description"
         content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files effortlessly."
@@ -16,11 +16,15 @@
     <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
 
     <section class="formatter_field-wrapper">
-        <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+        {#if browser}
+            <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+        {:else}
+            <div class="back-field" />
+        {/if}
     </section>
     <article class="article">
         <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
-        <p class="article_text">
+        <p class="article-text">
             JSON formatter & validator helps to beautify your JSON text and pretty print it.
             Optimize your JSON formatting effortlessly with our online tool. Simply put your JSON
             text, provide a link to your JSON, or upload a file containing your JSON. Whether your
@@ -40,14 +44,14 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        max-width: 925px;
     }
     .title {
         margin: 28px 0 0;
+        text-align: center;
     }
     .subtitle {
         margin: 16px 0 0;
-        color: #e2e8f0;
+        text-align: center;
     }
     .article {
         margin: 32px auto 0;
@@ -58,15 +62,21 @@
     }
 
     .article_title {
+        text-align: center;
         font-weight: 700;
     }
-    .article_text {
+    .article-text {
         margin: 16px 0 0;
         text-align: center;
-        font-family: "Noto Sans", sans-serif;
     }
     .formatter_field-wrapper {
         width: 100%;
         margin: 32px 0 0;
+    }
+    .back-field {
+        height: 500px;
+        resize: none;
+        background: #030711;
+        border-radius: 12px;
     }
 </style>
