@@ -17,7 +17,6 @@ export const highlightLine = (lineNumber: number, view: EditorView) => {
 		},
 		update(lineHighlights, tr) {
 			const hasErrors = tr.effects.some(effect => effect.is(addLineHighlight));
-
 			if (hasErrors) {
 				for (const e of tr.effects) {
 					if (e.is(addLineHighlight)) {

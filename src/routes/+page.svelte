@@ -52,7 +52,6 @@
     .subtitle {
         margin: 16px 0 0;
         text-align: center;
-        color: #e2e8f0;
     }
     .article {
         margin: 32px auto 0;
