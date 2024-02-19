@@ -1,6 +1,5 @@
 *,
 * {
-	color: #ffffff;
 	line-height: 120%;
 }
 
@@ -26,6 +25,7 @@ h6 {
 }
 
 h1 {
+	color: #ffffff;
 	font-size: 32px;
 }
 
@@ -38,10 +38,20 @@ p {
 	margin: 0;
 	padding: 0;
 	font-size: 16px;
+	color: #ffffff;
 }
-
+a {
+	text-decoration: underline;
+	color: inherit;
+}
 button {
 	cursor: pointer;
+}
+.error {
+	display: block;
+	line-height: 24px;
+	border-radius: 4px;
+	background: #631515 !important;
 }
 
 .container {

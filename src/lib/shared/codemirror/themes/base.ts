@@ -133,7 +133,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
 	},
 
 	//for tooltip parent
-	"body & .cm-tooltip-lint, :host & .cm-tooltip-lint": {
+	".cm-tooltip-lint, :host & .cm-tooltip-lint": {
 		display: "flex",
 		backgroundColor: "var(--tooltip-background, #21252b)",
 		alignItems: "center",
@@ -144,17 +144,17 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		fontSize: "12.8px",
 		lineHeight: "1rem",
 	},
-	"body & .cm-tooltip-below, :host & .cm-tooltip-below": {
+	".cm-tooltip-below, :host & .cm-tooltip-below": {
 		borderRadius: "0.375rem",
 		border: "none !important",
 	},
-	"body & .cm-diagnostic, :host & .cm-diagnostic": {
+	".cm-diagnostic, :host & .cm-diagnostic": {
 		paddingLeft: "20px !important",
 		backgroundRepeat: "no-repeat",
 		backgroundPositionX: "2px",
 		backgroundPositionY: "center",
 	},
-	"body & .cm-diagnostic-error, :host & .cm-diagnostic-error": {
+	".cm-diagnostic-error, :host & .cm-diagnostic-error": {
 		backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E %3Cpath d='M12 8C12 10.2091 10.2091 12 8 12C5.79086 12 4 10.2091 4 8C4 5.79086 5.79086 4 8 4C10.2091 4 12 5.79086 12 8Z' fill='%23d11'/%3E %3C/svg%3E")`,
 		border: "none !important",
 	},

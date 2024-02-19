@@ -22,7 +22,6 @@ export const theme = [
 			"border-radius": "12px",
 			background: "var(--editor-background, #030711)",
 		},
-
 		".cm-content": {
 			caretColor: "var(--cursor, #abb2bf)",
 		},
