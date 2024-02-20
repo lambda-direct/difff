@@ -1,6 +1,6 @@
 <script lang="ts">
     import { basicSetup } from "codemirror";
-    import CompareJson, { isFormatError } from "~/utils/index";
+    import JSONDataOperations, { isFormatError } from "~/utils/index";
     import { showError } from "$lib/storages";
     import { json } from "@codemirror/lang-json";
     import { EditorState } from "@codemirror/state";
@@ -82,7 +82,7 @@
     const formatJSON = async (input: string) => {
         if (input) {
             try {
-                const result = await CompareJson.format(input);
+                const result = await JSONDataOperations.format(input);
                 removeHighlightedLines(view);
                 $showError = false;
                 return result;
