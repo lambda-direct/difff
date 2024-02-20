@@ -11,7 +11,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		},
 	},
 	".cm-selectionMatch": {
-		background: "#2945938a !important", // TODO
+		background: "#2945938a !important",
 	},
 	"@media (max-width: 768px)": {
 		".cm-content": {

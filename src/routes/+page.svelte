@@ -1,5 +1,8 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import BtnIcon from "~/lib/shared/ButtonWithIcon.svelte";
+    import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
+    import CopyIcon from "~/lib/icons/CopyIcon.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
@@ -14,14 +17,20 @@
 <main class="main">
     <h1 class="title">JSON Formatter Online</h1>
     <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
+    <div class="section-wrapper">
+        <div class="icon-header">
+            <BtnIcon><CopyIcon color={"#7d8799"} /></BtnIcon>
+            <BtnIcon><DownLoadIcon color={"#7d8799"} /></BtnIcon>
+        </div>
+        <section class="formatter_field-wrapper">
+            {#if browser}
+                <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+            {:else}
+                <div class="back-field" />
+            {/if}
+        </section>
+    </div>
 
-    <section class="formatter_field-wrapper">
-        {#if browser}
-            <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
-        {:else}
-            <div class="back-field" />
-        {/if}
-    </section>
     <article class="article">
         <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
         <p class="article-text">
@@ -44,6 +53,12 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+    }
+    .section-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin: 32px 0 0;
+        width: 100%;
     }
     .title {
         margin: 28px 0 0;
@@ -70,13 +85,18 @@
         text-align: center;
     }
     .formatter_field-wrapper {
+        margin: 12px 0 0;
         width: 100%;
-        margin: 32px 0 0;
     }
     .back-field {
         height: 500px;
         resize: none;
         background: #030711;
         border-radius: 12px;
+    }
+    .icon-header {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
     }
 </style>

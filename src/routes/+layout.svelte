@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<style>
+<style lang="scss">
     .header {
         overflow: hidden;
         display: flex;
@@ -38,8 +38,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: 0;
         padding: 0 0 32px;
         @media (min-width: 768px) {
+            margin: 0 0 54px;
             height: 100%;
             padding: 0;
         }
