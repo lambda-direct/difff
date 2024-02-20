@@ -1,6 +1,11 @@
 import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
+import type { FormatError } from "~/types";
+
+export const isFormatError = (error: unknown): error is FormatError => {
+	return <FormatError>error !== undefined && (<FormatError>error).loc !== undefined;
+};
 
 class CompareJson {
 	format = async (json: string) => {

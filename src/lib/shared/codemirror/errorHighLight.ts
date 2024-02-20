@@ -1,44 +1,54 @@
 import { StateEffect, StateField } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 
-export const addLineHighlight = StateEffect.define<{ line: number }>({
-	map: ({ line }, change) => ({
-		line: change.mapPos(line),
-	}),
-});
-
-export const lineHighlight = Decoration.mark({ class: "error" });
-
-export const highlightLine = (lineNumber: number, view: EditorView) => {
-	lineNumber = lineNumber > 2 ? lineNumber - 1 : lineNumber;
-	const lineHighlightField = StateField.define<DecorationSet>({
-		create() {
-			return Decoration.none;
-		},
-		update(lineHighlights, tr) {
-			const hasErrors = tr.effects.some(effect => effect.is(addLineHighlight));
-			if (hasErrors) {
-				for (const e of tr.effects) {
-					if (e.is(addLineHighlight)) {
-						const line = e.value.line;
-						lineHighlights = lineHighlights.update({
-							add: [lineHighlight.range(view.state.doc.line(line).from, view.state.doc.line(line).to)],
-						});
-					}
-				} // TODO
-			} else {
-				lineHighlights = Decoration.none;
-			}
-			return lineHighlights;
-		},
-		provide: f => EditorView.decorations.from(f),
-	});
+export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
+	const line = view.state.doc.line(lineNumber);
 	view.dispatch({
 		effects: [
-			StateEffect.appendConfig.of([lineHighlightField]),
-			addLineHighlight.of({
-				line: lineNumber,
+			addHighlight.of({
+				from: line.from,
+				to: line.to,
 			}),
 		],
 	});
 };
+
+export const removeHighlightedLines = (view: EditorView) => {
+	view.dispatch({
+		effects: [removeHighlights.of(null)],
+	});
+};
+
+export const lineHighlightField = StateField.define<DecorationSet>({
+	create() {
+		return Decoration.none;
+	},
+	update(highlights, tr) {
+		for (const e of tr.effects) {
+			if (e.is(removeHighlights)) {
+				highlights = highlights.update({
+					filter: () => {
+						return false;
+					},
+				});
+			} else if (e.is(addHighlight)) {
+				highlights = highlights.update({
+					add: [lineHighlight.range(e.value.from, e.value.to)],
+				});
+			}
+		}
+		return highlights;
+	},
+	provide: f => EditorView.decorations.from(f),
+});
+
+const addHighlight = StateEffect.define<{ from: number; to: number }>({
+	map: ({ from, to }, change) => ({
+		from: change.mapPos(from),
+		to: change.mapPos(to),
+	}),
+});
+
+const removeHighlights = StateEffect.define();
+
+const lineHighlight = Decoration.mark({ class: "error" });

@@ -17,7 +17,7 @@
 
     <section class="formatter_field-wrapper">
         {#if browser}
-            <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+            <CodeMirror placeholder={"Put your JSON or Drag & Drop a file"} />
         {:else}
             <div class="back-field" />
         {/if}

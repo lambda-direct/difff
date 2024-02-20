@@ -67,8 +67,8 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		border: "none !important",
 	},
 	".cm-content": {
-		fontFamily: "var(--editor-font)",
-		fontSize: "14.2px",
+		fontFamily: `"JetBrains Mono", monospace`,
+		fontSize: "14px",
 		cursor: "text",
 		padding: "12px 0",
 	},
@@ -76,7 +76,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		outline: "none !important",
 	},
 	".cm-gutters": {
-		fontFamily: "var(--editor-font)",
+		fontFamily: `"JetBrains Mono", monospace`,
 		border: "none",
 	},
 	".cm-activeLine": {
@@ -97,7 +97,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		padding: "0",
 
 		"&:not(:first-child)": {
-			padding: "4px 0 0",
+			padding: "2px 0 0",
 		},
 	},
 	".cm-gutter-lint .cm-gutterElement": {
@@ -121,8 +121,8 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		},
 	},
 	".cm-line": {
-		minHeight: "24px !important",
-		lineHeight: "24px !important",
+		minHeight: "18px !important",
+		lineHeight: "18px !important",
 	},
 	".cm-gutter": {
 		overflow: "visible",
