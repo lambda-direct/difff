@@ -38,12 +38,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0;
-        padding: 0 0 32px;
-        @media (min-width: 768px) {
-            margin: 0 0 54px;
-            height: calc(100% - 41px);
-            padding: 0;
-        }
+        padding: 0 0 16px;
     }
 </style>

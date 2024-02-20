@@ -1,7 +1,8 @@
 <script lang="ts">
+    export let click: any;
 </script>
 
-<button class="icon-btn">
+<button on:click={click} class="icon-btn">
     <slot />
 </button>
 

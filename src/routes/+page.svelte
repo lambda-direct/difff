@@ -5,6 +5,24 @@
     import BtnIcon from "~/lib/shared/ButtonWithIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
+    let jsonData = {
+        name: "John Doe",
+        age: 30,
+        city: "Example City"
+    };
+    const downloadJsonFile = () => {
+        const jsonString = JSON.stringify(jsonData, null, 2);
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        const aTag = document.createElement("a");
+        aTag.href = url;
+        aTag.download = "data.json";
+        document.body.appendChild(aTag);
+        aTag.click();
+        document.body.removeChild(aTag);
+        URL.revokeObjectURL(url);
+    };
 </script>
 
 <svelte:head>
@@ -24,8 +42,8 @@
                 <JSONIcon color={"#e2e8f0"} />
             </div>
             <div class="icon-btn-wrapp">
-                <BtnIcon><DownLoadIcon color={"#7d8799"} /></BtnIcon>
-                <BtnIcon><CopyIcon color={"#7d8799"} /></BtnIcon>
+                <BtnIcon click={downloadJsonFile}><DownLoadIcon color={"#7d8799"} /></BtnIcon>
+                <BtnIcon click={() => {}}><CopyIcon color={"#7d8799"} /></BtnIcon>
             </div>
         </div>
         <section class="formatter_field-wrapper">
