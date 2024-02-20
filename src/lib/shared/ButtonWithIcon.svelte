@@ -1,9 +1,7 @@
-<button
-    on:click={() => {
-        console.log(22);
-    }}
-    class="icon-btn"
->
+<script lang="ts">
+</script>
+
+<button class="icon-btn">
     <slot />
 </button>
 
@@ -12,9 +10,12 @@
         display: flex;
         align-items: center;
         height: 36px;
-        padding: 0 8px;
-        background: #070c18;
-        border: 1px solid #2b29298c;
+        padding: 0 7px;
+        background: #030711;
+        border: 1px solid #2b292929;
         border-radius: 8px;
+    }
+    .icon-btn:hover {
+        background: #2b292929;
     }
 </style>

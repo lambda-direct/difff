@@ -20,7 +20,8 @@ export const theme = [
 			"&": {
 				height: "500px",
 				color: "var(--cursor, #abb2bf)",
-				"border-radius": "12px",
+				"border-bottom-left-radius": "8px",
+				"border-bottom-right-radius": "8px",
 				background: "var(--editor-background, #030711)",
 			},
 			".cm-content": {

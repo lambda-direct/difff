@@ -42,7 +42,7 @@
         padding: 0 0 32px;
         @media (min-width: 768px) {
             margin: 0 0 54px;
-            height: 100%;
+            height: calc(100% - 41px);
             padding: 0;
         }
     }

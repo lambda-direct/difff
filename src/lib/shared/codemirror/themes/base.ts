@@ -79,6 +79,9 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		fontFamily: `"JetBrains Mono", monospace`,
 		border: "none",
 	},
+	".cm-foldGutter": {
+		"user-select": "none",
+	},
 	".cm-activeLine": {
 		borderTopRightRadius: "0.375rem",
 		borderBottomRightRadius: "0.375rem",
@@ -95,7 +98,8 @@ export const baseTheme: Extension = EditorView.baseTheme({
 	".cm-lineNumbers .cm-gutterElement": {
 		fontSize: "12.8px",
 		padding: "0",
-
+		"user-select": "none",
+		cursor: "default",
 		"&:not(:first-child)": {
 			padding: "2px 0 0",
 		},
