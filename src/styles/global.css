@@ -49,7 +49,6 @@ button {
 	cursor: pointer;
 }
 .error {
-	line-height: 24px;
 	background: #631515 !important;
 }
 

@@ -1,12 +1,15 @@
 <script lang="ts">
     import { basicSetup } from "codemirror";
-    import CompareJson from "~/utils/index";
+    import JSONDataOperations, { isFormatError } from "~/utils/index";
     import { showError } from "$lib/storages";
-    import { type ErrorObject } from "~/types";
     import { json } from "@codemirror/lang-json";
     import { EditorState } from "@codemirror/state";
     import { themeExtensions } from "./themes/theme";
-    import { highlightLine } from "./errorHighLight";
+    import {
+        addHighlightedLine,
+        lineHighlightField,
+        removeHighlightedLines
+    } from "./errorHighLight";
     import ErrorModal from "$lib/shared/ErrorModal.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
@@ -20,7 +23,13 @@
     let updateFromProp = false;
     let updateFromState = false;
 
-    const stateExtensions = [basicSetup, json(), themeExtensions, placeholderSet(placeholder)];
+    const stateExtensions = [
+        basicSetup,
+        lineHighlightField,
+        json(),
+        themeExtensions,
+        placeholderSet(placeholder)
+    ];
 
     const dispatch = createEventDispatcher<{ change: string }>();
 
@@ -57,7 +66,6 @@
 
     const handleChange = async (): Promise<void> => {
         const new_value = view.state.doc.toString();
-
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
@@ -74,11 +82,14 @@
     const formatJSON = async (input: string) => {
         if (input) {
             try {
-                const result = await CompareJson.format(input);
+                const result = await JSONDataOperations.format(input);
+                removeHighlightedLines(view);
                 $showError = false;
                 return result;
             } catch (err) {
-                highlightLine((err as ErrorObject).loc.start.line, view);
+                if (isFormatError(err)) {
+                    addHighlightedLine(view, err.loc.start.line);
+                }
                 $showError = true;
                 return input;
             }
