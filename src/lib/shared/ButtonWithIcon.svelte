@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let click: any;
+    export let click = () => {};
 </script>
 
 <button on:click={click} class="icon-btn">

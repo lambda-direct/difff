@@ -5,14 +5,11 @@
     import BtnIcon from "~/lib/shared/ButtonWithIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
-    let jsonData = {
-        name: "John Doe",
-        age: 30,
-        city: "Example City"
-    };
+
+    let value: string;
+
     const downloadJsonFile = () => {
-        const jsonString = JSON.stringify(jsonData, null, 2);
-        const blob = new Blob([jsonString], { type: "application/json" });
+        const blob = new Blob([value], { type: "application/json" });
         const url = URL.createObjectURL(blob);
 
         const aTag = document.createElement("a");
@@ -22,6 +19,10 @@
         aTag.click();
         document.body.removeChild(aTag);
         URL.revokeObjectURL(url);
+    };
+
+    const copyToClipboard = async () => {
+        await navigator.clipboard.writeText(value);
     };
 </script>
 
@@ -43,12 +44,15 @@
             </div>
             <div class="icon-btn-wrapp">
                 <BtnIcon click={downloadJsonFile}><DownLoadIcon color={"#7d8799"} /></BtnIcon>
-                <BtnIcon click={() => {}}><CopyIcon color={"#7d8799"} /></BtnIcon>
+                <BtnIcon click={copyToClipboard}><CopyIcon color={"#7d8799"} /></BtnIcon>
             </div>
         </div>
         <section class="formatter_field-wrapper">
             {#if browser}
-                <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+                <CodeMirror
+                    bind:value
+                    placeholder={"Put your JSON, provide a link, or Drag & Drop a file"}
+                />
             {:else}
                 <div class="back-field" />
             {/if}

@@ -16,7 +16,7 @@
 
     export let placeholder: string;
 
-    let value: string = "";
+    export let value: string = "";
     let view: EditorView;
     let element: HTMLDivElement;
 
