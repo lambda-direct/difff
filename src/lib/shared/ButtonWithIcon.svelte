@@ -1,7 +1,8 @@
 <script lang="ts">
+    export let click = () => {};
 </script>
 
-<button class="icon-btn">
+<button on:click={click} {...$$props} class="icon-btn">
     <slot />
 </button>
 
