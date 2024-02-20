@@ -2,7 +2,7 @@
     export let click = () => {};
 </script>
 
-<button on:click={click} class="icon-btn">
+<button on:click={click} {...$$props} class="icon-btn">
     <slot />
 </button>
 

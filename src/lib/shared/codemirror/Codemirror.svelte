@@ -1,5 +1,6 @@
 <script lang="ts">
     import { basicSetup } from "codemirror";
+    // import { browser } from "$app/environment";
     import JSONDataOperations, { isFormatError } from "~/utils/index";
     import { showError } from "$lib/storages";
     import { json } from "@codemirror/lang-json";
@@ -13,10 +14,11 @@
     import ErrorModal from "$lib/shared/ErrorModal.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
+    import CodeMirrorHeader from "$lib/shared/CodeMirrorHeader.svelte";
 
     export let placeholder: string;
 
-    export let value: string = "";
+    let value: string = "";
     let view: EditorView;
     let element: HTMLDivElement;
 
@@ -69,7 +71,6 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
-        value = await formatJSON(value);
         dispatch("change", value);
     };
 
@@ -79,10 +80,11 @@
             extensions: [stateExtensions]
         });
     };
-    const formatJSON = async (input: string) => {
-        if (input) {
+
+    const formatJSON = async () => {
+        if (value) {
             try {
-                const result = await JSONDataOperations.format(input);
+                const result = await JSONDataOperations.format(value);
                 removeHighlightedLines(view);
                 $showError = false;
                 return result;
@@ -91,16 +93,49 @@
                     addHighlightedLine(view, err.loc.start.line);
                 }
                 $showError = true;
-                return input;
+                return value;
             }
         } else {
             $showError = false;
-            return input;
+            return value;
         }
     };
+
+    const downloadJsonFile = () => {
+        const blob = new Blob([value], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        const aTag = document.createElement("a");
+        aTag.href = url;
+        aTag.download = "data.json";
+        document.body.appendChild(aTag);
+        aTag.click();
+        document.body.removeChild(aTag);
+        URL.revokeObjectURL(url);
+    };
+
+    const copyToClipboard = async () => {
+        await navigator.clipboard.writeText(value);
+    };
+
+    $: {
+        if (value === "") {
+            $showError = false;
+            if (view) removeHighlightedLines(view);
+        }
+    }
+    // if (browser) {
+    //     const cmDiv = document.getElementsByClassName("cm-content");
+    //     cmDiv.ariaLabel = "JSON-input";
+    // }
 </script>
 
 <div class="field_wrapper">
+    <CodeMirrorHeader
+        formatClick={formatJSON}
+        downloadClick={downloadJsonFile}
+        copyClick={copyToClipboard}
+    />
     <div class="codemirror-wrapper" bind:this={element} />
     {#if $showError}
         <ErrorModal />
