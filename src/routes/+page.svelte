@@ -24,8 +24,8 @@
                 <JSONIcon color={"#e2e8f0"} />
             </div>
             <div class="icon-btn-wrapp">
-                <BtnIcon onClick={() => {}}><DownLoadIcon color={"#7d8799"} /></BtnIcon>
-                <BtnIcon onClick={() => {}}><CopyIcon color={"#7d8799"} /></BtnIcon>
+                <BtnIcon><DownLoadIcon color={"#7d8799"} /></BtnIcon>
+                <BtnIcon><CopyIcon color={"#7d8799"} /></BtnIcon>
             </div>
         </div>
         <section class="formatter_field-wrapper">
