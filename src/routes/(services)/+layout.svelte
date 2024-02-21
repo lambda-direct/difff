@@ -2,11 +2,13 @@
     import "~/styles/index.css";
 </script>
 
-<header class="header">
-    <div class="container">
-        <p class="header-text">🚀 Visit and see how our service has changed over the past week →</p>
-    </div>
-</header>
+<a href="/changelog">
+    <header class="header">
+        <div class="container">
+            <p class="header-text">🚀 Visit and see how our service has changed over the past week →</p>
+        </div>
+    </header>
+</a>
 <div class="page-wrapper">
     <div class="container">
         <slot />

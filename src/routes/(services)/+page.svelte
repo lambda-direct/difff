@@ -36,7 +36,8 @@
             For valid JSON, it will be formatted using <a
                 href="https://prettier.io/"
                 rel="nofollow noopener noreferrer"
-                target="_blank">Prettier</a
+                target="_blank"
+                class="prettier-href">Prettier</a
             >.
         </p>
     </article>
@@ -93,5 +94,8 @@
         background: #030711;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
+    }
+    .prettier-href{
+        text-decoration: underline;
     }
 </style>

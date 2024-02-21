@@ -42,7 +42,7 @@ p {
 	color: #ffffff;
 }
 a {
-	text-decoration: underline;
+	text-decoration: none;
 	color: inherit;
 }
 button {
