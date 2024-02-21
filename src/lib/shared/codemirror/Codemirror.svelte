@@ -1,6 +1,6 @@
 <script lang="ts">
     import { basicSetup } from "codemirror";
-    // import { browser } from "$app/environment";
+    import { browser } from "$app/environment";
     import JSONDataOperations, { isFormatError } from "~/utils/index";
     import { showError } from "$lib/storages";
     import { json } from "@codemirror/lang-json";
@@ -124,10 +124,15 @@
             if (view) removeHighlightedLines(view);
         }
     }
-    // if (browser) {
-    //     const cmDiv = document.getElementsByClassName("cm-content");
-    //     cmDiv.ariaLabel = "JSON-input";
-    // }
+    onMount(() => {
+        if (browser) {
+            const cmDiv = document.getElementsByClassName("cm-content");
+            if (cmDiv.length > 0) {
+                cmDiv[0].setAttribute("aria-label", "JSON input");
+                cmDiv[0].setAttribute("aria-labelledby", "JSON input");
+            }
+        }
+    });
 </script>
 
 <div class="field_wrapper">
