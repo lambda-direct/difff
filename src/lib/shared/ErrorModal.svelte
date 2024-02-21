@@ -19,9 +19,9 @@
         align-items: center;
         flex-direction: row-reverse;
         padding: 12px;
-        background: #cd1c1cbf;
+        background: #8f2626;
         border-radius: 4px;
-        bottom: 0%;
+        top: 55px;
         position: absolute;
         right: 12px;
         z-index: 100;
@@ -29,7 +29,7 @@
     }
     @keyframes floatIn {
         to {
-            bottom: 12px;
+            top: 63px;
         }
     }
 </style>

@@ -18,7 +18,7 @@ export const theme = [
 	EditorView.theme(
 		{
 			"&": {
-				height: "500px",
+				height: "60vh",
 				color: "var(--cursor, #abb2bf)",
 				"border-bottom-left-radius": "8px",
 				"border-bottom-right-radius": "8px",

@@ -13,6 +13,8 @@ export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
 				to: line.to,
 			}),
 		],
+		selection: { head: line.from, anchor: line.to },
+		scrollIntoView: true,
 	});
 };
 

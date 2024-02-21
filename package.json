@@ -19,6 +19,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "8.56.0",
 		"@types/node": "^20.11.17",
+		"@types/toastify-js": "^1.12.3",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"eslint": "^8.56.0",
@@ -47,6 +48,7 @@
 		"@lezer/highlight": "^1.2.0",
 		"axios": "^1.6.7",
 		"codemirror": "^6.0.1",
-		"svelte-codemirror-editor": "^1.2.0"
+		"svelte-codemirror-editor": "^1.2.0",
+		"toastify-js": "^1.12.0"
 	}
 }

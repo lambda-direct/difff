@@ -1,4 +1,5 @@
 <script lang="ts">
+    import 'toastify-js/src/toastify.css';
     import "~/styles/index.css";
 </script>
 
@@ -38,7 +39,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0 0 16px;
-        height: calc(100% - 57px);
+        padding: 0 0 32px;
     }
 </style>
