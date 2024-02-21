@@ -1,5 +1,8 @@
 import { StateEffect, StateField } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
+import { showError } from "~/lib/storages";
+import { isFormatError } from "~/utils";
+import JSONDataOperations from "~/utils/index";
 
 export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
 	const line = view.state.doc.line(lineNumber);
@@ -17,6 +20,26 @@ export const removeHighlightedLines = (view: EditorView) => {
 	view.dispatch({
 		effects: [removeHighlights.of(null)],
 	});
+};
+
+export const validateJson = async (value: string, view: EditorView) => {
+	if (value) {
+		try {
+			await JSONDataOperations.format(value);
+			removeHighlightedLines(view);
+			showError.set(false);
+			return;
+		} catch (err) {
+			if (isFormatError(err)) {
+				addHighlightedLine(view, err.loc.start.line);
+			}
+			showError.set(true);
+			return;
+		}
+	} else {
+		showError.set(false);
+		return;
+	}
 };
 
 export const lineHighlightField = StateField.define<DecorationSet>({

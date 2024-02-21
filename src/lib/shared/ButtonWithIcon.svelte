@@ -13,10 +13,11 @@
         height: 36px;
         padding: 0 7px;
         background: #030711;
-        border: 1px solid #2b292929;
+        border: 1px solid #2c2c2c;
         border-radius: 8px;
     }
+    
     .icon-btn:hover {
-        background: #2b292929;
+        background: #2c2c2c;
     }
 </style>
