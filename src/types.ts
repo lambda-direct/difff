@@ -5,6 +5,12 @@ export type FormatError = {
 	};
 };
 
+export type Post = {
+	title: string;
+	description: string;
+	data: string;
+};
+
 type Coordinates = {
 	line: number;
 	column: number;
