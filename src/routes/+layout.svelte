@@ -22,7 +22,7 @@
         padding: 0 16px;
         height: 40px;
         border-bottom: 1px solid #303030;
-        font-family: "Noto Sans", sans-serif;
+        font-family: "NotoSans-Regular", sans-serif;
         color: #e2e8f0;
     }
 

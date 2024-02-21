@@ -22,7 +22,6 @@
     }
     .name {
         margin: 0;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 600;
+        font-family: "JetBrainsMono-SemiBold", monospace;
     }
 </style>
