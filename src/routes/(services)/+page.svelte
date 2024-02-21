@@ -89,7 +89,7 @@
         width: 100%;
     }
     .back-field {
-        height: 500px;
+        height: 60vh;
         resize: none;
         background: #030711;
         border-bottom-left-radius: 8px;

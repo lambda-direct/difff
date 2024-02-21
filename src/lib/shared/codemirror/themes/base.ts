@@ -101,7 +101,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		"user-select": "none",
 		cursor: "default",
 		"&:not(:first-child)": {
-			padding: "2px 0 0",
+			padding: "1px 0 0 3px",
 		},
 	},
 	".cm-gutter-lint .cm-gutterElement": {

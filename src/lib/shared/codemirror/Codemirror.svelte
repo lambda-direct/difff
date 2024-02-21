@@ -1,16 +1,17 @@
 <script lang="ts">
+    import Alert from "~/utils/toastify";
     import { basicSetup } from "codemirror";
     import { browser } from "$app/environment";
     import JSONDataOperations from "~/utils/index";
-    import { showError } from "$lib/storages";
+    import { showError } from "~/lib/storages";
     import { json } from "@codemirror/lang-json";
     import { EditorState } from "@codemirror/state";
-    import { themeExtensions } from "./themes/theme";
-    import { lineHighlightField, removeHighlightedLines, validateJson } from "./codeMirror";
-    import ErrorModal from "$lib/shared/ErrorModal.svelte";
+    import { themeExtensions } from "./themes/theme"
+    import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
+    import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
-    import CodeMirrorHeader from "$lib/shared/CodeMirrorHeader.svelte";
+    import { lineHighlightField, removeHighlightedLines, validateJson } from "./codeMirror";
 
     export let placeholder: string;
 
@@ -76,7 +77,8 @@
 
     const formatJSON = async () => {
         await validateJson(value, view);
-        if (!$showError) {
+        if (!$showError && value.replaceAll(" ","")) {
+            Alert.success("Formatted")
             return await JSONDataOperations.format(value);
         } else {
             return value;
@@ -94,10 +96,12 @@
         aTag.click();
         document.body.removeChild(aTag);
         URL.revokeObjectURL(url);
+        Alert.success("Downloading")
     };
 
     const copyToClipboard = async () => {
         await navigator.clipboard.writeText(value);
+        Alert.success("Copied")
     };
 
     $: {
