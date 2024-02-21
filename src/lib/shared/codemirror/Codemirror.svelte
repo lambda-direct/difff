@@ -1,16 +1,12 @@
 <script lang="ts">
     import { basicSetup } from "codemirror";
-    // import { browser } from "$app/environment";
-    import JSONDataOperations, { isFormatError } from "~/utils/index";
+    import { browser } from "$app/environment";
+    import JSONDataOperations from "~/utils/index";
     import { showError } from "$lib/storages";
     import { json } from "@codemirror/lang-json";
     import { EditorState } from "@codemirror/state";
     import { themeExtensions } from "./themes/theme";
-    import {
-        addHighlightedLine,
-        lineHighlightField,
-        removeHighlightedLines
-    } from "./errorHighLight";
+    import { lineHighlightField, removeHighlightedLines, validateJson } from "./codeMirror";
     import ErrorModal from "$lib/shared/ErrorModal.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
@@ -25,6 +21,7 @@
     let updateFromProp = false;
     let updateFromState = false;
 
+    const dispatch = createEventDispatcher<{ change: string }>();
     const stateExtensions = [
         basicSetup,
         lineHighlightField,
@@ -32,11 +29,6 @@
         themeExtensions,
         placeholderSet(placeholder)
     ];
-
-    const dispatch = createEventDispatcher<{ change: string }>();
-
-    onMount(() => (view = createEditorView()));
-    onDestroy(() => view?.destroy());
 
     $: view && update(value);
     $: onChange = handleChange;
@@ -71,6 +63,7 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
+        validateJson(value, view);
         dispatch("change", value);
     };
 
@@ -82,21 +75,10 @@
     };
 
     const formatJSON = async () => {
-        if (value) {
-            try {
-                const result = await JSONDataOperations.format(value);
-                removeHighlightedLines(view);
-                $showError = false;
-                return result;
-            } catch (err) {
-                if (isFormatError(err)) {
-                    addHighlightedLine(view, err.loc.start.line);
-                }
-                $showError = true;
-                return value;
-            }
+        await validateJson(value, view);
+        if (!$showError) {
+            return await JSONDataOperations.format(value);
         } else {
-            $showError = false;
             return value;
         }
     };
@@ -124,10 +106,27 @@
             if (view) removeHighlightedLines(view);
         }
     }
-    // if (browser) {
-    //     const cmDiv = document.getElementsByClassName("cm-content");
-    //     cmDiv.ariaLabel = "JSON-input";
-    // }
+    const onPaste = async () => {
+        value = await formatJSON();
+    };
+
+    onMount(() => {
+        view = createEditorView();
+
+        if (browser) {
+            window.addEventListener("paste", onPaste);
+            const cmDiv = document.getElementsByClassName("cm-content");
+            if (cmDiv.length > 0) {
+                cmDiv[0].setAttribute("aria-label", "JSON input");
+                cmDiv[0].setAttribute("aria-labelledby", "JSON input");
+            }
+        }
+    });
+
+    onDestroy(() => {
+        view?.destroy();
+        window.removeEventListener("paste", onPaste);
+    });
 </script>
 
 <div class="field_wrapper">

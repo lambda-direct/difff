@@ -8,7 +8,7 @@ html {
 }
 
 body {
-	font-family: "JetBrains Mono", monospace;
+	font-family: "JetBrainsMono-Regular", monospace;
 	background: #121212;
 	height: 100%;
 }
@@ -19,7 +19,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: "Noto Sans", sans-serif;
+	font-family: "NotoSans-Regular", sans-serif;
 	margin: 0;
 	padding: 0;
 }
@@ -35,7 +35,7 @@ h2 {
 }
 
 p {
-	font-family: "Noto Sans", sans-serif;
+	font-family: "NotoSans-Regular", sans-serif;
 	margin: 0;
 	padding: 0;
 	font-size: 16px;

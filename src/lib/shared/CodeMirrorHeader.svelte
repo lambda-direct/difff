@@ -34,9 +34,9 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 12px;
-        height: 48px;
+        height: 54px;
         background: #030711;
-        border-bottom: 1px solid #2b292929;
+        border-bottom: 1px solid #2c2c2c;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
     }

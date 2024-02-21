@@ -11,7 +11,7 @@
     .title {
         color: #fff;
         font-size: 14px;
-        font-family: "JetBrains Mono", monospace;
+        font-family: "JetBrainsMono-Regular", monospace;
     }
     .modal {
         display: flex;

@@ -49,20 +49,24 @@
         align-items: center;
         flex-direction: column;
     }
+    
     .section-wrapper {
         display: flex;
         flex-direction: column;
         margin: 32px 0 0;
         width: 100%;
     }
+
     .title {
         margin: 28px 0 0;
         text-align: center;
     }
+
     .subtitle {
         margin: 16px 0 0;
         text-align: center;
     }
+
     .article {
         margin: 32px auto 0;
         width: 100%;
@@ -73,12 +77,13 @@
 
     .article_title {
         text-align: center;
-        font-weight: 700;
     }
+
     .article-text {
         margin: 16px 0 0;
         text-align: center;
     }
+
     .formatter_field-wrapper {
         width: 100%;
     }

@@ -1,1 +1,27 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@font-face {
+	font-family: "JetBrainsMono-Regular";
+	font-size: 400;
+	src: local(""), url("../lib/fonts/JetBrainsMono-Regular.ttf") format("ttf");
+	display: swap;
+}
+
+@font-face {
+	font-family: "JetBrainsMono-SemiBold";
+	font-size: 600;
+	src: local(""), url("../lib/fonts/JetBrainsMono-SemiBold.ttf") format("ttf");
+	display: swap;
+}
+
+@font-face {
+	font-family: "NotoSans-Regular";
+	font-size: 400;
+	src: local(""), url("../lib/fonts/NotoSans-Regular.ttf") format("ttf");
+	display: swap;
+}
+
+@font-face {
+	font-family: "NotoSans-Bold";
+	font-size: 700;
+	src: local(""), url("../lib/fonts/NotoSans-Bold.ttf") format("ttf");
+	display: swap;
+}
