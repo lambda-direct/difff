@@ -49,6 +49,7 @@
 		"@lezer/highlight": "^1.2.0",
 		"axios": "^1.6.7",
 		"codemirror": "^6.0.1",
+		"mdsvex-relative-images": "^1.0.3",
 		"svelte-codemirror-editor": "^1.2.0",
 		"toastify-js": "^1.12.0"
 	}

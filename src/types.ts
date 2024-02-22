@@ -13,10 +13,8 @@ export type Post = {
 };
 
 export type Article = {
-	title: string;
-	content: string;
-	subTitle?: string;
-	subContent?: string;
+	metaTitle: string;
+	metaDescription: string;
 };
 
 export type ResponsePosts = Post & { slug: string };

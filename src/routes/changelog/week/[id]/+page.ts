@@ -6,8 +6,7 @@ export const load: PageLoad = async ({ params }) => {
 	try {
 		const data = await import(`../../../../md/articles/${params.id}.md`);
 
-		const article = data.metadata as Article;
-		return article;
+		return { metadata: data.metadata as Article, content: data.default };
 	} catch (e) {
 		error(404, `Could not find ${params.id}`);
 	}

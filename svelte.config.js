@@ -1,8 +1,9 @@
+import { mdsvex } from "mdsvex";
 import adapter from "@sveltejs/adapter-cloudflare";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { mdsvex } from "mdsvex";
+import relativeImages from "mdsvex-relative-images";
 
-const mdsvexOptions = { extensions: [".md"] };
+const mdsvexOptions = { extensions: [".md"], remarkPlugins: [relativeImages] };
 
 const config = {
 	extensions: [".svelte", ".md"],
