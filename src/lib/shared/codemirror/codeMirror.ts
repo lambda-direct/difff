@@ -12,9 +12,8 @@ export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
 				from: line.from,
 				to: line.to,
 			}),
+			EditorView.scrollIntoView(line.from, { y: "center", x: "start" }),
 		],
-		selection: { head: line.from, anchor: line.to },
-		scrollIntoView: true,
 	});
 };
 
