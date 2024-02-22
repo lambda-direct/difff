@@ -11,6 +11,7 @@ export type Post = {
 	data: string;
 };
 
+export type ResponsePosts = Post & { slug: string };
 type Coordinates = {
 	line: number;
 	column: number;

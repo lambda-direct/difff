@@ -1,5 +1,9 @@
-<script>
+<script lang="ts">
     import "~/styles/index.css";
+
+    export let data 
+    const {posts} = data
+
 </script>
 
 <div class="page-wrapper">
@@ -16,30 +20,18 @@
             </a>.
         </h2>
         <div class="change-log-posts">
-            <div class="week-content">
-                <div class="main-content">
-                    <p class="week-num">WEEK 1</p>
-                    <div class="info-container">
-                        <div class="mini-title">
-                            <p>Induction</p>
-                            <p>How to start your first product?</p>
+            {#each posts as post}
+                <div class="week-content">
+                    <div class="main-content">
+                        <p class="week-num">{post.slug.replace('-', " ")}</p>
+                        <div class="post-info">
+                            <p class="post-title">{post.title}</p>
+                            <p class="post-description">{post.description}</p>
                         </div>
                     </div>
+                    <span class="date">{post.data}</span>
                 </div>
-                <span class="date">Feb 22, 2024</span>
-            </div>
-            <div class="week-content">
-                <div class="main-content">
-                    <p class="week-num">WEEK 2</p>
-                    <div class="info-container">
-                        <div class="mini-title">
-                            <p>Our first ideas to how we can do it</p>
-                            <p>The question was, how to make everything work as we want?</p>
-                        </div>
-                    </div>
-                </div>
-                <span class="date">Feb 22, 2024</span>
-            </div>
+            {/each}
         </div>
     </div>
 </div>
@@ -61,6 +53,7 @@
         text-align: center;
     }
     .date {
+        min-width: 90px;
         font-size: 14px;
         font-family: "NotoSans-Regular", sans-serif;
         font-weight: 700;
@@ -69,24 +62,24 @@
     .subtitle {
         margin: 16px 0 0;
         text-align: center;
+        
     }
-    .mini-title {
+    .post-info{
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
-        width: 100%;
-    }
-    .info-container {
-        display: flex;
-        margin: 0 0 0 18px;
+        align-items: flex-start;
+        margin: 0 0 0 12px;
     }
     .week-num {
-        padding: 0 4px 0 0;
+        min-width: 320px;
         border-right: 2px solid #323232;
+        text-transform: uppercase;
         font-size: 72px;
+    
     }
     .week-content {
         display: flex;
+        align-items: flex-start;
         justify-content: space-between;
         padding: 8px;
         width: 100%;
@@ -103,5 +96,14 @@
     }
     .difff-href {
         text-decoration: underline;
+    }
+    .post-title{
+        margin: 6px 0 12px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #e2e8f0
+    }
+    .post-description{
+        color: #e1e1e1
     }
 </style>

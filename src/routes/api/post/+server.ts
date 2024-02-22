@@ -12,7 +12,6 @@ const getPosts = async () => {
 		if (file && typeof file === "object" && "metadata" in file) {
 			const metadata = file.metadata as Omit<Post, "slug">;
 			const post = { ...metadata, slug };
-			console.log(22);
 			posts.push(post);
 		}
 	}
