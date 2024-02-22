@@ -3,7 +3,7 @@
 
     export let data 
     const {posts} = data
-
+    
 </script>
 
 <svelte:head>
@@ -16,7 +16,7 @@
 
 <div class="page-wrapper">
     <div class="container">
-        <h1 class="title">Difff Change & Decision log</h1>
+        <h1 class="title">Change & Decision log</h1>
         <h2 class="subtitle">
             Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
             <a
@@ -29,16 +29,16 @@
         </h2>
         <div class="change-log-posts">
             {#each posts as post}
-            <a href={`changelog/week/${post.id}`}>
+            <a href={`changelog/${post.id}`}>
                 <div class="week-content">
                     <div class="main-content">
-                        <p class="week-num">{post.slug.replace('-', " ")}</p>
+                        <p class="week-num">{post.data}</p>
                         <div class="post-info">
                             <p class="post-title">{post.title}</p>
                             <p class="post-description">{post.description}</p>
                         </div>
                     </div>
-                    <span class="date">{post.data}</span>
+                    <!-- <span class="date">{post.data.split(',')[1]}</span> -->
                 </div>
             </a>
                 
@@ -62,14 +62,8 @@
         margin: 28px 0 0;
         text-align: center;
     }
-    .date {
-        min-width: 90px;
-        font-size: 14px;
-        font-family: "NotoSans-Regular", sans-serif;
-        font-weight: 700;
-        color: #e1e1e1;
-    }
     .subtitle {
+        max-width: 680px;
         margin: 16px 0 0;
         font-weight: 500;
         text-align: center;
@@ -82,16 +76,16 @@
         margin: 0 0 0 12px;
     }
     .week-num {
-        min-width: 320px;
+        min-width: 240px;
+        padding: 0 12px 0 0;
         border-right: 2px solid #323232;
-        text-transform: uppercase;
-        font-size: 72px;
+        font-size: 64px;
     
     }
     .week-content {
         display: flex;
         align-items: flex-start;
-        justify-content: space-between;
+        justify-content: center;
         width: 100%;
         padding: 8px;
         border-top: 1px solid #323232;

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { page } from "$app/stores";
     import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
     export let data;
 </script>
@@ -17,7 +16,7 @@
                 <RightArrowIcon color={"#e1e1e1"} />
             </li>
             <li class="list_item" class:list_item_link-active={true}>
-                {$page.url.pathname.split("/").slice(-2).join(" ")}
+                {data.metadata.data}
             </li>
         </ul>
     </nav>
