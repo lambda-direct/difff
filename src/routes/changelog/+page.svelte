@@ -29,7 +29,7 @@
         </h2>
         <div class="change-log-posts">
             {#each posts as post}
-            <a href={`posts/${post.id}`}>
+            <a href={`articles/${post.id}`}>
                 <div class="week-content">
                     <div class="main-content">
                         <p class="week-num">{post.slug.replace('-', " ")}</p>

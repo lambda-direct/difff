@@ -1,24 +1,24 @@
-
+<script lang="ts">
+    export let data
+    
+</script>
 
 <div class="blog-page">
     <h1 class="post-title">
-        JSON is incredibly slow: Here’s What’s Faster!
+        {data.title}
     </h1>
+      
     <p class="post-body">
-        Yes, you heard that right! JSON, the ubiquitous format for data interchange in web development, might be slowing down your applications. 
-        In a world where speed and responsiveness are paramount, it’s crucial to examine the performance 
-        implications of JSON, a technology we often take for granted. In this blog, we’ll dive deep into the reasons 
-        why JSON can be a bottleneck in your applications and explore faster alternatives and optimization techniques 
-        to keep your apps running at their best.
+        {data.content}
     </p>
-    <h2 class="sub-title">
-        The popularity of JSON and why people use it…
-    </h2>
-    <p class="post-body">
-        In today’s fast-paced digital landscape, application speed and responsiveness are non-negotiable. 
-        Users expect instant access to information, swift interactions, and seamless experiences across web and mobile applications. 
-        This demand for speed is driven by several factors:
-    </p>
+    {#if data.subTitle && data.subContent}
+        <h2 class="sub-title">
+            {data.subTitle}
+        </h2>
+        <p class="post-body">
+            {data.subContent}
+        </p>
+    {/if}
 </div>
 
 <style>
@@ -26,10 +26,12 @@
         margin: 12px 0 0;
         letter-spacing: -0.048px;
         line-height: 32px;
+        color: #e1e1e1
     }
 
     .sub-title{
         margin: 32px 0 0;
+        color: #fff
     }
     
     .post-title{

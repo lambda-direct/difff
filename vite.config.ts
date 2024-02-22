@@ -12,6 +12,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"~": path.resolve("./src"),
+			"$md/": path.resolve("./src/md"),
 		},
 	},
 });
