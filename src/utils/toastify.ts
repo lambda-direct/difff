@@ -16,6 +16,7 @@ class Alert {
 			text: message,
 			style: {
 				background: "#ff416c",
+				"box-shadow": "none",
 			},
 		};
 		Toastify(options).showToast();
@@ -27,6 +28,7 @@ class Alert {
 			text: message,
 			style: {
 				background: "#248127",
+				"box-shadow": "none",
 			},
 		};
 		Toastify(options).showToast();
@@ -38,6 +40,7 @@ class Alert {
 			text: message,
 			style: {
 				background: "#f83600",
+				"box-shadow": "none",
 			},
 		};
 		Toastify(options).showToast();
