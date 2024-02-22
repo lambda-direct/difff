@@ -9,6 +9,7 @@ export type Post = {
 	title: string;
 	description: string;
 	data: string;
+	id: number;
 };
 
 export type ResponsePosts = Post & { slug: string };

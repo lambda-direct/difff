@@ -21,6 +21,7 @@
         </h2>
         <div class="change-log-posts">
             {#each posts as post}
+            <a href={`posts/${post.id}`}>
                 <div class="week-content">
                     <div class="main-content">
                         <p class="week-num">{post.slug.replace('-', " ")}</p>
@@ -31,6 +32,8 @@
                     </div>
                     <span class="date">{post.data}</span>
                 </div>
+            </a>
+                
             {/each}
         </div>
     </div>
@@ -81,12 +84,15 @@
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        padding: 8px;
         width: 100%;
+        padding: 8px;
         border-top: 1px solid #323232;
     }
     .week-content:last-child {
         border-bottom: 1px solid #323232;
+    }
+    .week-content:hover{
+        background: #0e0e0e;
     }
     .change-log-posts {
         display: flex;
