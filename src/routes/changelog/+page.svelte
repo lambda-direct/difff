@@ -21,8 +21,6 @@
             Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
             <a
                 href="/"
-                rel="nofollow noopener noreferrer"
-                target="_blank"
                 class="difff-href">
                 Difff.app
             </a>
