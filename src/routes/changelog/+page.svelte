@@ -6,6 +6,14 @@
 
 </script>
 
+<svelte:head>
+    <title>Difff Change & Decision log</title>
+    <meta
+        name="description"
+        content="Latest features, improvements, and fixes we’ve implemented."
+    />
+</svelte:head>
+
 <div class="page-wrapper">
     <div class="container">
         <h1 class="title">Difff Change & Decision log</h1>
@@ -17,7 +25,7 @@
                 target="_blank"
                 class="difff-href">
                 Difff.app
-            </a>.
+            </a>
         </h2>
         <div class="change-log-posts">
             {#each posts as post}
@@ -52,7 +60,6 @@
     }
     .title {
         margin: 28px 0 0;
-        color: #e2e8f0;
         text-align: center;
     }
     .date {
@@ -64,6 +71,7 @@
     }
     .subtitle {
         margin: 16px 0 0;
+        font-weight: 500;
         text-align: center;
         
     }
