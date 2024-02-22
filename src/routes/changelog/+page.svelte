@@ -20,7 +20,7 @@
         <h2 class="subtitle">
             Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
             <a
-                href="https://difff.app/"
+                href="/"
                 rel="nofollow noopener noreferrer"
                 target="_blank"
                 class="difff-href">

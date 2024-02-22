@@ -1,27 +1,43 @@
 @font-face {
-	font-family: "JetBrainsMono-Regular";
-	font-size: 400;
-	src: local(""), url("../lib/fonts/JetBrainsMono-Regular.ttf") format("ttf");
-	display: swap;
+    font-family: "JetBrainsMono-Regular";
+    font-size: 400;
+    src:
+        local(""),
+        url("./fonts/JetBrainsMono-Regular.ttf") format("ttf");
+    display: swap;
 }
 
 @font-face {
-	font-family: "JetBrainsMono-SemiBold";
-	font-size: 600;
-	src: local(""), url("../lib/fonts/JetBrainsMono-SemiBold.ttf") format("ttf");
-	display: swap;
+    font-family: "JetBrainsMono-SemiBold";
+    font-size: 600;
+    src:
+        local(""),
+        url("./fonts/JetBrainsMono-SemiBold.ttf") format("ttf");
+    display: swap;
 }
 
 @font-face {
-	font-family: "NotoSans-Regular";
-	font-size: 400;
-	src: local(""), url("../lib/fonts/NotoSans-Regular.ttf") format("ttf");
-	display: swap;
+    font-family: "NotoSans-Regular";
+    font-size: 400;
+    src:
+        local(""),
+        url("./fonts/NotoSans-Regular.ttf") format("ttf");
+    display: swap;
 }
 
 @font-face {
-	font-family: "NotoSans-Bold";
-	font-size: 700;
-	src: local(""), url("../lib/fonts/NotoSans-Bold.ttf") format("ttf");
-	display: swap;
+    font-family: "NotoSans-Bold";
+    font-size: 700;
+    src:
+        local(""),
+        url("./fonts/NotoSans-Bold.ttf") format("ttf");
+    display: swap;
+}
+@font-face {
+    font-family: "source-serif-4";
+    font-size: 700;
+    src:
+        local(""),
+        url("./fonts/SourceSerif4-BoldItalic.ttf") format("ttf");
+    display: swap;
 }
