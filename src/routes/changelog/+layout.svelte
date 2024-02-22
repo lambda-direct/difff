@@ -1,21 +1,18 @@
 <script lang="ts">
-    import 'toastify-js/src/toastify.css';
     import "~/styles/index.css";
-
-    
+    import 'toastify-js/src/toastify.css';
 </script>
 
 
-<div class="routing">
 
-</div>
+
 <div class="page-wrapper">
-    <div class="container">
+    <div class="container">      
         <slot />
     </div>
 </div>
 
-<style lang="scss">
+<style>
     .page-wrapper {
         display: flex;
         justify-content: center;

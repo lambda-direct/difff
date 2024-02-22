@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { page } from "$app/stores";
+    import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte"
     export let data
     
 </script>
@@ -11,102 +13,64 @@
     />
 </svelte:head>
 
+<header class="header">
+    <nav class="navigation">
+        <ul class="list">
+            <li class="list_item">
+                <a href="/changelog" class="list_item_ling">
+                    Change & Decision log
+                    <RightArrowIcon color={"#e1e1e1"}/>
+                </a>
+            </li>
+            <li class="list_item">
+                {$page.url.pathname.split("/").slice(-2).join(" ").toUpperCase()}
+            </li>
+        </ul>
+    </nav>
+</header>
+
 <div class="blog-page">
     <svelte:component this={data.content}/>
 </div>
 
 <style>
-    .blog-page{
-        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
-        max-width: 680px;
-        & h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin: 0;
-            padding: 0;
-            color: #ffffff;
-        }
-        & menu, ol, ul {
-            padding: 0;
-            margin: 0;
-            list-style: disc;
-            list-style-image: none;
-        } 
+    @import "styles.module.css";
+    .list {
+        display: inline-flex;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        list-style-image: none;
+    } 
 
-        & ul {
-            & ul{
-                list-style: circle;
-            }
-        }
+    .list_item_ling{
+        display: flex;
+        align-items: center;
+    }
 
-        & li {
-            margin: 22px 0 0 30px;
-            font-size: 20px;
-           
-            color: #e1e1e1;
-            &:first-child{
-                margin: 42px 0 0 30px;
-            }
-            & li{
-                &:first-child{
-                    margin: 22px 0 0 30px;
-                }
-            }
-            
+    .list_item{
+        align-self: center;
+        margin: 0 4px 0 0;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        cursor: pointer;
+        color:#e1e1e1;
+        &:hover{
+            color: #878787
         }
-
-        & h1 {
-            font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
-            margin: 50px 0 32px 0;
-            font-size: 42px;
-            line-height: 52px;
-            color: #ffffff;
-            @media (max-width: 768px) {
-                margin: 32px 0 24px 0;
-                line-height: 48px;
-                font-size: 32px;
-            }
-        }
-
-        & h2 {
-            margin: 34px 0 0;
-            color: #fff;
-        }
-
-        & h3 {
-            margin: 24px 0 0;
-            color: #fff;
-        }
-
-        & em {
-            font-size: 18px;
-        }
-
-        & a{
-            text-decoration: underline;
-
-        }
-
-        & img {
-            max-width: 100%;
-        }
-
-        & p {
-            margin: 42px 0 0;
-            padding: 0;
-            letter-spacing: -0.048px;
-            clear: left;
-            line-height: 32px;
-            font-size: 20px;
-            color: #e1e1e1;
-            @media (max-width: 768px) {
-                margin: 24px 0 0;
-                line-height: 28px;
-                font-size: 18px;
-            }
-        }
+    }
+    
+    .home-route-container{
+        display: inline-flex;
+        align-items: center;
+        margin: 0 8px 0 0;
+        color: #878787;
+    }
+    
+    .navigation{
+        display: inline-flex;
+        align-items: center;
+        margin: 50px 0 0;
     }
 </style>
