@@ -1,6 +1,5 @@
 <script lang="ts">
     import 'toastify-js/src/toastify.css';
-    import Footer from '~/lib/shared/Footer.svelte';
     import "~/styles/index.css";
 </script>
 
@@ -15,7 +14,6 @@
 <div class="container">
     <slot />
 </div>
-<Footer/>
 
 <style lang="scss">
     .header {
