@@ -109,6 +109,10 @@
 		}
 	}
 
+	& h2 + p {
+		margin: 16px 0 0;
+	}
+
 	& p {
 		margin: 42px 0 0;
 		padding: 0;
