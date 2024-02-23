@@ -135,7 +135,7 @@
 
 <div class="field_wrapper">
     <CodeMirrorHeader
-        formatClick={formatJSON}
+        formatClick={async() => {value =await formatJSON()}}
         downloadClick={downloadJsonFile}
         copyClick={copyToClipboard}
     />
