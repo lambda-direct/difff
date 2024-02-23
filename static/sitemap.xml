@@ -16,9 +16,9 @@
    </url>
 
    <url>
-      <loc>https://difff.app/changelog/[id]</loc>
+      <loc>https://difff.app/changelog/10-02-2024</loc>
       <lastmod>2024-02-22</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>1</priority>
+      <changefreq>yearly</changefreq>
+      <priority>1.0</priority>
    </url>
 </urlset> 
