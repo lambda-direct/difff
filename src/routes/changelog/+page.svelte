@@ -1,5 +1,6 @@
 <script lang="ts">
     import "~/styles/index.css";
+    import { formattedDate } from "~/utils/index.js";
 
     export let data 
     const {posts} = data
@@ -25,23 +26,20 @@
                 Difff.app
             </a>
         </h2>
-        <div class="change-log-posts">
+        <ul class="list">
             {#each posts as post}
-            <a href={`changelog/${post.id}`}>
-                <div class="week-content">
-                    <div class="main-content">
-                        <p class="week-num">{post.data}</p>
+                <li class="list_element">
+                    <a class="week-content" href={`changelog/${post.date}`} >
+                        <p class="week-num">{formattedDate(post.date)}</p>
+                        <div class="vertical-line"/>
                         <div class="post-info">
                             <p class="post-title">{post.title}</p>
                             <p class="post-description">{post.description}</p>
-                        </div>
-                    </div>
-                    <!-- <span class="date">{post.data.split(',')[1]}</span> -->
-                </div>
-            </a>
-                
+                        </div> 
+                    </a>
+                </li>
             {/each}
-        </div>
+        </ul>
     </div>
 </div>
 
@@ -51,10 +49,6 @@
         justify-content: center;
         align-items: center;
         padding: 0 0 16px;
-    }
-    .main-content {
-        display: flex;
-        padding: 16px;
     }
     .title {
         margin: 28px 0 0;
@@ -71,35 +65,42 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        margin: 0 0 0 12px;
     }
-    .week-num {
-        min-width: 240px;
-        padding: 0 12px 0 0;
-        border-right: 2px solid #323232;
-        font-size: 64px;
     
+    .week-num {
+        font-size: 58px;
     }
     .week-content {
         display: flex;
         align-items: flex-start;
         justify-content: center;
-        width: 100%;
-        padding: 8px;
-        border-top: 1px solid #323232;
+        padding: 24px;
     }
-    .week-content:last-child {
-        border-bottom: 1px solid #323232;
+    .vertical-line{
+        width: 2px;
+        min-height: 80px;
+        background-color: #323232;
+        margin: 0 18px;
     }
-    .week-content:hover{
-        background: #0e0e0e;
-    }
-    .change-log-posts {
+    .list {
         display: flex;
         flex-direction: column;
         margin: 48px auto 0;
         width: fit-content;
+        padding: 0;
+        list-style: none;
+        list-style-image: none;
     }
+    .list_element{
+        border-top: 1px solid #323232;
+        &:hover{
+            background: #0e0e0e;
+        }
+        &:last-child{
+            border-bottom: 1px solid #323232;
+        }
+    }
+   
     .difff-href {
         text-decoration: underline;
     }

@@ -8,14 +8,12 @@ export type FormatError = {
 export type Post = {
 	title: string;
 	description: string;
-	data: string;
-	id: string;
+	date: string;
 };
 
 export type Article = {
 	metaTitle: string;
 	metaDescription: string;
-	data: string;
 };
 
 export type ResponsePosts = Post & { slug: string };

@@ -4,21 +4,17 @@ import type { Post } from "~/types";
 const getPosts = async () => {
 	const posts: Post[] = [];
 	const paths = import.meta.glob("/src/md/article-meta/*.md", { eager: true });
-
 	for (const path in paths) {
 		const file = paths[path];
-		const slug = path.split("/").at(-1)?.replace(".md", "");
-
 		if (file && typeof file === "object" && "metadata" in file) {
-			const metadata = file.metadata as Omit<Post, "slug">;
-			const post = { ...metadata, slug };
-			posts.push(post);
+			const metadata = file.metadata as Post;
+			posts.push(metadata);
 		}
 	}
 	return posts;
 };
 
 export const GET = async () => {
-	const post = await getPosts();
-	return json(post);
+	const postsMeta = await getPosts();
+	return json(postsMeta);
 };

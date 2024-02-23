@@ -1,5 +1,8 @@
 <script lang="ts">
+    import { page } from "$app/stores";
+    import { formattedDate } from "~/utils/index.js";
     import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
+
     export let data;
 </script>
 
@@ -16,7 +19,7 @@
                 <RightArrowIcon color={"#e1e1e1"} />
             </li>
             <li class="list_item" class:list_item_link-active={true}>
-                {data.metadata.data}
+                {formattedDate($page.params.id)}
             </li>
         </ul>
     </nav>

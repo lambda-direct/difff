@@ -8,6 +8,15 @@ export const isFormatError = (error: unknown): error is FormatError => {
 	return <FormatError>error !== undefined && (<FormatError>error).loc !== undefined;
 };
 
+export const formattedDate = (inputDate: string) => {
+	const [day, month, year] = inputDate.split("-");
+	return new Date(`${month}/${day}/${year}`).toLocaleDateString("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric",
+	});
+};
+
 class JSONDataOperations {
 	private optionsJSON = {
 		tabWidth: 4,
