@@ -15,45 +15,48 @@
     />
 </svelte:head>
 
-<div class="page-wrapper">
-    <div class="container">
-        <h1 class="title">Change & Decision log</h1>
-        <h2 class="subtitle">
-            Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
-            <a
-                href="/"
-                class="difff-href">
-                Difff.app
+<header class="header">
+    <h1 class="title">Change & Decision log</h1>
+    <h2 class="subtitle">
+        Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
+        <a
+            href="/"
+            class="diff_link">
+            Difff.app
+        </a>
+    </h2>
+</header>
+<ul class="list">
+    {#each posts as post}
+        <li class="list_element">
+            <a class="week-content" href={`changelog/${post.date}`} >
+                <p class="week-num">{formattedDate(post.date)}</p>
+                <div class="vertical-line"/>
+                <div class="post-info">
+                    <p class="post-title">{post.title}</p>
+                    <p class="post-description">{post.description}</p>
+                </div> 
             </a>
-        </h2>
-        <ul class="list">
-            {#each posts as post}
-                <li class="list_element">
-                    <a class="week-content" href={`changelog/${post.date}`} >
-                        <p class="week-num">{formattedDate(post.date)}</p>
-                        <div class="vertical-line"/>
-                        <div class="post-info">
-                            <p class="post-title">{post.title}</p>
-                            <p class="post-description">{post.description}</p>
-                        </div> 
-                    </a>
-                </li>
-            {/each}
-        </ul>
-    </div>
-</div>
+        </li>
+    {/each}
+</ul>
+        
+        
+
 
 <style>
-    .page-wrapper {
+    .header{
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 0 0 16px;
     }
+
     .title {
         margin: 28px 0 0;
         text-align: center;
     }
+
     .subtitle {
         max-width: 680px;
         margin: 16px 0 0;
@@ -61,27 +64,11 @@
         text-align: center;
         
     }
-    .post-info{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+
+    .diff_link {
+        text-decoration: underline;
     }
-    
-    .week-num {
-        font-size: 58px;
-    }
-    .week-content {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        padding: 24px;
-    }
-    .vertical-line{
-        width: 2px;
-        min-height: 80px;
-        background-color: #323232;
-        margin: 0 18px;
-    }
+
     .list {
         display: flex;
         flex-direction: column;
@@ -91,25 +78,49 @@
         list-style: none;
         list-style-image: none;
     }
+
     .list_element{
         border-top: 1px solid #323232;
+        transition: all 0.2s;
         &:hover{
-            background: #0e0e0e;
+            background: #171717;
         }
         &:last-child{
             border-bottom: 1px solid #323232;
         }
     }
-   
-    .difff-href {
-        text-decoration: underline;
+
+    .week-content {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 24px;
     }
+
+    .week-num {
+        font-size: 58px;
+    }
+
+    .vertical-line{
+        width: 2px;
+        min-height: 80px;
+        background-color: #323232;
+        margin: 0 18px;
+    }
+
+    .post-info{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
     .post-title{
         margin: 6px 0 12px;
         font-size: 18px;
         font-weight: 600;
         color: #e2e8f0
     }
+
     .post-description{
         color: #e1e1e1
     }

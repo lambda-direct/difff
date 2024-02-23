@@ -5,6 +5,11 @@ export type FormatError = {
 	};
 };
 
+export type ToolsRoute = {
+	name: string;
+	path: string;
+};
+
 export type Post = {
 	title: string;
 	description: string;

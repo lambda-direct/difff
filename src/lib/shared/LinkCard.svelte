@@ -6,7 +6,7 @@
 
 <div class="card">
     <p class="name">{name}</p>
-    <ArrowIcon />
+    <ArrowIcon color={"#eaeaea"} />
 </div>
 
 <style>
@@ -14,11 +14,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 216px;
-        height: 60px;
-        border: 1px solid #323232;
+        gap: 4px;
+        height: 52px;
+        border: 1px solid #292828;
         border-radius: 4px;
-        background: #1d1d1d;
+        background: #171717;
+        &:hover{
+            background: #1d1d1d;
+        }
     }
     .name {
         margin: 0;

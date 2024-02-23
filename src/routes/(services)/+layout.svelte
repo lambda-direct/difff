@@ -1,5 +1,6 @@
 <script lang="ts">
     import 'toastify-js/src/toastify.css';
+    import Footer from '~/lib/shared/Footer.svelte';
     import "~/styles/index.css";
 </script>
 
@@ -10,11 +11,11 @@
         </div>
     </header>
 </a>
-<div class="page-wrapper">
-    <div class="container">
-        <slot />
-    </div>
+
+<div class="container">
+    <slot />
 </div>
+<Footer/>
 
 <style lang="scss">
     .header {
@@ -35,12 +36,5 @@
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         text-overflow: ellipsis;
-    }
-
-    .page-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 0 32px;
     }
 </style>

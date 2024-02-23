@@ -6,14 +6,14 @@
 
 
 
-<div class="page-wrapper">
+<div class="container_wrapper">
     <div class="container">      
         <slot />
     </div>
 </div>
 
 <style>
-    .page-wrapper {
+    .container_wrapper {
         display: flex;
         justify-content: center;
         align-items: center;

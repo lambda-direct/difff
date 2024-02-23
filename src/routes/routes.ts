@@ -1,7 +1,4 @@
-type ToolsRoute = {
-	name: string;
-	path: string;
-};
+import type { ToolsRoute } from "~/types";
 
 export const toolsRoutes: ToolsRoute[] = [
 	{
