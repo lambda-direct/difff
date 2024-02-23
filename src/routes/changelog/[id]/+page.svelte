@@ -43,7 +43,10 @@
     }
 
     .header{
-        min-width: 680px;
+        
+        @media (min-width: 768px) {
+            min-width: 680px;
+        }
     }
 
     .navigation {
