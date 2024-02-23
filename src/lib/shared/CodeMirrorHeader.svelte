@@ -9,7 +9,7 @@
     export let copyClick = () => {};
 </script>
 
-<div class="icon-header">
+<header class="icon-header">
     <BtnIcon aria-label="format" aria-labelledby="format" name="format" click={formatClick}
         ><div class="title-wrapper">
             <FormatIcon /><span class="icon-txt">format</span>
@@ -26,7 +26,7 @@
             ><CopyIcon color={"#7d8799"} /></BtnIcon
         >
     </div>
-</div>
+</header>
 
 <style>
     .icon-header {

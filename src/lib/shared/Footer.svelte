@@ -14,13 +14,15 @@
 <footer class="footer">
     <div class="container">
         <h2 class="footer-title">Helpful links</h2>
-        <div class="link-group">
+        <ul class="link-group">
             {#each routesToShow as route}
+            <li>
                 <a href={route.path}>
                     <NavLink name={route.name} />
                 </a>
+            </li>
             {/each}
-        </div>
+        </ul>
     </div>
 </footer>
 
@@ -42,6 +44,8 @@
         flex-direction: column;
         align-items: center;
         gap: 12px;
+        list-style: none;
+        list-style-image: none;
         @media (min-width: 768px) {
             flex-direction: row;
             gap: 24px;

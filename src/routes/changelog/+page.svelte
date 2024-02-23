@@ -26,20 +26,23 @@
         </a>
     </h2>
 </header>
-<ul class="list">
-    {#each posts as post}
-        <li class="list_element">
-            <a class="week-content" href={`changelog/${post.date}`} >
-                <p class="week-num">{formattedDate(post.date)}</p>
-                <div class="vertical-line"/>
-                <div class="post-info">
-                    <p class="post-title">{post.title}</p>
-                    <p class="post-description">{post.description}</p>
-                </div> 
-            </a>
-        </li>
-    {/each}
-</ul>
+<nav>
+    <ul class="list">
+        {#each posts as post}
+            <li class="list_element">
+                <a class="week-content" href={`changelog/${post.date}`} >
+                    <p class="week-num">{formattedDate(post.date)}</p>
+                    <div class="vertical-line"/>
+                    <div class="post-info">
+                        <p class="post-title">{post.title}</p>
+                        <p class="post-description">{post.description}</p>
+                    </div> 
+                </a>
+            </li>
+        {/each}
+    </ul>
+</nav>
+
         
         
 

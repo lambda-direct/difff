@@ -13,18 +13,18 @@
 </svelte:head>
 
 <main class="main">
-    <h1 class="title">JSON Formatter Online</h1>
-    <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
-    <div class="section-wrapper">
-        <section class="formatter_field-wrapper">
-            {#if browser}
-                <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
-            {:else}
-                <CodeMirrorHeader />
-                <div class="back-field" />
-            {/if}
-        </section>
-    </div>
+    <header>
+        <h1 class="title">JSON Formatter Online</h1>
+        <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
+    </header>
+    <section class="formatter_field-wrapper">
+        {#if browser}
+            <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+        {:else}
+            <CodeMirrorHeader />
+            <div class="back-field" />
+        {/if}
+    </section>
 
     <article class="article">
         <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
@@ -51,12 +51,7 @@
         flex-direction: column;
     }
     
-    .section-wrapper {
-        display: flex;
-        flex-direction: column;
-        margin: 32px 0 0;
-        width: 100%;
-    }
+
 
     .title {
         margin: 28px 0 0;
@@ -86,6 +81,9 @@
     }
 
     .formatter_field-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin: 32px 0 0;
         width: 100%;
     }
     .back-field {

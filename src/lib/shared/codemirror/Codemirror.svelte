@@ -133,7 +133,7 @@
     });
 </script>
 
-<div class="field_wrapper">
+<section class="field_wrapper">
     <CodeMirrorHeader
         formatClick={formatJSON}
         downloadClick={downloadJsonFile}
@@ -143,7 +143,7 @@
     {#if $showError}
         <ErrorModal />
     {/if}
-</div>
+</section>
 
 <style>
     .field_wrapper {

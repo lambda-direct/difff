@@ -13,7 +13,7 @@
 
 
 
-<div class="article">
+<section class="article">
     <header class="header">
         <nav class="navigation">
             <ul class="list">
@@ -28,10 +28,10 @@
         </nav>
     </header>
     
-    <div class="blog_page">
+    <article class="blog_page">
         <svelte:component this={data.content} />
-    </div>
-</div>
+    </article>
+</section>
 
 <style>
     @import "styles.module.css";
