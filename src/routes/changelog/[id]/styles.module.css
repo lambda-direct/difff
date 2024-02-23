@@ -75,12 +75,12 @@
 	& img {
 		display: block;
 		margin: 0 auto;
-		width: 375px;
-		height: 230px;
-		@media (min-width: 768px) {
+		width: 100%;
+		/* height: 230px; */
+		/* @media (min-width: 768px) {
 			width: 680px;
 			height: 453px;
-		}
+		} */
 	}
 	& blockquote {
 		margin: 0 0 0 -20px;
