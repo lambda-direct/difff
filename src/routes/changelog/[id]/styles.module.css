@@ -73,7 +73,18 @@
 	}
 
 	& img {
-		max-width: 100%;
+		display: block;
+		margin: 0 auto;
+		width: 375px;
+		height: 250px;
+		@media (min-width: 420px) {
+			width: 420px;
+			height: 280px;
+		}
+		@media (min-width: 768px) {
+			width: 680px;
+			height: 450px;
+		}
 	}
 	& blockquote {
 		margin: 0 0 0 -20px;
