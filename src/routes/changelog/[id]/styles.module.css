@@ -76,14 +76,10 @@
 		display: block;
 		margin: 0 auto;
 		width: 375px;
-		height: 250px;
-		@media (min-width: 420px) {
-			width: 420px;
-			height: 280px;
-		}
+		height: 230px;
 		@media (min-width: 768px) {
 			width: 680px;
-			height: 450px;
+			height: 453px;
 		}
 	}
 	& blockquote {
