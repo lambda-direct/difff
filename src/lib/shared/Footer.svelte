@@ -10,16 +10,21 @@
     
 </script>
 
+
 <footer class="footer">
-    <h2 class="footer-title">Helpful links</h2>
-    <div class="link-group">
-        {#each routesToShow as route}
-            <a href={route.path}>
-                <NavLink name={route.name} />
-            </a>
-        {/each}
+    <div class="container">
+        <h2 class="footer-title">Helpful links</h2>
+        <div class="link-group">
+            {#each routesToShow as route}
+                <a href={route.path}>
+                    <NavLink name={route.name} />
+                </a>
+            {/each}
+        </div>
     </div>
 </footer>
+
+
 
 <style>
     .footer {
@@ -29,15 +34,23 @@
         max-width: 1024px;
         width: 100%;
         margin: 38px auto 0;
-        padding: 0 16px 32px;
+        padding: 0 0 32px;
         
     }
     .link-group {
         display: flex;
-        gap: 24px;
-        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        @media (min-width: 768px) {
+            flex-direction: row;
+            gap: 24px;
+            width: 100%;
+        }
+        
     }
     .footer-title {
+        text-align: center;
         margin: 0 auto 16px;
     }
 </style>

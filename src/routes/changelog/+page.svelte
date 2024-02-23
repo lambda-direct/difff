@@ -92,36 +92,56 @@
 
     .week-content {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: center;
-        padding: 24px;
+        padding: 12px;
+        @media (min-width: 768px) {
+            padding: 24px;
+        }
     }
 
     .week-num {
-        font-size: 58px;
+        font-size: 28px;
+        @media (min-width: 420px) {
+            font-size: 36px;
+        }
+        @media (min-width: 768px) {
+            font-size: 58px;
+        }
     }
 
     .vertical-line{
         width: 2px;
         min-height: 80px;
         background-color: #323232;
-        margin: 0 18px;
+        margin: 0 8px;
+        @media (min-width: 768px) {
+            margin: 0 18px;
+        }
     }
 
     .post-info{
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+    
     }
     
     .post-title{
         margin: 6px 0 12px;
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 600;
-        color: #e2e8f0
+        color: #e2e8f0;
+        @media (min-width: 768px) {
+            font-size: 18px;
+        }
     }
 
     .post-description{
-        color: #e1e1e1
+        color: #e1e1e1;
+        font-size: 14px;;
+        @media (min-width: 768px) {
+            font-size: 16px;
+        }
     }
 </style>

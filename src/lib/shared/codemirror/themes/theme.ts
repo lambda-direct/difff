@@ -5,7 +5,7 @@ import { tags as t } from "@lezer/highlight";
 
 import { baseTheme } from "./base";
 
-const invalid = "#ffffff";
+const invalid = "#eaeaea";
 const cyan = "#56b6c2";
 const malibu = "#61afef";
 const violet = "#c678dd";

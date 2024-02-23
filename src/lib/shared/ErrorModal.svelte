@@ -4,12 +4,12 @@
 
 <div class="modal">
     <p class="title">Invalid JSON</p>
-    <AlertIcon color={"#ffffff"} />
+    <AlertIcon color={"#eaeaea"} />
 </div>
 
 <style>
     .title {
-        color: #fff;
+        color: #eaeaea;
         font-size: 14px;
         font-family: "JetBrainsMono-Regular", monospace;
     }

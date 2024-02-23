@@ -11,26 +11,40 @@
     <meta name="description" content={data.metadata.metaDescription} />
 </svelte:head>
 
-<header class="header">
-    <nav class="navigation">
-        <ul class="list">
-            <li class="list_item">
-                <a href="/changelog" class="list_item_link"> Change & Decision log</a>
-                <RightArrowIcon color={"#e1e1e1"} />
-            </li>
-            <li class="list_item" class:list_item_link-active={true}>
-                {formattedDate($page.params.id)}
-            </li>
-        </ul>
-    </nav>
-</header>
 
-<div class="blog_page">
-    <svelte:component this={data.content} />
+
+<div class="article">
+    <header class="header">
+        <nav class="navigation">
+            <ul class="list">
+                <li class="list_item">
+                    <a href="/changelog" class="list_item_link"> Change & Decision log</a>
+                    <RightArrowIcon color={"#e1e1e1"} />
+                </li>
+                <li class="list_item" class:list_item_link-active={true}>
+                    {formattedDate($page.params.id)}
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="blog_page">
+        <svelte:component this={data.content} />
+    </div>
 </div>
 
 <style>
     @import "styles.module.css";
+
+    .article{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header{
+        min-width: 680px;
+    }
 
     .navigation {
         display: inline-flex;

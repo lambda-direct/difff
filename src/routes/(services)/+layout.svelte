@@ -29,6 +29,7 @@
     }
 
     .header-text {
+        text-align: center;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;
