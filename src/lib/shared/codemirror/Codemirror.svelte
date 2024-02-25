@@ -56,6 +56,11 @@
         }
         updateFromProp = true;
         view.setState(createEditorState(value));
+        view.dispatch({
+            effects: [
+			    EditorView.scrollIntoView(1)
+            ]
+        })
         updateFromProp = false;
     };
 
