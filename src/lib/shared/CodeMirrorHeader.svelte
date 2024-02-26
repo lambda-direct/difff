@@ -14,7 +14,7 @@
         showDropDown = true
     }
     
-    const setCloseDropDown = ({ relatedTarget, currentTarget }: {relatedTarget: unknown, currentTarget: unknown}) => {
+    const setCloseDropDown = ({ relatedTarget, currentTarget }: {relatedTarget: unknown, currentTarget: any}) => {
         if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget)) return
         showDropDown = false
     } // REDO!!
