@@ -1,17 +1,19 @@
 <script lang="ts">
-    import Alert from "~/utils/toastify";
     import { browser } from "$app/environment";
     import { showError } from "~/lib/storages";
+    import PopUpBtn from "~/lib/shared/PopUpButton.svelte";
+    import CopyIcon from "~/lib/icons/CopyIcon.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
+    import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
-    import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
     import { createEditorState, formatJSON, removeHighlightedLines, stateExtensions, validateJson } from "./codeMirror";
-
+   
     export let placeholder: string;
 
-    let value: string = "";
-    let view: EditorView;
+    export let value: string = "";
+    export let view: EditorView;
     let element: HTMLDivElement;
 
     let updateFromProp = false;
@@ -32,6 +34,7 @@
             if (view) removeHighlightedLines(view);
         }
     }
+
     const createEditorView = (): EditorView => {
         const codemirror = new EditorView({
             parent: element,
@@ -44,6 +47,7 @@
             },
             extensions: [extensions]
         });
+        
         return codemirror;
     };
 
@@ -65,8 +69,8 @@
         validateJson(value, view);
         dispatch("change", value);
     };
-
-    const downloadJsonFile = () => {
+    
+    const downloadClick = () => {
         const blob = new Blob([value], { type: "application/json" });
         const url = URL.createObjectURL(blob);
 
@@ -77,15 +81,13 @@
         aTag.click();
         document.body.removeChild(aTag);
         URL.revokeObjectURL(url);
-        Alert.success("Downloading")
     };
 
-    const copyToClipboard = async () => {
+    const copyClick = async () => {
         await navigator.clipboard.writeText(value);
-        Alert.success("Copied")
     };
 
-    const onFormatClick = async () => {
+    const formatClick = async () => {
         if(!$showError){
             view.dispatch({
                 effects: [
@@ -100,11 +102,26 @@
         value = await formatJSON(value, view, $showError);
     };
 
+    const onDrop = async (event: DragEvent) => {
+        event.preventDefault();
+        if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+            const file = event.dataTransfer.files[0];
+            const reader = new FileReader();
+            reader.onload = async (e: ProgressEvent<FileReader>) => {
+                const droppedData = e.target?.result as string;
+                value = await formatJSON(droppedData, view, $showError);
+                
+            };
+            reader.readAsText(file)
+        }
+    };
+
     onMount(() => {
         view = createEditorView();
 
         if (browser) {
             window.addEventListener("paste", onPaste);
+            window.addEventListener("drop", onDrop);
             const cmDiv = document.getElementsByClassName("cm-content");
             if (cmDiv.length > 0) {
                 cmDiv[0].setAttribute("aria-label", "JSON input");
@@ -116,22 +133,54 @@
     onDestroy(() => {
         view?.destroy();
         window.removeEventListener("paste", onPaste);
+        window.removeEventListener("drop", onDrop);
     });
+
+   
 </script>
 
 <section class="field_wrapper">
-    <CodeMirrorHeader
-        formatClick={onFormatClick}
-        downloadClick={downloadJsonFile}
-        copyClick={copyToClipboard}
-    />
-    <div class="codemirror-wrapper" bind:this={element} />
+    <div class="codemirror-wrapper"  bind:this={element}/>
+    <footer class="footer">
+        <PopUpBtn aria-label="format" aria-labelledby="format" name="format" click={formatClick}
+        popUpMessage={"Formatted"}>
+            <MagicWand />
+        </PopUpBtn>
+        <div class="icon-btn-wrapp">
+            <PopUpBtn
+                aria-label="download"
+                aria-labelledby="download"
+                name="download"
+                click={downloadClick} popUpMessage={"Downloading"}>
+                <DownLoadIcon />
+            </PopUpBtn>
+            <PopUpBtn aria-label="copy" aria-labelledby="copy" name="copy" click={copyClick} popUpMessage={"Copied"}>
+                <CopyIcon />
+            </PopUpBtn>
+        </div>
+    </footer>
     {#if $showError}
         <ErrorModal />
     {/if}
 </section>
 
 <style>
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        height: 54px;
+        background: #030711;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    .icon-btn-wrapp {
+        display: flex;
+        gap: 8px;
+    }
+
     .field_wrapper {
         position: relative;
     }

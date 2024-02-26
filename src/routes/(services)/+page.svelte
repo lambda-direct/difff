@@ -1,7 +1,18 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import type { EditorView } from "@codemirror/view";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
+    import { formatJSON } from "~/lib/shared/codemirror/codeMirror";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
+    import { showError } from "~/lib/storages";
+
+    let value: string
+    let view: EditorView;
+
+    const formatClick = async () =>{
+        value = await formatJSON(value, view,$showError);
+    }
 </script>
 
 <svelte:head>
@@ -18,10 +29,16 @@
         <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
     </header>
     <section class="formatter_field-wrapper">
+        <CodeMirrorHeader label="Formatter" btnName="Format" functionClick={formatClick}>
+            <span  class="header_btn">
+                <MagicWand/>
+                Format
+            </span>
+        </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
+            <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"}/>
+
         {:else}
-            <CodeMirrorHeader />
             <div class="back-field" />
         {/if}
     </section>
@@ -51,7 +68,11 @@
         flex-direction: column;
     }
     
-
+    .header_btn{
+        display: flex;
+        gap: 4px;
+        font-size: 16px;
+    }
 
     .title {
         margin: 28px 0 0;
@@ -87,7 +108,7 @@
         width: 100%;
     }
     .back-field {
-        height: 60vh;
+        height: calc(60vh + 54px);
         resize: none;
         background: #030711;
         border-bottom-left-radius: 8px;

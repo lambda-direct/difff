@@ -43,10 +43,6 @@
     </ul>
 </nav>
 
-        
-        
-
-
 <style>
     .header{
         display: flex;

@@ -21,15 +21,15 @@
         padding: 12px;
         background: #8f2626;
         border-radius: 4px;
-        top: 55px;
+        top: 8px;
         position: absolute;
         right: 12px;
         z-index: 100;
-        animation: floatIn 0.5s ease-in-out 0s forwards;
+        animation: floatIn 0.3s ease-in-out 0s forwards;
     }
     @keyframes floatIn {
         to {
-            top: 63px;
+            top: 12px;
         }
     }
 </style>
