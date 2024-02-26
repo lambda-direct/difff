@@ -1,8 +1,12 @@
-import { StateEffect, StateField } from "@codemirror/state";
+import Alert from "~/utils/toastify";
+import { EditorState, StateEffect, StateField, type Extension } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 import { showError } from "~/lib/storages";
 import { isFormatError } from "~/utils";
 import JSONDataOperations from "~/utils/index";
+import { themeExtensions } from "./themes/theme";
+import { basicSetup } from "codemirror";
+import { json } from "@codemirror/lang-json";
 
 export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
 	const line = view.state.doc.line(lineNumber);
@@ -12,7 +16,7 @@ export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
 				from: line.from,
 				to: line.to,
 			}),
-			EditorView.scrollIntoView(line.from, { y: "center", x: "start" }),
+			EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" }),
 		],
 	});
 };
@@ -41,6 +45,26 @@ export const validateJson = async (value: string, view: EditorView) => {
 		showError.set(false);
 		return;
 	}
+};
+
+export const formatJSON = async (value: string, view: EditorView, isError: boolean) => {
+	await validateJson(value, view);
+	if (!isError && value.replaceAll(" ", "")) {
+		Alert.success("Formatted");
+		return await JSONDataOperations.format(value);
+	} else {
+		return value;
+	}
+};
+
+export const createEditorState = (
+	value: string | undefined,
+	stateExtensions: Extension | StateField<DecorationSet>
+): EditorState => {
+	return EditorState.create({
+		doc: value,
+		extensions: [stateExtensions],
+	});
 };
 
 export const lineHighlightField = StateField.define<DecorationSet>({
@@ -76,3 +100,5 @@ const addHighlight = StateEffect.define<{ from: number; to: number }>({
 const removeHighlights = StateEffect.define();
 
 const lineHighlight = Decoration.mark({ class: "error" });
+
+export const stateExtensions = [basicSetup, lineHighlightField, json(), themeExtensions];

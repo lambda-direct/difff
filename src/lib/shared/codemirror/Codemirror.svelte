@@ -1,17 +1,12 @@
 <script lang="ts">
     import Alert from "~/utils/toastify";
-    import { basicSetup } from "codemirror";
     import { browser } from "$app/environment";
-    import JSONDataOperations from "~/utils/index";
     import { showError } from "~/lib/storages";
-    import { json } from "@codemirror/lang-json";
-    import { EditorState } from "@codemirror/state";
-    import { themeExtensions } from "./themes/theme"
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
-    import { lineHighlightField, removeHighlightedLines, validateJson } from "./codeMirror";
+    import { createEditorState, formatJSON, removeHighlightedLines, stateExtensions, validateJson } from "./codeMirror";
 
     export let placeholder: string;
 
@@ -23,28 +18,31 @@
     let updateFromState = false;
 
     const dispatch = createEventDispatcher<{ change: string }>();
-    const stateExtensions = [
-        basicSetup,
-        lineHighlightField,
-        json(),
-        themeExtensions,
+
+    const extensions = [
+        ...stateExtensions,
         placeholderSet(placeholder)
     ];
 
     $: view && update(value);
     $: onChange = handleChange;
-
+    $: {
+        if (value === "") {
+            $showError = false;
+            if (view) removeHighlightedLines(view);
+        }
+    }
     const createEditorView = (): EditorView => {
         const codemirror = new EditorView({
             parent: element,
-            state: createEditorState(value),
+            state: createEditorState(value, extensions),
             dispatch(transaction) {
                 view.update([transaction]);
                 if (!updateFromProp && transaction.docChanged) {
                     onChange();
                 }
             },
-            extensions: [stateExtensions]
+            extensions: [extensions]
         });
         return codemirror;
     };
@@ -55,12 +53,7 @@
             return;
         }
         updateFromProp = true;
-        view.setState(createEditorState(value));
-        view.dispatch({
-            effects: [
-			    EditorView.scrollIntoView(1)
-            ]
-        })
+        view.setState(createEditorState(value, extensions));
         updateFromProp = false;
     };
 
@@ -71,23 +64,6 @@
         value = new_value;
         validateJson(value, view);
         dispatch("change", value);
-    };
-
-    const createEditorState = (value: string | undefined): EditorState => {
-        return EditorState.create({
-            doc: value,
-            extensions: [stateExtensions]
-        });
-    };
-
-    const formatJSON = async () => {
-        await validateJson(value, view);
-        if (!$showError && value.replaceAll(" ","")) {
-            Alert.success("Formatted")
-            return await JSONDataOperations.format(value);
-        } else {
-            return value;
-        }
     };
 
     const downloadJsonFile = () => {
@@ -109,14 +85,19 @@
         Alert.success("Copied")
     };
 
-    $: {
-        if (value === "") {
-            $showError = false;
-            if (view) removeHighlightedLines(view);
+    const onFormatClick = async () => {
+        if(!$showError){
+            view.dispatch({
+                effects: [
+                    EditorView.scrollIntoView(1)
+                ]
+            })
         }
-    }
+        value = await formatJSON(value, view, $showError);
+    };
+
     const onPaste = async () => {
-        value = await formatJSON();
+        value = await formatJSON(value, view, $showError);
     };
 
     onMount(() => {
@@ -140,7 +121,7 @@
 
 <section class="field_wrapper">
     <CodeMirrorHeader
-        formatClick={async () => {value = await formatJSON()}}
+        formatClick={onFormatClick}
         downloadClick={downloadJsonFile}
         copyClick={copyToClipboard}
     />
