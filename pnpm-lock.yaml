@@ -38,9 +38,6 @@ dependencies:
   svelte-codemirror-editor:
     specifier: ^1.2.0
     version: 1.2.0(codemirror@6.0.1)(svelte@4.2.11)
-  toastify-js:
-    specifier: ^1.12.0
-    version: 1.12.0
 
 devDependencies:
   '@babel/parser':
@@ -2450,10 +2447,6 @@ packages:
     dependencies:
       is-number: 7.0.0
     dev: true
-
-  /toastify-js@1.12.0:
-    resolution: {integrity: sha512-HeMHCO9yLPvP9k0apGSdPUWrUbLnxUKNFzgUoZp1PHCLploIX/4DSQ7V8H25ef+h4iO9n0he7ImfcndnN6nDrQ==}
-    dev: false
 
   /totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
