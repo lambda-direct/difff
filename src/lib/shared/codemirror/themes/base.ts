@@ -67,10 +67,16 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		border: "none !important",
 	},
 	".cm-content": {
+		padding: "12px 0",
 		fontFamily: `"JetBrains Mono", monospace`,
 		fontSize: "14px",
 		cursor: "text",
-		padding: "12px 0",
+	},
+	span: {
+		fontSize: "14px",
+		display: "inline-block",
+		minHeight: "18px !important",
+		lineHeight: "18px !important",
 	},
 	".cm-focused": {
 		outline: "none !important",
@@ -101,7 +107,10 @@ export const baseTheme: Extension = EditorView.baseTheme({
 		"user-select": "none",
 		cursor: "default",
 		"&:not(:first-child)": {
-			padding: "1px 0 0 3px",
+			display: "flex",
+			"align-items": "center",
+			"justify-content": "center",
+			padding: "0 0 0 4px",
 		},
 	},
 	".cm-gutter-lint .cm-gutterElement": {
@@ -126,6 +135,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
 	},
 	".cm-line": {
 		minHeight: "18px !important",
+		maxHeight: "18px !important",
 		lineHeight: "18px !important",
 	},
 	".cm-gutter": {
