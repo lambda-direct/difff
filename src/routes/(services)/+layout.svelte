@@ -1,5 +1,4 @@
 <script lang="ts">
-    import 'toastify-js/src/toastify.css';
     import "~/styles/index.css";
 </script>
 
