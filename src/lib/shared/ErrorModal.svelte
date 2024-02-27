@@ -24,7 +24,7 @@
         top: 8px;
         position: absolute;
         right: 12px;
-        z-index: 100;
+        z-index: 5;
         animation: floatIn 0.3s ease-in-out 0s forwards;
     }
     @keyframes floatIn {
