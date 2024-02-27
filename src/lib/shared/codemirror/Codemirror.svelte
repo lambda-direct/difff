@@ -8,12 +8,26 @@
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
-    import { createEditorState, formatJSON, removeHighlightedLines, stateExtensions, validateJson } from "./codeMirror";
+    import { createEditorState, removeHighlightedLines, stateExtensions } from "./codeMirror";
    
     export let placeholder: string;
-
+    export let controlFunction: Function
+    export let validateFunction: Function
     export let value: string = "";
     export let view: EditorView;
+
+
+    const format = async (value: string, view: EditorView, isError: boolean) => {
+        await validateFunction(value, view);
+        if (!isError && value.replaceAll(" ", "")) {
+            view.dispatch({
+                effects: [EditorView.scrollIntoView(1)]
+            });
+            return await controlFunction(value);
+        } else {
+            return value;
+        }
+    };
     let element: HTMLDivElement;
 
     let updateFromProp = false;
@@ -66,7 +80,7 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
-        validateJson(value, view);
+        validateFunction(value, view);
         dispatch("change", value);
     };
     
@@ -88,18 +102,11 @@
     };
 
     const formatClick = async () => {
-        if(!$showError){
-            view.dispatch({
-                effects: [
-                    EditorView.scrollIntoView(1)
-                ]
-            })
-        }
-        value = await formatJSON(value, view, $showError);
+        value = await format(value, view, $showError);
     };
 
     const onPaste = async () => {
-        value = await formatJSON(value, view, $showError);
+        value = await format(value, view, $showError);
     };
 
     const onDrop = async (event: DragEvent) => {
@@ -109,8 +116,7 @@
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                value = await formatJSON(droppedData, view, $showError);
-                
+                value = await format(droppedData, view, $showError);
             };
             reader.readAsText(file)
         }
@@ -142,7 +148,7 @@
 <section class="field_wrapper">
     <div class="codemirror-wrapper"  bind:this={element}/>
     <footer class="footer">
-        <PopUpBtn aria-label="format" aria-labelledby="format" name="format" click={formatClick}
+        <PopUpBtn aria-label="format" aria-labelledby="format" name="format" click={async() => {value = await format(value, view, $showError)}}
         popUpMessage={"Formatted"}>
             <MagicWand />
         </PopUpBtn>

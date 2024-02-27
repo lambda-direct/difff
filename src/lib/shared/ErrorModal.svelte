@@ -1,9 +1,10 @@
 <script lang="ts">
     import AlertIcon from "~/lib/icons/AlertIcon.svelte";
+
 </script>
 
 <div class="modal">
-    <p class="title">Invalid JSON</p>
+    <p class="title">Invalid format</p>
     <AlertIcon color={"#eaeaea"} />
 </div>
 

@@ -42,7 +42,7 @@
             {/each}
         </div>
         <button on:click|stopPropagation={handleDropDownClick} class="button">
-            JSON {label}
+            {label}
             {#if showDropDown}
                 <DropDownOpenIcon/>
             {:else}

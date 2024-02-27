@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let click = () => {};
+    export let click: Function;
     export let popUpMessage: string;
 
     let showPopUp: boolean = false

@@ -1,9 +1,6 @@
 import { EditorState, StateEffect, StateField, type Extension } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 import { search } from "@codemirror/search";
-import { showError } from "~/lib/storages";
-import { isFormatError } from "~/utils";
-import JSONDataOperations from "~/utils/index";
 import { themeExtensions } from "./themes/theme";
 import { basicSetup } from "codemirror";
 import { json } from "@codemirror/lang-json";
@@ -25,35 +22,6 @@ export const removeHighlightedLines = (view: EditorView) => {
     view.dispatch({
         effects: [removeHighlights.of(null)]
     });
-};
-
-export const validateJson = async (value: string, view: EditorView) => {
-    if (value) {
-        try {
-            await JSONDataOperations.format(value);
-            removeHighlightedLines(view);
-            showError.set(false);
-            return;
-        } catch (err) {
-            if (isFormatError(err)) {
-                addHighlightedLine(view, err.loc.start.line);
-            }
-            showError.set(true);
-            return;
-        }
-    } else {
-        showError.set(false);
-        return;
-    }
-};
-
-export const formatJSON = async (value: string, view: EditorView, isError: boolean) => {
-    await validateJson(value, view);
-    if (!isError && value.replaceAll(" ", "")) {
-        return await JSONDataOperations.format(value);
-    } else {
-        return value;
-    }
 };
 
 export const createEditorState = (

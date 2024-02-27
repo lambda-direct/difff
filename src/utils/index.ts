@@ -1,12 +1,11 @@
 import axios from "axios";
-import type { FormatError } from "~/types";
 import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
-
-export const isFormatError = (error: unknown): error is FormatError => {
-    return <FormatError>error !== undefined && (<FormatError>error).loc !== undefined;
-};
+import { EditorView } from "@codemirror/view";
+import { addHighlightedLine, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
+import { showError } from "~/lib/storages";
+import { isFormatError } from "./helpers";
 
 export const formattedDate = (inputDate: string) => {
     const [day, month, year] = inputDate.split("-");
@@ -52,9 +51,29 @@ class JSONDataOperations {
         }
     };
 
-    public format = async (userInput: string) => {
+    public prettierFormatJSON = async (userInput: string) => {
         const json = await this.dataFromUrl(userInput);
         return await prettier.format(json, this.optionsJSON);
+    };
+
+    public validateJson = async (value: string, view: EditorView) => {
+        if (value) {
+            try {
+                await this.prettierFormatJSON(value);
+                removeHighlightedLines(view);
+                showError.set(false);
+                return;
+            } catch (err) {
+                if (isFormatError(err)) {
+                    addHighlightedLine(view, err.loc.start.line);
+                }
+                showError.set(true);
+                return;
+            }
+        } else {
+            showError.set(false);
+            return;
+        }
     };
 }
 

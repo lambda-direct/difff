@@ -5,6 +5,14 @@ export type FormatError = {
     };
 };
 
+export type FormatYamlError = {
+    mark: { name: null; buffer: string; position: number; line: number; column: number };
+    message: string;
+    name: string;
+    reason: string;
+    stack: string;
+};
+
 export type ToolsRoute = {
     name: string;
     path: string;
