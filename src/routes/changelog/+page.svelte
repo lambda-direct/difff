@@ -1,10 +1,8 @@
 <script lang="ts">
     import "~/styles/index.css";
-    import { formattedDate } from "~/utils/index.js";
 
     export let data 
     const {posts} = data
-    
 </script>
 
 <svelte:head>
@@ -31,7 +29,7 @@
         {#each posts as post}
             <li class="list_element">
                 <a class="week-content" href={`changelog/${post.date}`} >
-                    <p class="week-num">{formattedDate(post.date)}</p>
+                    <p class="week-num">WEEK {post.weekNumber}</p>
                     <div class="vertical-line"/>
                     <div class="post-info">
                         <p class="post-title">{post.title}</p>
@@ -100,12 +98,12 @@
     }
 
     .week-num {
-        font-size: 28px;
+        font-size: 20px;
         @media (min-width: 420px) {
-            font-size: 36px;
+            font-size: 46px;
         }
         @media (min-width: 768px) {
-            font-size: 58px;
+            font-size: 68px;
         }
     }
 

@@ -1,8 +1,7 @@
 <script lang="ts">
-    import Btn from "~/lib/shared/Button.svelte";
+    import { dropDownOptions } from "~/utils/services"
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
-    import { dropDownOptions } from "~/utils/services"
 
     export let functionClick: () => void
     export let btnName: string
@@ -44,20 +43,20 @@
                     {/each}
                 </div>
             {/if}
-            <Btn click={setShowDropDown}>
+            <button on:click={setShowDropDown} class="button">
                 JSON {label}
                 {#if showDropDown}
                     <DropDownOpenIcon/>
                 {:else}
                     <DropDownIcon/>
                 {/if} 
-            </Btn>
+            </button>
         </div>
     </div>
-    <div class="btn-wrapper">
-        <Btn aria-label={btnName} aria-labelledby={btnName} name={btnName} click={functionClick}>
+    <div class="button-wrapper">
+        <button on:click={functionClick} class="button" aria-label={btnName} aria-labelledby={btnName} name={btnName} >
             <slot/>
-        </Btn>
+        </button>
     </div>
 </header>
 
@@ -125,8 +124,24 @@
         justify-content: flex-start;
         width: 45%;
     }
-    
-    .btn-wrapper{
+
+    .button {
+        display: flex;
+        align-items: center;
+        height: 36px;
+        padding: 0 12px;
+        background:#040b1a;
+        border: 1px solid #313345;
+        border-radius: 8px;
+        transition: all 0.2s;
+        color: #7d8799;
+        &:hover {
+            background: #040f1e;
+            color: #e1e1e1;
+        }
+    }
+
+    .button-wrapper{
         display: flex;
         justify-content: flex-start;
         width: 55%;
@@ -134,4 +149,5 @@
             justify-content: flex-end;
         }
     }
+    
 </style>
