@@ -5,6 +5,7 @@
     import JSONDataOperations from "~/utils/index";
     import { showError } from "~/lib/storages";
     import { json } from "@codemirror/lang-json";
+    import { search } from "@codemirror/search";
     import { EditorState } from "@codemirror/state";
     import { themeExtensions } from "./themes/theme"
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
@@ -28,7 +29,8 @@
         lineHighlightField,
         json(),
         themeExtensions,
-        placeholderSet(placeholder)
+        placeholderSet(placeholder),
+        search({ top: true })
     ];
 
     $: view && update(value);
