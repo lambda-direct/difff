@@ -1,5 +1,6 @@
 import { EditorState, StateEffect, StateField, type Extension } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
+import { search } from "@codemirror/search";
 import { showError } from "~/lib/storages";
 import { isFormatError } from "~/utils";
 import JSONDataOperations from "~/utils/index";
@@ -99,4 +100,10 @@ const removeHighlights = StateEffect.define();
 
 const lineHighlight = Decoration.mark({ class: "error" });
 
-export const stateExtensions = [basicSetup, lineHighlightField, json(), themeExtensions];
+export const stateExtensions = [
+    basicSetup,
+    lineHighlightField,
+    json(),
+    themeExtensions,
+    search({ top: true })
+];

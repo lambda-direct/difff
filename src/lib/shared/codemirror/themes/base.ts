@@ -19,6 +19,82 @@ export const baseTheme: Extension = EditorView.baseTheme({
             overflow: "auto"
         }
     },
+    ".cm-panels": {
+        background: "transparent !important"
+    },
+    ".cm-search": {
+        position: "absolute !important",
+        top: "0px",
+        right: "0px",
+        margin: "8px",
+        padding: "8px !important",
+        background: "#040b1a !important",
+        "border-radius": "6px",
+        border: "1px solid #313345 !important",
+        color: "#e1e1e1"
+    },
+    ".cm-panels.cm-panels-top": {
+        "z-index": "10",
+        border: "none !important"
+    },
+    ".cm-textfield": {
+        margin: "4px !important",
+        padding: "3px 5px !important",
+        "border-radius": "4px",
+        border: "1px solid #313345 !important",
+        "line-height": "120%"
+    },
+    ".cm-button": {
+        display: "flex",
+        "align-items": "center",
+        height: "20px",
+        margin: "4px !important",
+        padding: "0 12px",
+        background: "#040b1a",
+        border: "1px solid #313345",
+        "border-radius": "4px",
+        transition: "all 0.2s",
+        "line-height": "120%",
+        color: "#7d8799",
+        "&:hover": {
+            background: "#040f1e",
+            color: "#e1e1e1"
+        }
+    },
+    ".cm-panel.cm-search [name=close]": {
+        color: "#e1e1e1",
+        padding: "1px 4px"
+    },
+    ".cm-panel.cm-search label": {
+        display: "inline-flex",
+        "align-items": "center",
+        color: "#7d8799",
+        cursor: "pointer",
+        "user-select": "none",
+        "&:hover": {
+            color: "#e1e1e1"
+        }
+    },
+    ".cm-panel.cm-search input[type=checkbox]": {
+        "border-radius": "2px !important",
+        border: "1px solid #313345",
+        cursor: "pointer",
+        width: "15px",
+        height: "14px",
+        appearance: "none",
+        "accent-color": "#2a3c53",
+        "margin-right": "4px"
+    },
+    ".cm-panel.cm-search input[type=checkbox]:checked": {
+        "border-radius": "2px !important",
+        border: "1px solid #2a3c53",
+        cursor: "pointer",
+        width: "15px",
+        height: "14px",
+        appearance: "auto",
+        "accent-color": "#2a3c53",
+        "margin-right": "4px"
+    },
     "::-webkit-scrollbar": {
         padding: "0",
         margin: "0",
