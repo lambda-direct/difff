@@ -10,6 +10,7 @@
     let view: EditorView;
 
     const formatClick = async () => {
+        
         value = await JsonFormatter.prettierFormatJSON(value, view)
     };
 </script>
@@ -35,7 +36,7 @@
             </span>
         </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} controlFunction={JsonFormatter.prettierFormatJSON}/>
+            <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} type="json" controlFunction={JsonFormatter.prettierFormatJSON}/>
 
         {:else}
             <div class="back-field" />

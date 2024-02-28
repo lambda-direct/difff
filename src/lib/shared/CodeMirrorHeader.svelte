@@ -18,27 +18,28 @@
 	const handleMenuClose= () => {
 		showDropDown = false
 		if(browser)document.body.removeEventListener('click', handleMenuClose)
-	} // REDO somehow
+	}
 
 </script>
 
 <header class="header">
-    <div class="drop-down-wrapper">
+    <nav class="drop-down-wrapper">
         <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown} >
             {#each dropDownOptions as  options}
-                <!-- svelte-ignore a11y-click-events-have-key-events --><!-- svelte-ignore a11y-no-noninteractive-element-interactions --> 
-                <ul on:click|stopPropagation class="dropdown_content">
+                <div on:click|stopPropagation class="dropdown_content"> 
                     <p class="content_label">
                         {options.title}
                     </p>
-                    {#each options.values as option}
-                        <a href={option.path}>
+                    <ul>
+                        {#each options.values as option}
                             <li class="dropdown_options">
-                                {option.name}
+                                <a href={option.path} class="option_link">
+                                    {option.name}
+                                </a>
                             </li>
-                        </a>
-                    {/each}
-                </ul>
+                        {/each}
+                    </ul>
+                </div>
             {/each}
         </div>
         <button on:click|stopPropagation={handleDropDownClick} class="button">
@@ -49,7 +50,7 @@
                 <DropDownIcon/>
             {/if} 
         </button>
-    </div>
+    </nav>
     <div class="button-wrapper">
         <button on:click={functionClick} class="button" aria-label={btnName} aria-labelledby={btnName} name={btnName} >
             <slot/>
@@ -80,6 +81,10 @@
 		display: inline-block;
 	}
 
+    .option_link{
+        display: block;
+        width: 100%
+    }
 
     .active{
         opacity: 1;
@@ -101,6 +106,7 @@
 		border: 1px solid #313345;
 		border-radius: 6px;
 		box-shadow: 0px 8px 16px #000;
+        user-select: none;
 	}
 
     .header {

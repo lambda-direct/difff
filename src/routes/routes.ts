@@ -2,11 +2,11 @@ import type { ToolsRoute } from "~/types";
 
 export const toolsRoutes: ToolsRoute[] = [
     {
-        name: "FormatterJSON",
+        name: "JSON Formatter",
         path: "/"
     },
     {
-        name: "FormatterYAML",
+        name: "YAML Formatter",
         path: "/formatter/yaml"
     },
     {

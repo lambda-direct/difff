@@ -35,7 +35,7 @@
             </span>
         </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror bind:value bind:view placeholder={"Put your YAML, provide a link, or Drag & Drop a file"} controlFunction={YamlFormatter.formatYAML} />
+            <CodeMirror bind:value bind:view placeholder={"Put your YAML or Drag & Drop a file"} type="yaml" controlFunction={YamlFormatter.formatYAML} />
         {:else}
             <div class="back-field" />
         {/if}

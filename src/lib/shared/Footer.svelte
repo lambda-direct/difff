@@ -13,7 +13,7 @@
 
 <footer class="footer">
     <div class="container">
-        <h2 class="footer-title">Helpful links</h2>
+        <h2 class="footer-title">Other tools</h2>
         <ul class="link-group">
             {#each routesToShow as route}
             <li>

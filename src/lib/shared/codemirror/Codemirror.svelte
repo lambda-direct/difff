@@ -8,12 +8,13 @@
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
-    import { createEditorState, removeHighlightedLines, stateExtensions } from "./codeMirror";
+    import { createEditorState, stateExtensions } from "./codeMirror";
    
     export let placeholder: string;
     export let controlFunction: (value: string, view: EditorView) => Promise<string>
     export let value: string = "";
     export let view: EditorView;
+    export let type: string;
 
 
     let element: HTMLDivElement;
@@ -30,12 +31,6 @@
 
     $: view && update(value);
     $: onChange = handleChange;
-    $: {
-        if (value === "") {
-            $showError = false;
-            if (view) removeHighlightedLines(view);
-        }
-    }
 
     const createEditorView = (): EditorView => {
         const codemirror = new EditorView({
@@ -68,7 +63,6 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
-        controlFunction(value, view);
         dispatch("change", value);
     };
     
@@ -78,7 +72,7 @@
 
         const aTag = document.createElement("a");
         aTag.href = url;
-        aTag.download = "data.json";
+        aTag.download = `data.${type}`;
         document.body.appendChild(aTag);
         aTag.click();
         document.body.removeChild(aTag);

@@ -57,6 +57,7 @@ ul:hover {
 }
 
 button {
+    user-select: none;
     cursor: pointer;
 }
 
