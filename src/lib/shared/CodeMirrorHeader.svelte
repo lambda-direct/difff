@@ -6,7 +6,10 @@
     import SearchIcon from "~/lib/icons/SearchIcon.svelte";
     import UploadIcon from "../icons/UploadIcon.svelte";
     import type { EditorView } from "@codemirror/view";
-    import { openSearchPanel } from "@codemirror/search"
+    import { openSearchPanel, closeSearchPanel, searchPanelOpen } from "@codemirror/search"
+    import { onDestroy, onMount } from "svelte";
+    import type { ChangeEventHandler } from "svelte/elements";
+    import type { FileChangeInfo } from "fs/promises";
 
     export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>
     export let btnName: string
@@ -16,6 +19,8 @@
 
     let showDropDown: boolean = false
     let fileInput: HTMLInputElement;
+    let searchMenuOpened: boolean = false 
+
 
     const handleDropDownClick = () => {
 		showDropDown = !showDropDown
@@ -37,24 +42,50 @@
         }
     };
 
-    const handleSearchMenuClick = () => {
-        openSearchPanel(view)
+    const handleSearchMenuClick = () =>{
+        const newValue = !searchMenuOpened
+        searchMenuOpened = newValue
+        if(newValue){
+            openSearchPanel(view)
+        } else{
+            closeSearchPanel(view)
+        }
+        const closeBtn = document.querySelector("[name=close]")
+        if(!closeBtn)return
+        closeBtn.addEventListener("click", (() =>{
+            handleSearchMenuClick()
+            closeBtn.removeEventListener("click", handleSearchMenuClick)
+        }))
+    }
+    
+    const handleKeyDown = (event: KeyboardEvent) => {
+        if(event.key !== "f" || !event.ctrlKey)return
+        handleSearchMenuClick()
     };
+        
 
-    const handleFileChange = (event: any) => { // redo any
-        if (event.target && event.target.files.length > 0) {
+    const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+        if (event.currentTarget && event.currentTarget.files && event.currentTarget.files.length > 0) {
             value=""
-            const file = event.target.files[0];
+            const file = event.currentTarget.files[0];
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                console.log(droppedData)
                 value = await passedFunctionClick(droppedData, view)
             };
             reader.readAsText(file)
         }
     };
+
     
+    onMount(() => {
+        if(browser)document.addEventListener("keydown", handleKeyDown)
+    })
+
+    onDestroy(() => {
+        if(browser)document.removeEventListener("keydown", handleKeyDown)
+    })
+
 </script>
 
 <header class="header">
@@ -90,7 +121,7 @@
         <slot/>
     </button>
     <div class="button-wrapper">
-        <button class="icon button" title="search" aria-label="search" aria-labelledby="search"  name="search"on:click={handleSearchMenuClick} >
+        <button class="icon button" title="search" aria-label="search" aria-labelledby="search"  name="search" on:click={handleSearchMenuClick} >
             <SearchIcon />
         </button>
         <button  class="icon button" title="upload" aria-label="upload" aria-labelledby="upload" name="upload" on:click={handleFileUpload}>

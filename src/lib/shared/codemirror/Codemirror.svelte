@@ -1,9 +1,7 @@
 <script lang="ts">
     import { browser } from "$app/environment";
     import { showError } from "~/lib/storages";
-    import PopUpBtn from "~/lib/shared/PopUpButton.svelte";
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
-    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
@@ -127,22 +125,20 @@
 <section class="field_wrapper">
     <div class="codemirror-wrapper"  bind:this={element}/>
     <footer class="footer">
-        <PopUpBtn  title="format" aria-label="format" aria-labelledby="format" name="format" click={async() => {value = await controlFunction(value, view)}}
-        popUpMessage={"Formatted"}>
+        <button on:click={async() => {value = await controlFunction(value, view)}} title="format" aria-label="format" aria-labelledby="format" name="format" class="icon-button">
             <MagicWand />
-        </PopUpBtn>
+        </button>
         <div class="icon-btn-wrapp">
-            <PopUpBtn
+            <button on:click={downloadClick}
                 title="download"
                 aria-label="download"
                 aria-labelledby="download"
-                name="download"
-                click={downloadClick} popUpMessage={"Downloading"}>
+                name="download" class="icon-button">
                 <DownLoadIcon />
-            </PopUpBtn>
-            <PopUpBtn title="copy" aria-label="copy" aria-labelledby="copy" name="copy" click={copyClick} popUpMessage={"Copied"}>
+            </button>
+            <button on:click={copyClick} title="copy" aria-label="copy" aria-labelledby="copy" name="copy" class="icon-button">
                 <CopyIcon />
-            </PopUpBtn>
+            </button>
         </div>
     </footer>
     {#if $showError}
@@ -165,6 +161,22 @@
     .icon-btn-wrapp {
         display: flex;
         gap: 8px;
+    }
+
+    .icon-button {
+        display: flex;
+        align-items: center;
+        height: 36px;
+        padding: 0 7px;
+        background: #030711;
+        border: 1px solid #313345;
+        border-radius: 8px;
+        color: #7d8799;
+        transition: all 0.2s;
+        &:hover {
+            background: #040f1e;
+            color: #e1e1e1;
+        }
     }
 
     .field_wrapper {
