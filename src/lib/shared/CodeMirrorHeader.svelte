@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { dropDownOptions } from "~/utils/services";
+    import { browser } from "$app/environment";
+    import { closeSearchPanel, openSearchPanel } from "@codemirror/search";
+    import type { EditorView } from "@codemirror/view";
+    import { onDestroy, onMount } from "svelte";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
-    import { browser } from "$app/environment";
     import SearchIcon from "~/lib/icons/SearchIcon.svelte";
+    import { dropDownOptions } from "~/utils/services";
     import UploadIcon from "../icons/UploadIcon.svelte";
-    import type { EditorView } from "@codemirror/view";
-    import { openSearchPanel, closeSearchPanel } from "@codemirror/search";
-    import { onDestroy, onMount } from "svelte";
 
     export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>;
     export let btnName: string;
@@ -56,7 +56,8 @@
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-        if ((!event.ctrlKey && event.key !== "Meta") || event.key !== "f") return;
+        const {metaKey, ctrlKey, key} = event;
+        if (!(metaKey || ctrlKey) || key !== "f") return;
         handleSearchMenuClick();
     };
 
