@@ -1,34 +1,30 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { showError } from "~/lib/storages";
-    import PopUpBtn from "~/lib/shared/PopUpButton.svelte";
-    import CopyIcon from "~/lib/icons/CopyIcon.svelte";
-    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
-    import ErrorModal from "~/lib/shared/ErrorModal.svelte";
-    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
-    import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
-    import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
+    import { createEventDispatcher, onDestroy, onMount } from "svelte";
+    import CopyIcon from "~/lib/icons/CopyIcon.svelte";
+    import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
+    import ErrorModal from "~/lib/shared/ErrorModal.svelte";
+    import { showError } from "~/lib/storages";
     import { createEditorState, stateExtensions } from "./codeMirror";
-   
+
     export let placeholder: string;
-    export let controlFunction: (value: string, view: EditorView) => Promise<string>
+    export let controlFunction: (value: string, view: EditorView) => Promise<string>;
     export let value: string = "";
     export let view: EditorView;
     export let type: string;
 
-
     let element: HTMLDivElement;
 
-    let updateFromProp = false;
-    let updateFromState = false;
+    let updateFromProp: boolean = false;
+    let updateFromState: boolean = false;
+    let isDownloadDisabled: boolean = false;
+    let isCopyDisabled: boolean = false;
 
     const dispatch = createEventDispatcher<{ change: string }>();
 
-    const extensions = [
-        ...stateExtensions,
-        placeholderSet(placeholder)
-    ];
+    const extensions = [...stateExtensions, placeholderSet(placeholder)];
 
     $: view && update(value);
     $: onChange = handleChange;
@@ -45,7 +41,7 @@
             },
             extensions: [extensions]
         });
-        
+
         return codemirror;
     };
 
@@ -66,8 +62,12 @@
         value = new_value;
         dispatch("change", value);
     };
-    
+
     const downloadClick = () => {
+        isDownloadDisabled = true;
+        setTimeout(() => {
+            isDownloadDisabled = false;
+        }, 1500);
         const blob = new Blob([value], { type: "application/json" });
         const url = URL.createObjectURL(blob);
 
@@ -81,6 +81,10 @@
     };
 
     const copyClick = async () => {
+        isCopyDisabled = true;
+        setTimeout(() => {
+            isCopyDisabled = false;
+        }, 1500);
         await navigator.clipboard.writeText(value);
     };
 
@@ -91,14 +95,14 @@
     const onDrop = async (event: DragEvent) => {
         event.preventDefault();
         if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-            value=""
+            value = "";
             const file = event.dataTransfer.files[0];
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
                 value = await controlFunction(droppedData, view);
             };
-            reader.readAsText(file)
+            reader.readAsText(file);
         }
     };
 
@@ -121,28 +125,46 @@
         window.removeEventListener("paste", onPaste);
         window.removeEventListener("drop", onDrop);
     });
-
 </script>
 
 <section class="field_wrapper">
-    <div class="codemirror-wrapper"  bind:this={element}/>
+    <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
-        <PopUpBtn  title="format" aria-label="format" aria-labelledby="format" name="format" click={async() => {value = await controlFunction(value, view)}}
-        popUpMessage={"Formatted"}>
+        <button
+            on:click={async () => {
+                value = await controlFunction(value, view);
+            }}
+            title="format"
+            aria-label="format"
+            aria-labelledby="format"
+            name="format"
+            class="icon-button"
+        >
             <MagicWand />
-        </PopUpBtn>
+        </button>
         <div class="icon-btn-wrapp">
-            <PopUpBtn
+            <button
+                on:click={downloadClick}
+                disabled={isDownloadDisabled}
                 title="download"
                 aria-label="download"
                 aria-labelledby="download"
                 name="download"
-                click={downloadClick} popUpMessage={"Downloading"}>
+                class="icon-button"
+            >
                 <DownLoadIcon />
-            </PopUpBtn>
-            <PopUpBtn title="copy" aria-label="copy" aria-labelledby="copy" name="copy" click={copyClick} popUpMessage={"Copied"}>
+            </button>
+            <button
+                on:click={copyClick}
+                disabled={isCopyDisabled}
+                title="copy"
+                aria-label="copy"
+                aria-labelledby="copy"
+                name="copy"
+                class="icon-button"
+            >
                 <CopyIcon />
-            </PopUpBtn>
+            </button>
         </div>
     </footer>
     {#if $showError}
@@ -165,6 +187,22 @@
     .icon-btn-wrapp {
         display: flex;
         gap: 8px;
+    }
+
+    .icon-button {
+        display: flex;
+        align-items: center;
+        height: 36px;
+        padding: 0 7px;
+        background: #030711;
+        border: 1px solid #313345;
+        border-radius: 8px;
+        color: #7d8799;
+        transition: all 0.2s;
+        &:hover {
+            background: #040f1e;
+            color: #e1e1e1;
+        }
     }
 
     .field_wrapper {

@@ -1,35 +1,37 @@
 <script lang="ts">
-    import { dropDownOptions } from "~/utils/services"
+    import { browser } from "$app/environment";
+    import { closeSearchPanel, openSearchPanel } from "@codemirror/search";
+    import type { EditorView } from "@codemirror/view";
+    import { onDestroy, onMount } from "svelte";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
-    import { browser } from "$app/environment";
     import SearchIcon from "~/lib/icons/SearchIcon.svelte";
+    import { dropDownOptions } from "~/utils/services";
     import UploadIcon from "../icons/UploadIcon.svelte";
-    import type { EditorView } from "@codemirror/view";
-    import { openSearchPanel } from "@codemirror/search"
 
-    export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>
-    export let btnName: string
-    export let label: string
-    export let value: string
-    export let view: EditorView
+    export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>;
+    export let btnName: string;
+    export let label: string;
+    export let value: string;
+    export let view: EditorView;
 
-    let showDropDown: boolean = false
+    let showDropDown: boolean = false;
     let fileInput: HTMLInputElement;
+    let searchMenuOpened: boolean = false;
 
     const handleDropDownClick = () => {
-		showDropDown = !showDropDown
-        if(browser)document.body.addEventListener('click', handleMenuClose)
-	}
+        showDropDown = !showDropDown;
+        if (browser) document.body.addEventListener("click", handleMenuClose);
+    };
 
-	const handleMenuClose= () => {
-		showDropDown = false
-		if(browser)document.body.removeEventListener('click', handleMenuClose)
-	}
+    const handleMenuClose = () => {
+        showDropDown = false;
+        if (browser) document.body.removeEventListener("click", handleMenuClose);
+    };
 
-    const functionClick= async () => {
-		value = await passedFunctionClick(value, view)
-	}
+    const functionClick = async () => {
+        value = await passedFunctionClick(value, view);
+    };
 
     const handleFileUpload = () => {
         if (fileInput) {
@@ -38,30 +40,58 @@
     };
 
     const handleSearchMenuClick = () => {
-        openSearchPanel(view)
+        const newValue = !searchMenuOpened;
+        searchMenuOpened = newValue;
+        if (newValue) {
+            openSearchPanel(view);
+        } else {
+            closeSearchPanel(view);
+        }
+        const closeBtn = document.querySelector("[name=close]");
+        if (!closeBtn) return;
+        closeBtn.addEventListener("click", () => {
+            handleSearchMenuClick();
+            closeBtn.removeEventListener("click", handleSearchMenuClick);
+        });
     };
 
-    const handleFileChange = (event: any) => { // redo any
-        if (event.target && event.target.files.length > 0) {
-            value=""
-            const file = event.target.files[0];
+    const handleKeyDown = (event: KeyboardEvent) => {
+        const {metaKey, ctrlKey, key} = event;
+        if (!(metaKey || ctrlKey) || key !== "f") return;
+        handleSearchMenuClick();
+    };
+
+    const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+        if (
+            event.currentTarget &&
+            event.currentTarget.files &&
+            event.currentTarget.files.length > 0
+        ) {
+            value = "";
+            const file = event.currentTarget.files[0];
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                console.log(droppedData)
-                value = await passedFunctionClick(droppedData, view)
+                value = await passedFunctionClick(droppedData, view);
             };
-            reader.readAsText(file)
+            reader.readAsText(file);
         }
     };
-    
+
+    onMount(() => {
+        if (browser) document.addEventListener("keydown", handleKeyDown);
+    });
+
+    onDestroy(() => {
+        if (browser) document.removeEventListener("keydown", handleKeyDown);
+    });
 </script>
 
 <header class="header">
     <nav class="drop-down-wrapper">
-        <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown} >
-            {#each dropDownOptions as  options}
-                <div on:click|stopPropagation class="dropdown_content"> 
+        <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown}>
+            {#each dropDownOptions as options}
+                <div on:click|stopPropagation class="dropdown_content">
                     <p class="content_label">
                         {options.title}
                     </p>
@@ -80,21 +110,46 @@
         <button on:click|stopPropagation={handleDropDownClick} class="button text">
             {label}
             {#if showDropDown}
-                <DropDownOpenIcon/>
+                <DropDownOpenIcon />
             {:else}
-                <DropDownIcon/>
-            {/if} 
+                <DropDownIcon />
+            {/if}
         </button>
     </nav>
-    <button on:click={functionClick} class="button text" aria-label={btnName} aria-labelledby={btnName} name={btnName} >
-        <slot/>
+    <button
+        on:click={functionClick}
+        class="button text"
+        aria-label={btnName}
+        aria-labelledby={btnName}
+        name={btnName}
+    >
+        <slot />
     </button>
     <div class="button-wrapper">
-        <button class="icon button" title="search" aria-label="search" aria-labelledby="search"  name="search"on:click={handleSearchMenuClick} >
+        <button
+            class="icon button"
+            title="search"
+            aria-label="search"
+            aria-labelledby="search"
+            name="search"
+            on:click={handleSearchMenuClick}
+        >
             <SearchIcon />
         </button>
-        <button  class="icon button" title="upload" aria-label="upload" aria-labelledby="upload" name="upload" on:click={handleFileUpload}>
-            <input type="file" class="file-input" bind:this={fileInput} on:change={handleFileChange} />
+        <button
+            class="icon button"
+            title="upload"
+            aria-label="upload"
+            aria-labelledby="upload"
+            name="upload"
+            on:click={handleFileUpload}
+        >
+            <input
+                type="file"
+                class="file-input"
+                bind:this={fileInput}
+                on:change={handleFileChange}
+            />
             <UploadIcon />
         </button>
     </div>
@@ -102,37 +157,37 @@
 
 <style>
     .dropdown_options {
-		padding: 4px;
-		border-radius: 4px;
-		background: transparent;
-		font-size: 16px;
+        padding: 4px;
+        border-radius: 4px;
+        background: transparent;
+        font-size: 16px;
         color: #7d8799;
-	}
-
-	.dropdown_options:hover {
-		z-index: 5;
-		overflow: visible;
-		white-space: normal;
-		cursor: pointer;
-		background: #f5f5f014;
-		color: #e1e1e1;
-	}
-
-	.dropdown {
-		position: relative;
-		display: inline-block;
-	}
-
-    .option_link{
-        display: block;
-        width: 100%
     }
 
-    .active{
+    .dropdown_options:hover {
+        z-index: 5;
+        overflow: visible;
+        white-space: normal;
+        cursor: pointer;
+        background: #f5f5f014;
+        color: #e1e1e1;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .option_link {
+        display: block;
+        width: 100%;
+    }
+
+    .active {
         opacity: 1;
     }
 
-    .hidden{
+    .hidden {
         opacity: 0;
         height: 0px;
     }
@@ -141,19 +196,19 @@
         display: none;
     }
 
-	.dropdown_content {
-		z-index: 4;
-		display: flex;
+    .dropdown_content {
+        z-index: 4;
+        display: flex;
         flex-direction: column;
-		position: absolute;
+        position: absolute;
         top: 42px;
         padding: 8px;
-		background: #040b1a;
-		border: 1px solid #313345;
-		border-radius: 6px;
-		box-shadow: 0px 8px 16px #000;
+        background: #040b1a;
+        border: 1px solid #313345;
+        border-radius: 6px;
+        box-shadow: 0px 8px 16px #000;
         user-select: none;
-	}
+    }
 
     .header {
         display: flex;
@@ -167,11 +222,11 @@
         border-top-right-radius: 8px;
     }
 
-    .drop-down-wrapper{
+    .drop-down-wrapper {
         display: flex;
     }
 
-    .content_label{
+    .content_label {
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -184,13 +239,11 @@
         cursor: default;
     }
 
-    
-
     .button {
         display: flex;
         align-items: center;
         height: 36px;
-        background:#040b1a;
+        background: #040b1a;
         border: 1px solid #313345;
         border-radius: 8px;
         transition: all 0.2s;
@@ -201,18 +254,17 @@
         }
     }
 
-    .text{
+    .text {
         padding: 0 12px;
     }
 
-    .icon{
+    .icon {
         padding: 0 7px;
     }
 
-    .button-wrapper{
+    .button-wrapper {
         display: flex;
         flex-direction: row;
-        gap: 6px
+        gap: 6px;
     }
-    
 </style>
