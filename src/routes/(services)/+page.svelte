@@ -9,10 +9,6 @@
     let value: string
     let view: EditorView;
 
-    const formatClick = async () => {
-        
-        value = await JsonFormatter.prettierFormatJSON(value, view)
-    };
 </script>
 
 <svelte:head>
@@ -29,7 +25,7 @@
         <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirrorHeader label="JSON Formatter" btnName="Format" functionClick={formatClick}>
+        <CodeMirrorHeader bind:value bind:view label="JSON Formatter" btnName="Format" passedFunctionClick={JsonFormatter.prettierFormatJSON}>
             <span  class="header_btn">
                 <MagicWand/>
                 Format
@@ -37,7 +33,6 @@
         </CodeMirrorHeader>
         {#if browser}
             <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} type="json" controlFunction={JsonFormatter.prettierFormatJSON}/>
-
         {:else}
             <div class="back-field" />
         {/if}

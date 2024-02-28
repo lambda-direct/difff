@@ -3,6 +3,7 @@
     import { showError } from "~/lib/storages";
     import PopUpBtn from "~/lib/shared/PopUpButton.svelte";
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
+    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
@@ -121,25 +122,25 @@
         window.removeEventListener("drop", onDrop);
     });
 
-   
 </script>
 
 <section class="field_wrapper">
     <div class="codemirror-wrapper"  bind:this={element}/>
     <footer class="footer">
-        <PopUpBtn aria-label="format" aria-labelledby="format" name="format" click={async() => {value = await controlFunction(value, view)}}
+        <PopUpBtn  title="format" aria-label="format" aria-labelledby="format" name="format" click={async() => {value = await controlFunction(value, view)}}
         popUpMessage={"Formatted"}>
             <MagicWand />
         </PopUpBtn>
         <div class="icon-btn-wrapp">
             <PopUpBtn
+                title="download"
                 aria-label="download"
                 aria-labelledby="download"
                 name="download"
                 click={downloadClick} popUpMessage={"Downloading"}>
                 <DownLoadIcon />
             </PopUpBtn>
-            <PopUpBtn aria-label="copy" aria-labelledby="copy" name="copy" click={copyClick} popUpMessage={"Copied"}>
+            <PopUpBtn title="copy" aria-label="copy" aria-labelledby="copy" name="copy" click={copyClick} popUpMessage={"Copied"}>
                 <CopyIcon />
             </PopUpBtn>
         </div>

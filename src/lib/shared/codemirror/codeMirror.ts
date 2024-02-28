@@ -8,7 +8,17 @@ import { errorMessage, showError } from "~/lib/storages";
 
 export const addHighlightedLineJSON = (view: EditorView, lineNumber: number) => {
     const line = view.state.doc.line(lineNumber);
-    if (line.text === "") {
+    if (line.from === 0 && line.to === 0) {
+        errorMessage.set("JSON");
+        view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: 1,
+                    to: 100
+                })
+            ]
+        });
+    } else if (line.text === "") {
         errorMessage.set("seems like a missing closing parenthesis '}'");
         view.dispatch({
             effects: [

@@ -9,9 +9,6 @@
     let value: string
     let view: EditorView;
 
-    const formatClick = async () =>{
-        value = await YamlFormatter.formatYAML(value, view)
-    }
 </script>
 
 <svelte:head>
@@ -28,7 +25,7 @@
         <h2 class="subtitle">Validate, Format & Prettify your YAML</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirrorHeader label="YAML Formatter" btnName="Format" functionClick={formatClick}>
+        <CodeMirrorHeader bind:value bind:view label="YAML Formatter" btnName="Format" passedFunctionClick={YamlFormatter.formatYAML}>
             <span  class="header_btn">
                 <MagicWand/>
                 Format

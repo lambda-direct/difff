@@ -3,13 +3,20 @@
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
     import { browser } from "$app/environment";
+    import SearchIcon from "~/lib/icons/SearchIcon.svelte";
+    import UploadIcon from "../icons/UploadIcon.svelte";
+    import type { EditorView } from "@codemirror/view";
+    import { openSearchPanel } from "@codemirror/search"
 
-    export let functionClick: () => void
+    export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>
     export let btnName: string
     export let label: string
+    export let value: string
+    export let view: EditorView
 
     let showDropDown: boolean = false
-    
+    let fileInput: HTMLInputElement;
+
     const handleDropDownClick = () => {
 		showDropDown = !showDropDown
         if(browser)document.body.addEventListener('click', handleMenuClose)
@@ -20,6 +27,34 @@
 		if(browser)document.body.removeEventListener('click', handleMenuClose)
 	}
 
+    const functionClick= async () => {
+		value = await passedFunctionClick(value, view)
+	}
+
+    const handleFileUpload = () => {
+        if (fileInput) {
+            fileInput.click();
+        }
+    };
+
+    const handleSearchMenuClick = () => {
+        openSearchPanel(view)
+    };
+
+    const handleFileChange = (event: any) => { // redo any
+        if (event.target && event.target.files.length > 0) {
+            value=""
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = async (e: ProgressEvent<FileReader>) => {
+                const droppedData = e.target?.result as string;
+                console.log(droppedData)
+                value = await passedFunctionClick(droppedData, view)
+            };
+            reader.readAsText(file)
+        }
+    };
+    
 </script>
 
 <header class="header">
@@ -42,7 +77,7 @@
                 </div>
             {/each}
         </div>
-        <button on:click|stopPropagation={handleDropDownClick} class="button">
+        <button on:click|stopPropagation={handleDropDownClick} class="button text">
             {label}
             {#if showDropDown}
                 <DropDownOpenIcon/>
@@ -51,9 +86,16 @@
             {/if} 
         </button>
     </nav>
+    <button on:click={functionClick} class="button text" aria-label={btnName} aria-labelledby={btnName} name={btnName} >
+        <slot/>
+    </button>
     <div class="button-wrapper">
-        <button on:click={functionClick} class="button" aria-label={btnName} aria-labelledby={btnName} name={btnName} >
-            <slot/>
+        <button class="icon button" title="search" aria-label="search" aria-labelledby="search"  name="search"on:click={handleSearchMenuClick} >
+            <SearchIcon />
+        </button>
+        <button  class="icon button" title="upload" aria-label="upload" aria-labelledby="upload" name="upload" on:click={handleFileUpload}>
+            <input type="file" class="file-input" bind:this={fileInput} on:change={handleFileChange} />
+            <UploadIcon />
         </button>
     </div>
 </header>
@@ -95,6 +137,10 @@
         height: 0px;
     }
 
+    .file-input {
+        display: none;
+    }
+
 	.dropdown_content {
 		z-index: 4;
 		display: flex;
@@ -112,6 +158,7 @@
     .header {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         padding: 0 12px;
         height: 54px;
         background: #030711;
@@ -122,8 +169,6 @@
 
     .drop-down-wrapper{
         display: flex;
-        justify-content: flex-start;
-        width: 45%;
     }
 
     .content_label{
@@ -145,7 +190,6 @@
         display: flex;
         align-items: center;
         height: 36px;
-        padding: 0 12px;
         background:#040b1a;
         border: 1px solid #313345;
         border-radius: 8px;
@@ -157,13 +201,18 @@
         }
     }
 
+    .text{
+        padding: 0 12px;
+    }
+
+    .icon{
+        padding: 0 7px;
+    }
+
     .button-wrapper{
         display: flex;
-        justify-content: flex-start;
-        width: 55%;
-        @media (max-width: 768px) {
-            justify-content: flex-end;
-        }
+        flex-direction: row;
+        gap: 6px
     }
     
 </style>
