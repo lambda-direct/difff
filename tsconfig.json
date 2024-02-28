@@ -12,7 +12,8 @@
 		"moduleResolution": "bundler",
 		"paths": {
 			"~/*": ["./src/*"],
-			"$lib/*": ["./src/lib/*"]
+			"$lib/*": ["./src/lib/*"],
+			"$md/*": ["./src/md/*"]
 		}
 	},
 	"exclude": ["node_modules/*"]

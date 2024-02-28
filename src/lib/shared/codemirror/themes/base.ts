@@ -23,11 +23,13 @@ export const baseTheme: Extension = EditorView.baseTheme({
         background: "transparent !important"
     },
     ".cm-search": {
+        display: "grid",
+        "grid-template-columns": "repeat(3, 100px)",
         position: "absolute !important",
         top: "0px",
         right: "0px",
-        margin: "8px",
-        padding: "8px !important",
+        margin: "8px !important",
+        padding: "16px !important",
         background: "#040b1a !important",
         "border-radius": "6px",
         border: "1px solid #313345 !important",
@@ -41,15 +43,38 @@ export const baseTheme: Extension = EditorView.baseTheme({
         margin: "4px !important",
         padding: "3px 5px !important",
         "border-radius": "4px",
-        border: "1px solid #313345 !important",
+        border: "1px solid #4e5279 !important",
         "line-height": "120%"
+    },
+    ".cm-textfield[name=search]": {
+        "grid-column-start": 1,
+        "grid-column-end": 4,
+        "grid-row-start": 1
+    },
+    ".cm-textfield[name=replace]": {
+        "grid-column-start": 1,
+        "grid-column-end": 3,
+        "grid-row-start": 4
+    },
+    ".cm-button[name=replace]": {
+        "grid-column-start": 1,
+        "grid-row-start": 5
+    },
+    ".cm-button[name=replaceAll]": {
+        "grid-column-start": 2,
+        "grid-row-start": 5
+    },
+    ".cm-textfield:focus-visible": {
+        border: "1px solid #4e5279 !important",
+        outline: "1px solid #4e5279 !important"
     },
     ".cm-button": {
         display: "flex",
         "align-items": "center",
+        "justify-content": "center",
         height: "20px",
         margin: "4px !important",
-        padding: "0 12px",
+        padding: "0",
         background: "#040b1a",
         border: "1px solid #313345",
         "border-radius": "4px",
@@ -68,6 +93,8 @@ export const baseTheme: Extension = EditorView.baseTheme({
     ".cm-panel.cm-search label": {
         display: "inline-flex",
         "align-items": "center",
+        "justify-content": "center",
+        margin: "4px !important",
         color: "#7d8799",
         cursor: "pointer",
         "user-select": "none",
@@ -75,25 +102,27 @@ export const baseTheme: Extension = EditorView.baseTheme({
             color: "#e1e1e1"
         }
     },
+
     ".cm-panel.cm-search input[type=checkbox]": {
         "border-radius": "2px !important",
         border: "1px solid #313345",
         cursor: "pointer",
-        width: "15px",
-        height: "14px",
+        width: "12px",
+        height: "12px",
         appearance: "none",
         "accent-color": "#2a3c53",
-        "margin-right": "4px"
+        margin: "0 4px"
     },
+
     ".cm-panel.cm-search input[type=checkbox]:checked": {
         "border-radius": "2px !important",
         border: "1px solid #2a3c53",
         cursor: "pointer",
-        width: "15px",
-        height: "14px",
+        width: "12px",
+        height: "12px",
         appearance: "auto",
         "accent-color": "#2a3c53",
-        "margin-right": "4px"
+        margin: "0 4px"
     },
     "::-webkit-scrollbar": {
         padding: "0",

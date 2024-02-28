@@ -1,15 +1,17 @@
 <script lang="ts">
     import AlertIcon from "~/lib/icons/AlertIcon.svelte";
+    import { errorMessage } from "../storages";
+
 </script>
 
 <div class="modal">
-    <p class="title">Invalid JSON</p>
-    <AlertIcon color={"#ffffff"} />
+    <p class="title">Invalid {$errorMessage === "" ? "format" : $errorMessage}</p>
+    <AlertIcon color={"#eaeaea"} />
 </div>
 
 <style>
     .title {
-        color: #fff;
+        color: #eaeaea;
         font-size: 14px;
         font-family: "JetBrainsMono-Regular", monospace;
     }
@@ -21,15 +23,15 @@
         padding: 12px;
         background: #8f2626;
         border-radius: 4px;
-        top: 55px;
+        top: 8px;
         position: absolute;
         right: 12px;
         z-index: 5;
-        animation: floatIn 0.5s ease-in-out 0s forwards;
+        animation: floatIn 0.3s ease-in-out 0s forwards;
     }
     @keyframes floatIn {
         to {
-            top: 63px;
+            top: 12px;
         }
     }
 </style>

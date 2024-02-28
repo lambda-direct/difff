@@ -1,27 +1,99 @@
 @font-face {
-	font-family: "JetBrainsMono-Regular";
-	font-size: 400;
-	src: local(""), url("../lib/fonts/JetBrainsMono-Regular.ttf") format("ttf");
-	display: swap;
+    font-family: "JetBrainsMono-Regular";
+    font-size: 400;
+    src:
+        local(""),
+        url("./fonts/JetBrainsMono-Regular.ttf") format("ttf");
+    display: swap;
 }
 
 @font-face {
-	font-family: "JetBrainsMono-SemiBold";
-	font-size: 600;
-	src: local(""), url("../lib/fonts/JetBrainsMono-SemiBold.ttf") format("ttf");
-	display: swap;
+    font-family: "JetBrainsMono-SemiBold";
+    font-size: 600;
+    src:
+        local(""),
+        url("./fonts/JetBrainsMono-SemiBold.ttf") format("ttf");
+    display: swap;
 }
 
 @font-face {
-	font-family: "NotoSans-Regular";
-	font-size: 400;
-	src: local(""), url("../lib/fonts/NotoSans-Regular.ttf") format("ttf");
-	display: swap;
+    font-family: "NotoSans-Regular";
+    font-size: 400;
+    src:
+        local(""),
+        url("./fonts/NotoSans-Regular.ttf") format("ttf");
+    display: swap;
 }
 
 @font-face {
-	font-family: "NotoSans-Bold";
-	font-size: 700;
-	src: local(""), url("../lib/fonts/NotoSans-Bold.ttf") format("ttf");
-	display: swap;
+    font-family: "NotoSans-Bold";
+    font-size: 700;
+    src:
+        local(""),
+        url("./fonts/NotoSans-Bold.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "source serif";
+    src:
+        local(""),
+        url("./fonts/SourceSerif4-BoldItalic.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "Georgia";
+    src:
+        local(""),
+        url("./fonts/Georgia.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "Cambria";
+    src:
+        local(""),
+        url("./fonts/Cambria.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "Times";
+    src:
+        local(""),
+        url("./fonts/TimesRegular.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "Times New Roman";
+    src:
+        local(""),
+        url("./fonts/timesnewroman.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "Arial";
+    src:
+        local(""),
+        url("./fonts/ArialMT.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica";
+    src:
+        local(""),
+        url("./fonts/Helvetica.ttf") format("ttf");
+    display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue";
+    src:
+        local(""),
+        url("./fonts/HelveticaNeueBlackCondensed.ttf") format("ttf");
+    display: swap;
 }

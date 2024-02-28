@@ -1,7 +1,18 @@
 <script lang="ts">
+    import JsonFormatter from "~/utils/JSONFormatter";
     import { browser } from "$app/environment";
+    import { EditorView } from "@codemirror/view";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
+
+    let value: string
+    let view: EditorView;
+
+    const formatClick = async () => {
+        
+        value = await JsonFormatter.prettierFormatJSON(value, view)
+    };
 </script>
 
 <svelte:head>
@@ -13,19 +24,24 @@
 </svelte:head>
 
 <main class="main">
-    <h1 class="title">JSON Formatter Online</h1>
-    <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
-    <div class="section-wrapper">
-        <section class="formatter_field-wrapper">
-            {#if browser}
-                <CodeMirror placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} />
-            {:else}
-                <CodeMirrorHeader />
-                <div class="back-field" />
-            {/if}
-        </section>
-    </div>
+    <header>
+        <h1 class="title">JSON Formatter Online</h1>
+        <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
+    </header>
+    <section class="formatter_field-wrapper">
+        <CodeMirrorHeader label="JSON Formatter" btnName="Format" functionClick={formatClick}>
+            <span  class="header_btn">
+                <MagicWand/>
+                Format
+            </span>
+        </CodeMirrorHeader>
+        {#if browser}
+            <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} type="json" controlFunction={JsonFormatter.prettierFormatJSON}/>
 
+        {:else}
+            <div class="back-field" />
+        {/if}
+    </section>
     <article class="article">
         <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
         <p class="article-text">
@@ -36,7 +52,8 @@
             For valid JSON, it will be formatted using <a
                 href="https://prettier.io/"
                 rel="nofollow noopener noreferrer"
-                target="_blank">Prettier</a
+                target="_blank"
+                class="prettier-href">Prettier</a
             >.
         </p>
     </article>
@@ -50,11 +67,10 @@
         flex-direction: column;
     }
     
-    .section-wrapper {
+    .header_btn{
         display: flex;
-        flex-direction: column;
-        margin: 32px 0 0;
-        width: 100%;
+        gap: 4px;
+        font-size: 16px;
     }
 
     .title {
@@ -85,13 +101,19 @@
     }
 
     .formatter_field-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin: 32px 0 0;
         width: 100%;
     }
     .back-field {
-        height: 60vh;
+        height: calc(60vh + 54px);
         resize: none;
         background: #030711;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
+    }
+    .prettier-href{
+        text-decoration: underline;
     }
 </style>
