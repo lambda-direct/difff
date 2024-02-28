@@ -1,6 +1,6 @@
 <script lang="ts">
     import "~/styles/index.css";
-
+    
     export let data 
     const {posts} = data
 </script>

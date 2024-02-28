@@ -1,26 +1,16 @@
 <script lang="ts">
-    import JsonFormatter from "~/utils/index";
+    import JsonFormatter from "~/utils/JSONFormatter";
     import { browser } from "$app/environment";
     import { EditorView } from "@codemirror/view";
     import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
-    import { showError } from "~/lib/storages";
 
     let value: string
     let view: EditorView;
 
-
-    const formatClick = async (value: string, view: EditorView, isError: boolean) => {
-        await JsonFormatter.validateJson(value, view);
-        if (!isError && value.replaceAll(" ", "")) {
-            view.dispatch({
-                effects: [EditorView.scrollIntoView(1)]
-            });
-            return await JsonFormatter.prettierFormatJSON(value);
-        } else {
-            return value;
-        }
+    const formatClick = async () => {
+        value = await JsonFormatter.prettierFormatJSON(value, view)
     };
 </script>
 
@@ -38,14 +28,14 @@
         <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirrorHeader label="JSON Formatter" btnName="Format" functionClick={async() => {value = await formatClick(value, view, $showError)}}>
+        <CodeMirrorHeader label="JSON Formatter" btnName="Format" functionClick={formatClick}>
             <span  class="header_btn">
                 <MagicWand/>
                 Format
             </span>
         </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} controlFunction={JsonFormatter.prettierFormatJSON} validateFunction={JsonFormatter.validateJson}/>
+            <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} controlFunction={JsonFormatter.prettierFormatJSON}/>
 
         {:else}
             <div class="back-field" />

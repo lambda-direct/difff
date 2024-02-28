@@ -11,23 +11,11 @@
     import { createEditorState, removeHighlightedLines, stateExtensions } from "./codeMirror";
    
     export let placeholder: string;
-    export let controlFunction: Function
-    export let validateFunction: Function
+    export let controlFunction: (value: string, view: EditorView) => Promise<string>
     export let value: string = "";
     export let view: EditorView;
 
 
-    const format = async (value: string, view: EditorView, isError: boolean) => {
-        await validateFunction(value, view);
-        if (!isError && value.replaceAll(" ", "")) {
-            view.dispatch({
-                effects: [EditorView.scrollIntoView(1)]
-            });
-            return await controlFunction(value);
-        } else {
-            return value;
-        }
-    };
     let element: HTMLDivElement;
 
     let updateFromProp = false;
@@ -80,7 +68,7 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
-        validateFunction(value, view);
+        controlFunction(value, view);
         dispatch("change", value);
     };
     
@@ -101,22 +89,19 @@
         await navigator.clipboard.writeText(value);
     };
 
-    const formatClick = async () => {
-        value = await format(value, view, $showError);
-    };
-
     const onPaste = async () => {
-        value = await format(value, view, $showError);
+        value = await controlFunction(value, view);
     };
 
     const onDrop = async (event: DragEvent) => {
         event.preventDefault();
         if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+            value=""
             const file = event.dataTransfer.files[0];
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                value = await format(droppedData, view, $showError);
+                value = await controlFunction(droppedData, view);
             };
             reader.readAsText(file)
         }
@@ -148,7 +133,7 @@
 <section class="field_wrapper">
     <div class="codemirror-wrapper"  bind:this={element}/>
     <footer class="footer">
-        <PopUpBtn aria-label="format" aria-labelledby="format" name="format" click={async() => {value = await format(value, view, $showError)}}
+        <PopUpBtn aria-label="format" aria-labelledby="format" name="format" click={async() => {value = await controlFunction(value, view)}}
         popUpMessage={"Formatted"}>
             <MagicWand />
         </PopUpBtn>

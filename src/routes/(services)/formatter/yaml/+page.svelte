@@ -1,55 +1,17 @@
 <script lang="ts">
+    import YamlFormatter from "~/utils/YamlFormatter";
     import { browser } from "$app/environment";
     import { EditorView } from "@codemirror/view";
     import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
-    import { addHighlightedLine, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
-    import { showError } from "~/lib/storages";
-    import * as yaml from "js-yaml";
-    import { isFormatError, isYamlError } from "~/utils/helpers";
-
 
     let value: string
     let view: EditorView;
 
-    const formatClick = (value: string, view: EditorView, isError: boolean) =>{
-        validateYaml(value, view);
-        if (!isError && value.replaceAll(" ", "")) {
-            view.dispatch({
-                effects: [EditorView.scrollIntoView(1)]
-            });
-            return formatYaml(value);
-        } else {
-            return value;
-        }  
+    const formatClick = async () =>{
+        value = await YamlFormatter.formatYAML(value, view)
     }
-
-    const validateYaml = (value: string, view: EditorView) => {
-        if (value) {
-            try {
-                formatYaml(value);
-                removeHighlightedLines(view);
-                showError.set(false);
-                return;
-            } catch (err) {
-                if (isYamlError(err)) {
-                    addHighlightedLine(view, err.mark.line);
-                }
-                showError.set(true);
-                return;
-            }
-        } else {
-            showError.set(false);
-            return;
-        }
-    };
-
-    const formatYaml = (yamlString: string) => {
-        const yamlObject = yaml.load(yamlString);
-        const formattedYaml = yaml.dump(yamlObject);
-        return formattedYaml;
-    };
 </script>
 
 <svelte:head>
@@ -66,14 +28,14 @@
         <h2 class="subtitle">Validate, Format & Prettify your YAML</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirrorHeader label="YAML Formatter" btnName="Format" functionClick={async() => {value = await formatClick(value, view, $showError)}}>
+        <CodeMirrorHeader label="YAML Formatter" btnName="Format" functionClick={formatClick}>
             <span  class="header_btn">
                 <MagicWand/>
                 Format
             </span>
         </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror bind:value bind:view placeholder={"Put your YAML, provide a link, or Drag & Drop a file"} controlFunction={formatYaml} validateFunction={validateYaml}/>
+            <CodeMirror bind:value bind:view placeholder={"Put your YAML, provide a link, or Drag & Drop a file"} controlFunction={YamlFormatter.formatYAML} />
         {:else}
             <div class="back-field" />
         {/if}
@@ -82,15 +44,15 @@
     <article class="article">
         <h2 class="article_title">How to Format YAML Using an Online Tool (Easy Method)</h2>
         <p class="article-text">
-            YAML formatter & validator helps to beautify your YAML text and pretty print it.
-            Optimize your YAML formatting effortlessly with our online tool. Simply put your YAML
-            text, provide a link to your YAML, or upload a file containing your YAML. Whether your
-            YAML is valid or not, our service will identify and display errors if any are present.
-            For valid YAML, it will be formatted using <a
-                href="https://prettier.io/"
+            YAML formatter & validator helps to beautify your YAML Inline syntax gets 
+            expanded and indented with two spaces per data structure depth level.
+            We help you to format your YAML effortlessly with our online tool. Put compressed(as example to JavaScript Object) YAML
+            text or upload a file containing your YAML. Our service will identify is your YAML valid or not. Display errors if any are present.
+            Our formatting tool for valid YAML is <a
+                href="https://github.com/nodeca/js-yaml#readme"
                 rel="nofollow noopener noreferrer"
                 target="_blank"
-                class="prettier-href">Prettier</a
+                class="prettier-href">js-yaml</a
             >.
         </p>
     </article>

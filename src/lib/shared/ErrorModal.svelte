@@ -1,10 +1,11 @@
 <script lang="ts">
     import AlertIcon from "~/lib/icons/AlertIcon.svelte";
+    import { errorMessage } from "../storages";
 
 </script>
 
 <div class="modal">
-    <p class="title">Invalid format</p>
+    <p class="title">Invalid {$errorMessage === "" ? "format" : $errorMessage}</p>
     <AlertIcon color={"#eaeaea"} />
 </div>
 

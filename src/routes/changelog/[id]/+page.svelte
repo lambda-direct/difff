@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import { formattedDate } from "~/utils/index.js";
     import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
+    import { formattedDate } from "~/utils/helpers.js";
 
     export let data;
 </script>
@@ -27,7 +27,6 @@
             </ul>
         </nav>
     </header>
-    
     <article class="blog_page">
         <svelte:component this={data.content} />
     </article>

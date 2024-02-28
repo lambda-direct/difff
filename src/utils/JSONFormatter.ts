@@ -3,18 +3,8 @@ import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
 import { EditorView } from "@codemirror/view";
-import { addHighlightedLine, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
-import { showError } from "~/lib/storages";
-import { isFormatError } from "./helpers";
-
-export const formattedDate = (inputDate: string) => {
-    const [day, month, year] = inputDate.split("-");
-    return new Date(`${month}/${day}/${year}`).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-    });
-};
+import { addHighlightedLineJSON, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
+import type { FormatError } from "~/types";
 
 class JSONDataOperations {
     private optionsJSON = {
@@ -27,6 +17,10 @@ class JSONDataOperations {
         printWidth: 100,
         parser: "json",
         plugins: [parserBabel, prettierPluginEstree]
+    };
+
+    private isFormatError = (error: unknown): error is FormatError => {
+        return <FormatError>error !== undefined && (<FormatError>error).loc !== undefined;
     };
 
     private isURL = (url: string) => {
@@ -51,28 +45,22 @@ class JSONDataOperations {
         }
     };
 
-    public prettierFormatJSON = async (userInput: string) => {
-        const json = await this.dataFromUrl(userInput);
-        return await prettier.format(json, this.optionsJSON);
-    };
-
-    public validateJson = async (value: string, view: EditorView) => {
-        if (value) {
+    public prettierFormatJSON = async (userInput: string, view: EditorView) => {
+        if (userInput) {
             try {
-                await this.prettierFormatJSON(value);
+                const json = await this.dataFromUrl(userInput);
+                const formattedJSON = await prettier.format(json, this.optionsJSON);
                 removeHighlightedLines(view);
-                showError.set(false);
-                return;
+                return formattedJSON;
             } catch (err) {
-                if (isFormatError(err)) {
-                    addHighlightedLine(view, err.loc.start.line);
+                if (this.isFormatError(err)) {
+                    addHighlightedLineJSON(view, err.loc.start.line);
                 }
-                showError.set(true);
-                return;
+                return userInput;
             }
         } else {
-            showError.set(false);
-            return;
+            removeHighlightedLines(view);
+            return userInput;
         }
     };
 }

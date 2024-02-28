@@ -4,9 +4,37 @@ import { search } from "@codemirror/search";
 import { themeExtensions } from "./themes/theme";
 import { basicSetup } from "codemirror";
 import { json } from "@codemirror/lang-json";
+import { errorMessage, showError } from "~/lib/storages";
 
-export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
+export const addHighlightedLineJSON = (view: EditorView, lineNumber: number) => {
     const line = view.state.doc.line(lineNumber);
+    if (line.text === "") {
+        errorMessage.set("seems like a missing closing parenthesis '}'");
+        view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: 1,
+                    to: line.to
+                })
+            ]
+        });
+    } else {
+        view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: line.from,
+                    to: line.to
+                }),
+                EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
+            ]
+        });
+    }
+    showError.set(true);
+};
+
+export const addHighlightedLineYaml = (view: EditorView, lineNumber: number, reason: string) => {
+    const line = view.state.doc.line(lineNumber);
+    errorMessage.set(reason);
     view.dispatch({
         effects: [
             addHighlight.of({
@@ -16,12 +44,15 @@ export const addHighlightedLine = (view: EditorView, lineNumber: number) => {
             EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
         ]
     });
+    showError.set(true);
 };
 
 export const removeHighlightedLines = (view: EditorView) => {
     view.dispatch({
         effects: [removeHighlights.of(null)]
     });
+    errorMessage.set("");
+    showError.set(false);
 };
 
 export const createEditorState = (
