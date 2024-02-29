@@ -42,6 +42,7 @@
                 placeholder={"Put your JSON, provide a link, or Drag & Drop a file"}
                 type="json"
                 controlFunction={JsonFormatter.prettierFormatJSON}
+                validation={JsonFormatter.validateJSON}
             />
         {:else}
             <div class="back-field" />
@@ -54,12 +55,15 @@
             Optimize your JSON formatting effortlessly with our online tool. Simply put your JSON
             text, provide a link to your JSON, or upload a file containing your JSON. Whether your
             JSON is valid or not, our service will identify and display errors if any are present.
-            For valid JSON, it will be formatted using <a
+            For valid JSON, it will be formatted using
+            <a
                 href="https://prettier.io/"
                 rel="nofollow noopener noreferrer"
                 target="_blank"
-                class="prettier-href">Prettier</a
+                class="prettier-href"
             >
+                Prettier
+            </a>
         </p>
     </article>
 </main>

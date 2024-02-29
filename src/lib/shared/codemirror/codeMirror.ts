@@ -42,7 +42,40 @@ export const addHighlightedLineJSON = (view: EditorView, lineNumber: number) => 
     showError.set(true);
 };
 
+export const highlightErrorLineJSON = (view: EditorView, lineNumber: number) => {
+    const line = view.state.doc.line(lineNumber);
+    if (line.from === 0 && line.to === 0) {
+        view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: 1,
+                    to: 100
+                })
+            ]
+        });
+    } else if (line.text === "") {
+        view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: 1,
+                    to: line.to
+                })
+            ]
+        });
+    } else {
+        view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: line.from,
+                    to: line.to
+                })
+            ]
+        });
+    }
+};
+
 export const addHighlightedLineYaml = (view: EditorView, lineNumber: number, reason: string) => {
+    lineNumber = lineNumber === 0 ? 1 : lineNumber;
     const line = view.state.doc.line(lineNumber);
     errorMessage.set(reason);
     view.dispatch({

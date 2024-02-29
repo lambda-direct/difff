@@ -1,7 +1,7 @@
 import * as yaml from "js-yaml";
 import { EditorView } from "@codemirror/view";
-import { addHighlightedLineYaml, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
 import type { FormatYamlError } from "~/types";
+import { addHighlightedLineYaml, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
 
 class YAMLDataOperations {
     // private isURL = (url: string) => {
@@ -31,6 +31,18 @@ class YAMLDataOperations {
         );
     };
 
+    public validateYAML = async (input: string, view: EditorView) => {
+        try {
+            const yamlObject = yaml.load(input);
+            yaml.dump(yamlObject);
+            removeHighlightedLines(view);
+        } catch (err) {
+            if (this.isYamlError(err)) {
+                addHighlightedLineYaml(view, err.mark.line, "");
+            }
+        }
+    };
+
     public formatYAML = async (userInput: string, view: EditorView) => {
         if (userInput) {
             try {
@@ -39,7 +51,6 @@ class YAMLDataOperations {
                 removeHighlightedLines(view);
                 return formattedYaml;
             } catch (err) {
-                console.log("err:", err);
                 if (this.isYamlError(err)) {
                     addHighlightedLineYaml(view, err.mark.line, err.reason);
                 }

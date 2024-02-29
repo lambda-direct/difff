@@ -5,13 +5,14 @@
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
-    import Loading from "~/lib/icons/Loading.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import { showError } from "~/lib/storages";
-    import { createEditorState, stateExtensions } from "./codeMirror";
+    import { createEditorState, removeHighlightedLines, stateExtensions } from "./codeMirror";
 
-    export let placeholder: string;
     export let controlFunction: (value: string, view: EditorView) => Promise<string>;
+    export let validation: (value: string, view: EditorView) => Promise<void>;
+    export let placeholder: string;
+
     export let value: string = "";
     export let view: EditorView;
     export let type: string;
@@ -47,6 +48,14 @@
     };
 
     const update = (value: string | undefined): void => {
+        if (value) {
+            validation(value, view);
+        }
+
+        if (value === "") {
+            removeHighlightedLines(view);
+        }
+
         if (updateFromState) {
             updateFromState = false;
             return;
@@ -144,7 +153,7 @@
                 class="icon-button"
             >
                 {#if isDownloadClicked}
-                    <Loading />
+                    <SuccessIcon />
                 {:else}
                     <DownLoadIcon />
                 {/if}

@@ -6,9 +6,8 @@
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
 
-    let value: string
+    let value: string;
     let view: EditorView;
-
 </script>
 
 <svelte:head>
@@ -25,14 +24,26 @@
         <h2 class="subtitle">Validate, Format & Prettify your YAML</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirrorHeader bind:value bind:view label="YAML Formatter" btnName="Format" passedFunctionClick={YamlFormatter.formatYAML}>
-            <span  class="header_btn">
-                <MagicWand/>
+        <CodeMirrorHeader
+            bind:value
+            bind:view
+            label="YAML Formatter"
+            passedFunctionClick={YamlFormatter.formatYAML}
+        >
+            <span class="header_btn">
+                <MagicWand />
                 Format
             </span>
         </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror bind:value bind:view placeholder={"Put your YAML or Drag & Drop a file"} type="yaml" controlFunction={YamlFormatter.formatYAML} />
+            <CodeMirror
+                bind:value
+                bind:view
+                placeholder={"Put your YAML or Drag & Drop a file"}
+                type="yaml"
+                controlFunction={YamlFormatter.formatYAML}
+                validation={YamlFormatter.validateYAML}
+            />
         {:else}
             <div class="back-field" />
         {/if}
@@ -41,11 +52,11 @@
     <article class="article">
         <h2 class="article_title">How to Format YAML Using an Online Tool (Easy Method)</h2>
         <p class="article-text">
-            YAML formatter & validator helps to beautify your YAML Inline syntax gets 
-            expanded and indented with two spaces per data structure depth level.
-            We help you to format your YAML effortlessly with our online tool. Put compressed(as example to JavaScript Object) YAML
-            text or upload a file containing your YAML. Our service will identify is your YAML valid or not. Display errors if any are present.
-            Our formatting tool for valid YAML is <a
+            YAML formatter & validator helps to beautify your YAML Inline syntax gets expanded and
+            indented with two spaces per data structure depth level. We help you to format your YAML
+            effortlessly with our online tool. Put compressed(as example to JavaScript Object) YAML
+            text or upload a file containing your YAML. Our service will identify is your YAML valid
+            or not. Display errors if any are present. Our formatting tool for valid YAML is <a
                 href="https://github.com/nodeca/js-yaml#readme"
                 rel="nofollow noopener noreferrer"
                 target="_blank"
@@ -62,8 +73,8 @@
         align-items: center;
         flex-direction: column;
     }
-    
-    .header_btn{
+
+    .header_btn {
         display: flex;
         gap: 4px;
         font-size: 16px;
@@ -109,7 +120,7 @@
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }
-    .prettier-href{
+    .prettier-href {
         text-decoration: underline;
     }
 </style>

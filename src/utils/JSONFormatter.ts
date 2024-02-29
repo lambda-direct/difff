@@ -3,7 +3,11 @@ import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
 import { EditorView } from "@codemirror/view";
-import { addHighlightedLineJSON, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
+import {
+    addHighlightedLineJSON,
+    highlightErrorLineJSON,
+    removeHighlightedLines
+} from "~/lib/shared/codemirror/codeMirror";
 import type { FormatError } from "~/types";
 
 class JSONDataOperations {
@@ -46,13 +50,23 @@ class JSONDataOperations {
         }
     };
 
+    public validateJSON = async (input: string, view: EditorView) => {
+        try {
+            await prettier.format(input, this.optionsJSON);
+            removeHighlightedLines(view);
+        } catch (err) {
+            if (this.isFormatError(err)) {
+                highlightErrorLineJSON(view, err.loc.start.line);
+            }
+        }
+    };
+
     public prettierFormatJSON = async (userInput: string, view: EditorView) => {
         if (userInput) {
             try {
                 const json = await this.dataFromUrl(userInput);
                 const formattedJSON = await prettier.format(json, this.optionsJSON);
                 removeHighlightedLines(view);
-                console.log(22);
                 view.dispatch({
                     effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
                 });
