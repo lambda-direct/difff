@@ -6,7 +6,6 @@
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import Loading from "~/lib/icons/Loading.svelte";
-    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import { showError } from "~/lib/storages";
     import { createEditorState, stateExtensions } from "./codeMirror";
