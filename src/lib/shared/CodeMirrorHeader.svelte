@@ -1,16 +1,15 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
-    import { closeSearchPanel, openSearchPanel } from "@codemirror/search";
-    import type { EditorView } from "@codemirror/view";
-    import { onDestroy, onMount } from "svelte";
+    import { dropDownOptions } from "~/utils/services";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
+    import { browser } from "$app/environment";
     import SearchIcon from "~/lib/icons/SearchIcon.svelte";
-    import { dropDownOptions } from "~/utils/services";
-    import UploadIcon from "../icons/UploadIcon.svelte";
+    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
+    import type { EditorView } from "@codemirror/view";
+    import { openSearchPanel, closeSearchPanel } from "@codemirror/search";
+    import { onDestroy, onMount } from "svelte";
 
     export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>;
-    export let btnName: string;
     export let label: string;
     export let value: string;
     export let view: EditorView;
@@ -56,7 +55,7 @@
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-        const {metaKey, ctrlKey, key} = event;
+        const { metaKey, ctrlKey, key } = event;
         if (!(metaKey || ctrlKey) || key !== "f") return;
         handleSearchMenuClick();
     };
@@ -67,11 +66,11 @@
             event.currentTarget.files &&
             event.currentTarget.files.length > 0
         ) {
-            value = "";
             const file = event.currentTarget.files[0];
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
+                value = droppedData;
                 value = await passedFunctionClick(droppedData, view);
             };
             reader.readAsText(file);
@@ -108,7 +107,7 @@
             {/each}
         </div>
         <button on:click|stopPropagation={handleDropDownClick} class="button text">
-            {label}
+            <span class="btn_title">{label}</span>
             {#if showDropDown}
                 <DropDownOpenIcon />
             {:else}
@@ -118,10 +117,10 @@
     </nav>
     <button
         on:click={functionClick}
-        class="button text"
-        aria-label={btnName}
-        aria-labelledby={btnName}
-        name={btnName}
+        class="button text format-button"
+        aria-label="format"
+        aria-labelledby="format"
+        name="format"
     >
         <slot />
     </button>
@@ -189,7 +188,6 @@
 
     .hidden {
         opacity: 0;
-        height: 0px;
     }
 
     .file-input {
@@ -202,12 +200,16 @@
         flex-direction: column;
         position: absolute;
         top: 42px;
+        width: 100%;
         padding: 8px;
         background: #040b1a;
         border: 1px solid #313345;
         border-radius: 6px;
         box-shadow: 0px 8px 16px #000;
         user-select: none;
+        @media (max-width: 420px) {
+            width: fit-content;
+        }
     }
 
     .header {
@@ -224,6 +226,7 @@
 
     .drop-down-wrapper {
         display: flex;
+        flex-direction: column;
     }
 
     .content_label {
@@ -242,6 +245,7 @@
     .button {
         display: flex;
         align-items: center;
+        gap: 4px;
         height: 36px;
         background: #040b1a;
         border: 1px solid #313345;
@@ -262,9 +266,21 @@
         padding: 0 7px;
     }
 
+    .format-button {
+        margin: auto;
+    }
+    .btn_title {
+        @media (max-width: 420px) {
+            display: none;
+        }
+    }
+
     .button-wrapper {
         display: flex;
         flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
         gap: 6px;
+        width: 20%;
     }
 </style>

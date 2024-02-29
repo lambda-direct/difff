@@ -6,9 +6,8 @@
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
 
-    let value: string
+    let value: string;
     let view: EditorView;
-
 </script>
 
 <svelte:head>
@@ -25,14 +24,25 @@
         <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirrorHeader bind:value bind:view label="JSON Formatter" btnName="Format" passedFunctionClick={JsonFormatter.prettierFormatJSON}>
-            <span  class="header_btn">
-                <MagicWand/>
+        <CodeMirrorHeader
+            bind:value
+            bind:view
+            label="JSON Formatter"
+            passedFunctionClick={JsonFormatter.prettierFormatJSON}
+        >
+            <span class="header_btn">
+                <MagicWand />
                 Format
             </span>
         </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror bind:value bind:view placeholder={"Put your JSON, provide a link, or Drag & Drop a file"} type="json" controlFunction={JsonFormatter.prettierFormatJSON}/>
+            <CodeMirror
+                bind:value
+                bind:view
+                placeholder={"Put your JSON, provide a link, or Drag & Drop a file"}
+                type="json"
+                controlFunction={JsonFormatter.prettierFormatJSON}
+            />
         {:else}
             <div class="back-field" />
         {/if}
@@ -49,7 +59,7 @@
                 rel="nofollow noopener noreferrer"
                 target="_blank"
                 class="prettier-href">Prettier</a
-            >.
+            >
         </p>
     </article>
 </main>
@@ -61,8 +71,8 @@
         align-items: center;
         flex-direction: column;
     }
-    
-    .header_btn{
+
+    .header_btn {
         display: flex;
         gap: 4px;
         font-size: 16px;
@@ -108,7 +118,7 @@
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }
-    .prettier-href{
+    .prettier-href {
         text-decoration: underline;
     }
 </style>

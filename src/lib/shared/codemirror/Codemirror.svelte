@@ -3,7 +3,9 @@
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
+    import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
+    import Loading from "~/lib/icons/Loading.svelte";
     import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import { showError } from "~/lib/storages";
@@ -19,8 +21,8 @@
 
     let updateFromProp: boolean = false;
     let updateFromState: boolean = false;
-    let isDownloadDisabled: boolean = false;
-    let isCopyDisabled: boolean = false;
+    let isDownloadClicked: boolean = false;
+    let isCopyClicked: boolean = false;
 
     const dispatch = createEventDispatcher<{ change: string }>();
 
@@ -64,10 +66,10 @@
     };
 
     const downloadClick = () => {
-        isDownloadDisabled = true;
+        isDownloadClicked = true;
         setTimeout(() => {
-            isDownloadDisabled = false;
-        }, 1500);
+            isDownloadClicked = false;
+        }, 1200);
         const blob = new Blob([value], { type: "application/json" });
         const url = URL.createObjectURL(blob);
 
@@ -81,10 +83,10 @@
     };
 
     const copyClick = async () => {
-        isCopyDisabled = true;
+        isCopyClicked = true;
         setTimeout(() => {
-            isCopyDisabled = false;
-        }, 1500);
+            isCopyClicked = false;
+        }, 1200);
         await navigator.clipboard.writeText(value);
     };
 
@@ -145,25 +147,31 @@
         <div class="icon-btn-wrapp">
             <button
                 on:click={downloadClick}
-                disabled={isDownloadDisabled}
                 title="download"
                 aria-label="download"
                 aria-labelledby="download"
                 name="download"
                 class="icon-button"
             >
-                <DownLoadIcon />
+                {#if isDownloadClicked}
+                    <Loading />
+                {:else}
+                    <DownLoadIcon />
+                {/if}
             </button>
             <button
                 on:click={copyClick}
-                disabled={isCopyDisabled}
                 title="copy"
                 aria-label="copy"
                 aria-labelledby="copy"
                 name="copy"
                 class="icon-button"
             >
-                <CopyIcon />
+                {#if isCopyClicked}
+                    <SuccessIcon />
+                {:else}
+                    <CopyIcon />
+                {/if}
             </button>
         </div>
     </footer>
