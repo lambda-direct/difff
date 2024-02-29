@@ -31,14 +31,14 @@ class YAMLDataOperations {
         );
     };
 
-    public validateYAML = async (input: string, view: EditorView) => {
+    public validateYAML = (input: string, view: EditorView) => {
         try {
             const yamlObject = yaml.load(input);
             yaml.dump(yamlObject);
             removeHighlightedLines(view);
         } catch (err) {
             if (this.isYamlError(err)) {
-                addHighlightedLineYaml(view, err.mark.line, "");
+                addHighlightedLineYaml(view, err.mark.line, err.mark.position, "");
             }
         }
     };
@@ -46,13 +46,13 @@ class YAMLDataOperations {
     public formatYAML = async (userInput: string, view: EditorView) => {
         if (userInput) {
             try {
-                const yamlObject = yaml.load(userInput);
+                const yamlObject = await yaml.load(userInput);
                 const formattedYaml = yaml.dump(yamlObject);
                 removeHighlightedLines(view);
                 return formattedYaml;
             } catch (err) {
                 if (this.isYamlError(err)) {
-                    addHighlightedLineYaml(view, err.mark.line, err.reason);
+                    addHighlightedLineYaml(view, err.mark.line, err.mark.position, err.reason);
                 }
                 return userInput;
             }

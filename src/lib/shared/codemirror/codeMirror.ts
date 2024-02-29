@@ -68,23 +68,28 @@ export const highlightErrorLineJSON = (view: EditorView, lineNumber: number) => 
                 addHighlight.of({
                     from: line.from,
                     to: line.to
-                })
+                }),
+                EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
             ]
         });
     }
 };
 
-export const addHighlightedLineYaml = (view: EditorView, lineNumber: number, reason: string) => {
-    lineNumber = lineNumber === 0 ? 1 : lineNumber;
-    const line = view.state.doc.line(lineNumber);
+export const addHighlightedLineYaml = (
+    // REDO
+    view: EditorView,
+    line: number,
+    positionNumber: number,
+    reason: string
+) => {
     errorMessage.set(reason);
     view.dispatch({
         effects: [
             addHighlight.of({
-                from: line.from,
-                to: line.to
+                from: positionNumber,
+                to: positionNumber + 1
             }),
-            EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
+            EditorView.scrollIntoView(line, { y: "nearest", x: "nearest" })
         ]
     });
     showError.set(true);

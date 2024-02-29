@@ -50,15 +50,18 @@ class JSONDataOperations {
         }
     };
 
-    public validateJSON = async (input: string, view: EditorView) => {
-        try {
-            await prettier.format(input, this.optionsJSON);
-            removeHighlightedLines(view);
-        } catch (err) {
-            if (this.isFormatError(err)) {
-                highlightErrorLineJSON(view, err.loc.start.line);
-            }
-        }
+    public validateJSON = (input: string, view: EditorView) => {
+        prettier
+            .format(input, this.optionsJSON)
+            .then(() => {
+                removeHighlightedLines(view);
+            })
+            .catch((err) => {
+                if (this.isFormatError(err)) {
+                    highlightErrorLineJSON(view, err.loc.start.line);
+                }
+            });
+        removeHighlightedLines(view);
     };
 
     public prettierFormatJSON = async (userInput: string, view: EditorView) => {

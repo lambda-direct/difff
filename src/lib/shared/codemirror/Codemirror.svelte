@@ -10,7 +10,7 @@
     import { createEditorState, removeHighlightedLines, stateExtensions } from "./codeMirror";
 
     export let controlFunction: (value: string, view: EditorView) => Promise<string>;
-    export let validation: (value: string, view: EditorView) => Promise<void>;
+    export let validation: (value: string, view: EditorView) => void;
     export let placeholder: string;
 
     export let value: string = "";
@@ -37,9 +37,7 @@
             state: createEditorState(value, extensions),
             dispatch(transaction) {
                 view.update([transaction]);
-                if (!updateFromProp && transaction.docChanged) {
-                    onChange();
-                }
+                if (!updateFromProp && transaction.docChanged) onChange();
             },
             extensions: [extensions]
         });
@@ -48,20 +46,15 @@
     };
 
     const update = (value: string | undefined): void => {
-        if (value) {
-            validation(value, view);
-        }
-
-        if (value === "") {
-            removeHighlightedLines(view);
-        }
-
+        if (value === "") removeHighlightedLines(view);
+        if (value && type === "json") validation(value, view);
         if (updateFromState) {
             updateFromState = false;
             return;
         }
         updateFromProp = true;
         view.setState(createEditorState(value, extensions));
+
         view.dispatch({
             effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
         });
@@ -80,7 +73,7 @@
         isDownloadClicked = true;
         setTimeout(() => {
             isDownloadClicked = false;
-        }, 1200);
+        }, 1000);
         const blob = new Blob([value], { type: "application/json" });
         const url = URL.createObjectURL(blob);
 
@@ -97,7 +90,7 @@
         isCopyClicked = true;
         setTimeout(() => {
             isCopyClicked = false;
-        }, 1200);
+        }, 1000);
         await navigator.clipboard.writeText(value);
     };
 
