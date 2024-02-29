@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { dropDownOptions } from "~/utils/services";
-    import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
-    import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
     import { browser } from "$app/environment";
+    import { onDestroy, onMount } from "svelte";
     import SearchIcon from "~/lib/icons/SearchIcon.svelte";
     import UploadIcon from "~/lib/icons/UploadIcon.svelte";
+    import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
+    import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
+    import { dropDownOptions } from "~/utils/services";
     import type { EditorView } from "@codemirror/view";
     import { openSearchPanel, closeSearchPanel } from "@codemirror/search";
-    import { onDestroy, onMount } from "svelte";
 
     export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>;
     export let label: string;

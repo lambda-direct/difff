@@ -52,6 +52,10 @@ class JSONDataOperations {
                 const json = await this.dataFromUrl(userInput);
                 const formattedJSON = await prettier.format(json, this.optionsJSON);
                 removeHighlightedLines(view);
+                console.log(22);
+                view.dispatch({
+                    effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
+                });
                 return formattedJSON;
             } catch (err) {
                 if (this.isFormatError(err)) {

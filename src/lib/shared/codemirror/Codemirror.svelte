@@ -53,6 +53,9 @@
         }
         updateFromProp = true;
         view.setState(createEditorState(value, extensions));
+        view.dispatch({
+            effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
+        });
         updateFromProp = false;
     };
 
