@@ -1,3 +1,2 @@
 User-agent: *
-Disallow: /*.ts$
 Sitemap: https://difff.app/sitemap.xml
