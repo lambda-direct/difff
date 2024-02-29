@@ -132,18 +132,6 @@
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
-        <button
-            on:click={async () => {
-                value = await controlFunction(value, view);
-            }}
-            title="format"
-            aria-label="format"
-            aria-labelledby="format"
-            name="format"
-            class="icon-button"
-        >
-            <MagicWand />
-        </button>
         <div class="icon-btn-wrapp">
             <button
                 on:click={downloadClick}
@@ -184,7 +172,7 @@
     .footer {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
         padding: 0 12px;
         height: 54px;
         background: #030711;

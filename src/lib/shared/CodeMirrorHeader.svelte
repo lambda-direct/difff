@@ -199,6 +199,7 @@
         display: flex;
         flex-direction: column;
         position: absolute;
+        text-align: center;
         top: 42px;
         width: 100%;
         padding: 8px;
@@ -232,7 +233,7 @@
     .content_label {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
         height: 36px;
         padding: 0 4px;
         border-radius: 8px;
