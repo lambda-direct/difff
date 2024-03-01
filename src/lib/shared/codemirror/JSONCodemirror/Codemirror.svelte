@@ -1,21 +1,19 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import { showError } from "~/lib/storages";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
-    import { createEventDispatcher, onDestroy, onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
-    import { showError } from "~/lib/storages";
-    import { createEditorState, removeHighlightedLines, stateExtensions } from "./codeMirror";
+    import Header from "~/lib/shared/codemirror/JSONCodemirror/CodemirrorHeader.svelte";
+    import { createEditorState, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
+    import JsonFormatter from "~/utils/JSONFormatter";
+    import { stateExtensions } from "./codemirrorJSON";
 
-    export let controlFunction: (value: string, view: EditorView) => Promise<string>;
-    export let validation: (value: string, view: EditorView) => void;
-    export let placeholder: string;
-
-    export let value: string = "";
-    export let view: EditorView;
-    export let type: string;
+    let value: string = "";
+    let view: EditorView;
 
     let element: HTMLDivElement;
 
@@ -24,9 +22,10 @@
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
 
-    const dispatch = createEventDispatcher<{ change: string }>();
-
-    const extensions = [...stateExtensions, placeholderSet(placeholder)];
+    const extensions = [
+        ...stateExtensions,
+        placeholderSet("Put your JSON, provide a link, or Drag & Drop a file")
+    ];
 
     $: view && update(value);
     $: onChange = handleChange;
@@ -45,9 +44,9 @@
         return codemirror;
     };
 
-    const update = (value: string | undefined): void => {
+    const update = (value: string): void => {
         if (value === "") removeHighlightedLines(view);
-        if (value && type === "json") validation(value, view);
+        if (value) JsonFormatter.validateJSON(value, view);
         if (updateFromState) {
             updateFromState = false;
             return;
@@ -66,7 +65,6 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
-        dispatch("change", value);
     };
 
     const downloadClick = () => {
@@ -79,7 +77,7 @@
 
         const aTag = document.createElement("a");
         aTag.href = url;
-        aTag.download = `data.${type}`;
+        aTag.download = `data.json`;
         document.body.appendChild(aTag);
         aTag.click();
         document.body.removeChild(aTag);
@@ -95,7 +93,7 @@
     };
 
     const onPaste = async () => {
-        value = await controlFunction(value, view);
+        value = await JsonFormatter.prettierFormatJSON(value, view);
     };
 
     const onDrop = async (event: DragEvent) => {
@@ -106,7 +104,7 @@
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                value = await controlFunction(droppedData, view);
+                value = await JsonFormatter.prettierFormatJSON(droppedData, view);
             };
             reader.readAsText(file);
         }
@@ -114,10 +112,9 @@
 
     onMount(() => {
         view = createEditorView();
-
         if (browser) {
-            window.addEventListener("paste", onPaste);
-            window.addEventListener("drop", onDrop);
+            document.addEventListener("paste", onPaste);
+            document.addEventListener("drop", onDrop);
             const cmDiv = document.getElementsByClassName("cm-content");
             if (cmDiv.length > 0) {
                 cmDiv[0].setAttribute("aria-label", "JSON input");
@@ -128,15 +125,16 @@
 
     onDestroy(() => {
         view?.destroy();
-        window.removeEventListener("paste", onPaste);
-        window.removeEventListener("drop", onDrop);
+        document.removeEventListener("paste", onPaste);
+        document.removeEventListener("drop", onDrop);
     });
 </script>
 
+<Header bind:value bind:view />
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
-        <div class="icon-btn-wrapp">
+        <div class="icon-btn-wrap">
             <button
                 on:click={downloadClick}
                 title="download"
@@ -179,12 +177,13 @@
         justify-content: flex-end;
         padding: 0 12px;
         height: 54px;
+        border-top: 1px solid #313345;
         background: #030711;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }
 
-    .icon-btn-wrapp {
+    .icon-btn-wrap {
         display: flex;
         gap: 8px;
     }

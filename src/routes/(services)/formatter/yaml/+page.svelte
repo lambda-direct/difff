@@ -1,10 +1,7 @@
 <script lang="ts">
-    import YamlFormatter from "~/utils/YamlFormatter";
     import { browser } from "$app/environment";
     import { EditorView } from "@codemirror/view";
-    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
-    import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
-    import CodeMirrorHeader from "~/lib/shared/CodeMirrorHeader.svelte";
+    import CodeMirror from "~/lib/shared/codemirror/YAMLCodemirror/Codemirror.svelte";
 
     let value: string;
     let view: EditorView;
@@ -24,26 +21,8 @@
         <h2 class="subtitle">Validate, Format & Prettify your YAML</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirrorHeader
-            bind:value
-            bind:view
-            label="YAML Formatter"
-            passedFunctionClick={YamlFormatter.formatYAML}
-        >
-            <span class="header_btn">
-                <MagicWand />
-                Format
-            </span>
-        </CodeMirrorHeader>
         {#if browser}
-            <CodeMirror
-                bind:value
-                bind:view
-                placeholder={"Put your YAML or Drag & Drop a file"}
-                type="yaml"
-                controlFunction={YamlFormatter.formatYAML}
-                validation={YamlFormatter.validateYAML}
-            />
+            <CodeMirror />
         {:else}
             <div class="back-field" />
         {/if}
@@ -113,13 +92,7 @@
         margin: 32px 0 0;
         width: 100%;
     }
-    .back-field {
-        height: calc(60vh + 54px);
-        resize: none;
-        background: #030711;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-    }
+
     .prettier-href {
         text-decoration: underline;
     }

@@ -77,3 +77,10 @@ button {
         padding: 0 24px;
     }
 }
+
+.back-field {
+    height: calc(60vh + 54px + 54px);
+    resize: none;
+    background: #030711;
+    border-radius: 8px;
+}

@@ -1,0 +1,298 @@
+<script lang="ts">
+    import { browser } from "$app/environment";
+    import { closeSearchPanel, openSearchPanel } from "@codemirror/search";
+    import { EditorView } from "@codemirror/view";
+    import { onDestroy, onMount } from "svelte";
+    import SearchIcon from "~/lib/icons/SearchIcon.svelte";
+    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
+    import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
+    import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
+    import { dropDownOptions } from "~/utils/services";
+    import YamlFormatter from "~/utils/YamlFormatter";
+
+    export let value: string = "";
+    export let view: EditorView;
+
+    let showDropDown: boolean = false;
+    let searchMenuOpened: boolean = false;
+    let fileInput: HTMLInputElement;
+
+    const formatClick = () => {
+        value = YamlFormatter.formatYAML(value, view);
+    };
+
+    const handleDropDownClick = () => {
+        showDropDown = !showDropDown;
+        if (browser) document.body.addEventListener("click", handleMenuClose);
+    };
+
+    const handleMenuClose = () => {
+        showDropDown = false;
+        if (browser) document.body.removeEventListener("click", handleMenuClose);
+    };
+
+    const handleSearchMenuClick = () => {
+        const newValue = !searchMenuOpened;
+        searchMenuOpened = newValue;
+        if (newValue) {
+            openSearchPanel(view);
+        } else {
+            closeSearchPanel(view);
+        }
+        const closeBtn = document.querySelector("[name=close]");
+        if (!closeBtn) return;
+        closeBtn.addEventListener("click", () => {
+            handleSearchMenuClick();
+            closeBtn.removeEventListener("click", handleSearchMenuClick);
+        });
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+        const { metaKey, ctrlKey, key } = event;
+        if (!(metaKey || ctrlKey) || key !== "f") return;
+        handleSearchMenuClick();
+    };
+
+    const handleFileUpload = () => {
+        if (fileInput) {
+            fileInput.click();
+        }
+    };
+
+    const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+        if (
+            event.currentTarget &&
+            event.currentTarget.files &&
+            event.currentTarget.files.length > 0
+        ) {
+            const file = event.currentTarget.files[0];
+            const reader = new FileReader();
+            reader.onload = async (e: ProgressEvent<FileReader>) => {
+                const droppedData = e.target?.result as string;
+                value = droppedData;
+                setTimeout(() => {
+                    value = YamlFormatter.formatYAML(value, view);
+                }, 10); // REDO THIS
+            };
+            reader.readAsText(file);
+        }
+    };
+
+    onMount(() => {
+        if (browser) document.addEventListener("keydown", handleKeyDown);
+    });
+
+    onDestroy(() => {
+        if (browser) document.removeEventListener("keydown", handleKeyDown);
+    });
+</script>
+
+<header class="header">
+    <nav class="drop-down-wrapper">
+        <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown}>
+            {#each dropDownOptions as options}
+                <div on:click|stopPropagation class="dropdown_content">
+                    <p class="content_label">
+                        {options.title}
+                    </p>
+                    <ul>
+                        {#each options.values as option}
+                            <li class="dropdown_options">
+                                <a href={option.path} class="option_link">
+                                    {option.name}
+                                </a>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+            {/each}
+        </div>
+        <button on:click|stopPropagation={handleDropDownClick} class="button text">
+            <span class="btn_title">YAML Formatter</span>
+            {#if showDropDown}
+                <DropDownOpenIcon />
+            {:else}
+                <DropDownIcon />
+            {/if}
+        </button>
+    </nav>
+    <button
+        on:click={formatClick}
+        class="button text format-button"
+        aria-label="format"
+        aria-labelledby="format"
+        name="format"
+    >
+        <span class="header_btn">
+            <MagicWand />
+            Format
+        </span>
+    </button>
+    <div class="button-wrapper">
+        <button
+            class="icon button"
+            title="search"
+            aria-label="search"
+            aria-labelledby="search"
+            name="search"
+            on:click={handleSearchMenuClick}
+        >
+            <SearchIcon />
+        </button>
+        <button
+            class="icon button"
+            title="upload"
+            aria-label="upload"
+            aria-labelledby="upload"
+            name="upload"
+            on:click={handleFileUpload}
+        >
+            <input
+                type="file"
+                class="file-input"
+                bind:this={fileInput}
+                on:change={handleFileChange}
+            />
+            <UploadIcon />
+        </button>
+    </div>
+</header>
+
+<style>
+    .dropdown_options {
+        padding: 4px;
+        border-radius: 4px;
+        background: transparent;
+        font-size: 16px;
+        color: #7d8799;
+    }
+
+    .dropdown_options:hover {
+        z-index: 5;
+        overflow: visible;
+        white-space: normal;
+        cursor: pointer;
+        background: #f5f5f014;
+        color: #e1e1e1;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .option_link {
+        display: block;
+        width: 100%;
+    }
+
+    .active {
+        opacity: 1;
+    }
+
+    .hidden {
+        opacity: 0;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .dropdown_content {
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        text-align: center;
+        top: 42px;
+        width: 100%;
+        padding: 8px;
+        background: #040b1a;
+        border: 1px solid #313345;
+        border-radius: 6px;
+        box-shadow: 0px 8px 16px #000;
+        user-select: none;
+        @media (max-width: 420px) {
+            width: fit-content;
+        }
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        height: 54px;
+        background: #030711;
+        border-bottom: 1px solid #313345;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .drop-down-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content_label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        padding: 0 4px;
+        border-radius: 8px;
+        color: #7d8799;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: default;
+    }
+
+    .header_btn {
+        display: flex;
+        gap: 4px;
+        font-size: 16px;
+    }
+
+    .button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 36px;
+        background: #040b1a;
+        border: 1px solid #313345;
+        border-radius: 8px;
+        transition: all 0.2s;
+        color: #7d8799;
+        &:hover {
+            background: #040f1e;
+            color: #e1e1e1;
+        }
+    }
+
+    .text {
+        padding: 0 12px;
+    }
+
+    .icon {
+        padding: 0 7px;
+    }
+
+    .format-button {
+        margin: auto;
+    }
+    .btn_title {
+        @media (max-width: 420px) {
+            display: none;
+        }
+    }
+
+    .button-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 6px;
+        width: 20%;
+    }
+</style>
