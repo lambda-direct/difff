@@ -84,3 +84,30 @@ button {
     background: #030711;
     border-radius: 8px;
 }
+
+.footer_article {
+    margin: 32px auto 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer_article_title {
+    text-align: center;
+}
+
+.footer_article_text {
+    margin: 16px 0 0;
+    text-align: center;
+}
+
+.main_title {
+    margin: 28px 0 0;
+    text-align: center;
+}
+
+.main_subtitle {
+    margin: 16px 0 0;
+    text-align: center;
+}

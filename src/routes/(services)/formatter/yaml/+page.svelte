@@ -1,10 +1,6 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { EditorView } from "@codemirror/view";
     import CodeMirror from "~/lib/shared/codemirror/YAMLCodemirror/Codemirror.svelte";
-
-    let value: string;
-    let view: EditorView;
 </script>
 
 <svelte:head>
@@ -17,8 +13,8 @@
 
 <main class="main">
     <header>
-        <h1 class="title">YAML Formatter Online</h1>
-        <h2 class="subtitle">Validate, Format & Prettify your YAML</h2>
+        <h1 class="main_title">YAML Formatter Online</h1>
+        <h2 class="main_subtitle">Validate, Format & Prettify your YAML</h2>
     </header>
     <section class="formatter_field-wrapper">
         {#if browser}
@@ -28,9 +24,9 @@
         {/if}
     </section>
 
-    <article class="article">
-        <h2 class="article_title">How to Format YAML Using an Online Tool (Easy Method)</h2>
-        <p class="article-text">
+    <article class="footer_article">
+        <h2 class="footer_article_title">How to Format YAML Using an Online Tool (Easy Method)</h2>
+        <p class="footer_article_text">
             YAML formatter & validator helps to beautify your YAML Inline syntax gets expanded and
             indented with two spaces per data structure depth level. We help you to format your YAML
             effortlessly with our online tool. Put compressed(as example to JavaScript Object) YAML
@@ -51,39 +47,6 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-    }
-
-    .header_btn {
-        display: flex;
-        gap: 4px;
-        font-size: 16px;
-    }
-
-    .title {
-        margin: 28px 0 0;
-        text-align: center;
-    }
-
-    .subtitle {
-        margin: 16px 0 0;
-        text-align: center;
-    }
-
-    .article {
-        margin: 32px auto 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .article_title {
-        text-align: center;
-    }
-
-    .article-text {
-        margin: 16px 0 0;
-        text-align: center;
     }
 
     .formatter_field-wrapper {

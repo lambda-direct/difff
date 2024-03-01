@@ -13,8 +13,8 @@
 
 <main class="main">
     <header>
-        <h1 class="title">JSON Formatter Online</h1>
-        <h2 class="subtitle">Validate, Format & Prettify your JSON</h2>
+        <h1 class="main_title">JSON Formatter Online</h1>
+        <h2 class="main_subtitle">Validate, Format & Prettify your JSON</h2>
     </header>
     <section class="formatter_field-wrapper">
         {#if browser}
@@ -23,9 +23,9 @@
             <div class="back-field" />
         {/if}
     </section>
-    <article class="article">
-        <h2 class="article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
-        <p class="article-text">
+    <article class="footer_article">
+        <h2 class="footer_article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
+        <p class="footer_article_text">
             JSON formatter & validator helps to beautify your JSON text and pretty print it.
             Optimize your JSON formatting effortlessly with our online tool. Simply put your JSON
             text, provide a link to your JSON, or upload a file containing your JSON. Whether your
@@ -49,33 +49,6 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-    }
-
-    .title {
-        margin: 28px 0 0;
-        text-align: center;
-    }
-
-    .subtitle {
-        margin: 16px 0 0;
-        text-align: center;
-    }
-
-    .article {
-        margin: 32px auto 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .article_title {
-        text-align: center;
-    }
-
-    .article-text {
-        margin: 16px 0 0;
-        text-align: center;
     }
 
     .formatter_field-wrapper {
