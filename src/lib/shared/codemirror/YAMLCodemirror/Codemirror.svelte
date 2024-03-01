@@ -142,11 +142,15 @@
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
-        <span class="cursor-position"
-            >Ln {cursorPosition.line === 0 ? 1 : cursorPosition.line}, Col {cursorPosition.col === 0
-                ? 1
-                : cursorPosition.col}
-        </span>
+        <div>
+            <span class="cursor-position"
+                >Ln {cursorPosition.line === 0 ? 1 : cursorPosition.line}, Col {cursorPosition.col ===
+                0
+                    ? 1
+                    : cursorPosition.col}
+            </span>
+            <span class="cursor-position">Tab Size: 2</span>
+        </div>
         <div class="icon-btn-wrap">
             <button
                 on:click={downloadClick}
@@ -161,6 +165,7 @@
                 {:else}
                     <DownLoadIcon />
                 {/if}
+                Download
             </button>
             <button
                 on:click={copyClick}
@@ -175,6 +180,7 @@
                 {:else}
                     <CopyIcon />
                 {/if}
+                Copy
             </button>
         </div>
     </footer>
