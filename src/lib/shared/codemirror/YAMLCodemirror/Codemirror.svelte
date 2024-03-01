@@ -11,6 +11,7 @@
     import { createEditorState, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
     import YamlFormatter from "~/utils/YamlFormatter";
     import { stateExtensions } from "./codemirrorYAML";
+    import type { SelectionRange } from "@codemirror/state";
 
     let value: string = "";
     let view: EditorView;
@@ -21,6 +22,7 @@
     let updateFromState: boolean = false;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
+    let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
     const extensions = [...stateExtensions, placeholderSet("Put your YAML or Drag & Drop a file")];
 
@@ -33,6 +35,9 @@
             state: createEditorState(value, extensions),
             dispatch(transaction) {
                 view.update([transaction]);
+                if (transaction.selection || transaction.docChanged) {
+                    trackCursorPosition(view);
+                }
                 if (!updateFromProp && transaction.docChanged) onChange();
             },
             extensions: [extensions]
@@ -57,6 +62,17 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
+    };
+
+    const trackCursorPosition = (editorView: EditorView) => {
+        const { doc, selection } = editorView.state;
+        const mainRange: SelectionRange = selection.main;
+
+        const lineInfo = doc.lineAt(mainRange.head);
+        const line = lineInfo.number;
+        const col = mainRange.head - lineInfo.from;
+
+        cursorPosition = { line, col };
     };
 
     const downloadClick = () => {
