@@ -1,30 +1,33 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
-    import { createEventDispatcher, onDestroy, onMount } from "svelte";
-    import CopyIcon from "~/lib/icons/CopyIcon.svelte";
-    import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
-    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
-    import ErrorModal from "~/lib/shared/ErrorModal.svelte";
     import { showError } from "~/lib/storages";
-    import { createEditorState, stateExtensions } from "./codeMirror";
+    import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
+    import { onDestroy, onMount } from "svelte";
+    import CopyIcon from "~/lib/icons/CopyIcon.svelte";
+    import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
+    import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
+    import ErrorModal from "~/lib/shared/ErrorModal.svelte";
+    import Header from "~/lib/shared/codemirror/JSONCodemirror/CodemirrorHeader.svelte";
+    import { createEditorState, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
+    import JsonFormatter from "~/utils/JSONFormatter";
+    import { stateExtensions } from "./codemirrorJSON";
+    import type { SelectionRange } from "@codemirror/state";
 
-    export let placeholder: string;
-    export let controlFunction: (value: string, view: EditorView) => Promise<string>;
-    export let value: string = "";
-    export let view: EditorView;
-    export let type: string;
+    let value: string = "";
+    let view: EditorView;
 
     let element: HTMLDivElement;
 
     let updateFromProp: boolean = false;
     let updateFromState: boolean = false;
-    let isDownloadDisabled: boolean = false;
-    let isCopyDisabled: boolean = false;
+    let isDownloadClicked: boolean = false;
+    let isCopyClicked: boolean = false;
+    let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
-    const dispatch = createEventDispatcher<{ change: string }>();
-
-    const extensions = [...stateExtensions, placeholderSet(placeholder)];
+    const extensions = [
+        ...stateExtensions,
+        placeholderSet("Put your JSON, provide a link, or Drag & Drop a file")
+    ];
 
     $: view && update(value);
     $: onChange = handleChange;
@@ -35,9 +38,10 @@
             state: createEditorState(value, extensions),
             dispatch(transaction) {
                 view.update([transaction]);
-                if (!updateFromProp && transaction.docChanged) {
-                    onChange();
+                if (transaction.selection || transaction.docChanged) {
+                    trackCursorPosition(view);
                 }
+                if (!updateFromProp && transaction.docChanged) onChange();
             },
             extensions: [extensions]
         });
@@ -45,13 +49,30 @@
         return codemirror;
     };
 
-    const update = (value: string | undefined): void => {
+    const trackCursorPosition = (editorView: EditorView) => {
+        const { doc, selection } = editorView.state;
+        const mainRange: SelectionRange = selection.main;
+
+        const lineInfo = doc.lineAt(mainRange.head);
+        const line = lineInfo.number;
+        const col = mainRange.head - lineInfo.from;
+
+        cursorPosition = { line, col };
+    };
+
+    const update = (value: string): void => {
+        if (value === "") removeHighlightedLines(view);
+        if (value) JsonFormatter.validateJSON(value, view);
         if (updateFromState) {
             updateFromState = false;
             return;
         }
         updateFromProp = true;
         view.setState(createEditorState(value, extensions));
+
+        view.dispatch({
+            effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
+        });
         updateFromProp = false;
     };
 
@@ -60,20 +81,19 @@
         if (new_value === value) return;
         updateFromState = true;
         value = new_value;
-        dispatch("change", value);
     };
 
     const downloadClick = () => {
-        isDownloadDisabled = true;
+        isDownloadClicked = true;
         setTimeout(() => {
-            isDownloadDisabled = false;
-        }, 1500);
+            isDownloadClicked = false;
+        }, 1000);
         const blob = new Blob([value], { type: "application/json" });
         const url = URL.createObjectURL(blob);
 
         const aTag = document.createElement("a");
         aTag.href = url;
-        aTag.download = `data.${type}`;
+        aTag.download = `data.json`;
         document.body.appendChild(aTag);
         aTag.click();
         document.body.removeChild(aTag);
@@ -81,15 +101,15 @@
     };
 
     const copyClick = async () => {
-        isCopyDisabled = true;
+        isCopyClicked = true;
         setTimeout(() => {
-            isCopyDisabled = false;
-        }, 1500);
+            isCopyClicked = false;
+        }, 1000);
         await navigator.clipboard.writeText(value);
     };
 
     const onPaste = async () => {
-        value = await controlFunction(value, view);
+        value = await JsonFormatter.prettierFormatJSON(value, view);
     };
 
     const onDrop = async (event: DragEvent) => {
@@ -100,7 +120,7 @@
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                value = await controlFunction(droppedData, view);
+                value = await JsonFormatter.prettierFormatJSON(droppedData, view);
             };
             reader.readAsText(file);
         }
@@ -108,10 +128,9 @@
 
     onMount(() => {
         view = createEditorView();
-
         if (browser) {
-            window.addEventListener("paste", onPaste);
-            window.addEventListener("drop", onDrop);
+            document.addEventListener("paste", onPaste);
+            document.addEventListener("drop", onDrop);
             const cmDiv = document.getElementsByClassName("cm-content");
             if (cmDiv.length > 0) {
                 cmDiv[0].setAttribute("aria-label", "JSON input");
@@ -122,48 +141,54 @@
 
     onDestroy(() => {
         view?.destroy();
-        window.removeEventListener("paste", onPaste);
-        window.removeEventListener("drop", onDrop);
+        document.removeEventListener("paste", onPaste);
+        document.removeEventListener("drop", onDrop);
     });
 </script>
 
+<Header bind:value bind:view />
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
-        <button
-            on:click={async () => {
-                value = await controlFunction(value, view);
-            }}
-            title="format"
-            aria-label="format"
-            aria-labelledby="format"
-            name="format"
-            class="icon-button"
-        >
-            <MagicWand />
-        </button>
-        <div class="icon-btn-wrapp">
+        <div>
+            <span class="cursor-position"
+                >Ln {cursorPosition.line === 0 ? 1 : cursorPosition.line}, Col {cursorPosition.col ===
+                0
+                    ? 1
+                    : cursorPosition.col}
+            </span>
+            <span class="cursor-position">Tab Size: 2</span>
+        </div>
+        <div class="icon-btn-wrap">
             <button
                 on:click={downloadClick}
-                disabled={isDownloadDisabled}
                 title="download"
                 aria-label="download"
                 aria-labelledby="download"
                 name="download"
                 class="icon-button"
             >
-                <DownLoadIcon />
+                {#if isDownloadClicked}
+                    <SuccessIcon />
+                {:else}
+                    <DownLoadIcon />
+                {/if}
+                Download
             </button>
             <button
                 on:click={copyClick}
-                disabled={isCopyDisabled}
                 title="copy"
                 aria-label="copy"
                 aria-labelledby="copy"
                 name="copy"
                 class="icon-button"
             >
-                <CopyIcon />
+                {#if isCopyClicked}
+                    <SuccessIcon />
+                {:else}
+                    <CopyIcon />
+                {/if}
+                Copy
             </button>
         </div>
     </footer>
@@ -179,12 +204,13 @@
         justify-content: space-between;
         padding: 0 12px;
         height: 54px;
+        border-top: 1px solid #313345;
         background: #030711;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }
 
-    .icon-btn-wrapp {
+    .icon-btn-wrap {
         display: flex;
         gap: 8px;
     }
@@ -192,8 +218,9 @@
     .icon-button {
         display: flex;
         align-items: center;
+        gap: 4px;
         height: 36px;
-        padding: 0 7px;
+        padding: 0 6px;
         background: #030711;
         border: 1px solid #313345;
         border-radius: 8px;
@@ -203,6 +230,13 @@
             background: #040f1e;
             color: #e1e1e1;
         }
+    }
+
+    .cursor-position {
+        font-family: "NotoSans-Regular", sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        color: #7d8799;
     }
 
     .field_wrapper {

@@ -1,22 +1,26 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import { closeSearchPanel, openSearchPanel } from "@codemirror/search";
+    import { EditorView } from "@codemirror/view";
     import { onDestroy, onMount } from "svelte";
     import SearchIcon from "~/lib/icons/SearchIcon.svelte";
     import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
     import { dropDownOptions } from "~/utils/services";
-    import type { EditorView } from "@codemirror/view";
-    import { openSearchPanel, closeSearchPanel } from "@codemirror/search";
+    import YamlFormatter from "~/utils/YamlFormatter";
 
-    export let passedFunctionClick: (userValue: string, view: EditorView) => Promise<string>;
-    export let label: string;
-    export let value: string;
+    export let value: string = "";
     export let view: EditorView;
 
     let showDropDown: boolean = false;
-    let fileInput: HTMLInputElement;
     let searchMenuOpened: boolean = false;
+    let fileInput: HTMLInputElement;
+
+    const formatClick = () => {
+        value = YamlFormatter.formatYAML(value, view);
+    };
 
     const handleDropDownClick = () => {
         showDropDown = !showDropDown;
@@ -26,16 +30,6 @@
     const handleMenuClose = () => {
         showDropDown = false;
         if (browser) document.body.removeEventListener("click", handleMenuClose);
-    };
-
-    const functionClick = async () => {
-        value = await passedFunctionClick(value, view);
-    };
-
-    const handleFileUpload = () => {
-        if (fileInput) {
-            fileInput.click();
-        }
     };
 
     const handleSearchMenuClick = () => {
@@ -60,6 +54,12 @@
         handleSearchMenuClick();
     };
 
+    const handleFileUpload = () => {
+        if (fileInput) {
+            fileInput.click();
+        }
+    };
+
     const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
         if (
             event.currentTarget &&
@@ -71,7 +71,9 @@
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
                 value = droppedData;
-                value = await passedFunctionClick(droppedData, view);
+                setTimeout(() => {
+                    value = YamlFormatter.formatYAML(value, view);
+                }, 10); // REDO THIS
             };
             reader.readAsText(file);
         }
@@ -107,7 +109,7 @@
             {/each}
         </div>
         <button on:click|stopPropagation={handleDropDownClick} class="button text">
-            <span class="btn_title">{label}</span>
+            <span class="btn_title">YAML Formatter</span>
             {#if showDropDown}
                 <DropDownOpenIcon />
             {:else}
@@ -116,13 +118,16 @@
         </button>
     </nav>
     <button
-        on:click={functionClick}
+        on:click={formatClick}
         class="button text format-button"
         aria-label="format"
         aria-labelledby="format"
         name="format"
     >
-        <slot />
+        <span class="header_btn">
+            <MagicWand />
+            Format
+        </span>
     </button>
     <div class="button-wrapper">
         <button
@@ -241,6 +246,12 @@
         font-size: 16px;
         font-weight: 600;
         cursor: default;
+    }
+
+    .header_btn {
+        display: flex;
+        gap: 4px;
+        font-size: 16px;
     }
 
     .button {

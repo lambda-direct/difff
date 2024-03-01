@@ -1,61 +1,6 @@
 import { EditorState, StateEffect, StateField, type Extension } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
-import { search } from "@codemirror/search";
-import { themeExtensions } from "./themes/theme";
-import { basicSetup } from "codemirror";
-import { json } from "@codemirror/lang-json";
 import { errorMessage, showError } from "~/lib/storages";
-
-export const addHighlightedLineJSON = (view: EditorView, lineNumber: number) => {
-    const line = view.state.doc.line(lineNumber);
-    if (line.from === 0 && line.to === 0) {
-        errorMessage.set("JSON");
-        view.dispatch({
-            effects: [
-                addHighlight.of({
-                    from: 1,
-                    to: 100
-                })
-            ]
-        });
-    } else if (line.text === "") {
-        errorMessage.set("seems like a missing closing parenthesis '}'");
-        view.dispatch({
-            effects: [
-                addHighlight.of({
-                    from: 1,
-                    to: line.to
-                })
-            ]
-        });
-    } else {
-        view.dispatch({
-            effects: [
-                addHighlight.of({
-                    from: line.from,
-                    to: line.to
-                }),
-                EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
-            ]
-        });
-    }
-    showError.set(true);
-};
-
-export const addHighlightedLineYaml = (view: EditorView, lineNumber: number, reason: string) => {
-    const line = view.state.doc.line(lineNumber);
-    errorMessage.set(reason);
-    view.dispatch({
-        effects: [
-            addHighlight.of({
-                from: line.from,
-                to: line.to
-            }),
-            EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
-        ]
-    });
-    showError.set(true);
-};
 
 export const removeHighlightedLines = (view: EditorView) => {
     view.dispatch({
@@ -98,7 +43,7 @@ export const lineHighlightField = StateField.define<DecorationSet>({
     provide: (f) => EditorView.decorations.from(f)
 });
 
-const addHighlight = StateEffect.define<{ from: number; to: number }>({
+export const addHighlight = StateEffect.define<{ from: number; to: number }>({
     map: ({ from, to }, change) => ({
         from: change.mapPos(from),
         to: change.mapPos(to)
@@ -108,11 +53,3 @@ const addHighlight = StateEffect.define<{ from: number; to: number }>({
 const removeHighlights = StateEffect.define();
 
 const lineHighlight = Decoration.mark({ class: "error" });
-
-export const stateExtensions = [
-    basicSetup,
-    lineHighlightField,
-    json(),
-    themeExtensions,
-    search({ top: true })
-];
