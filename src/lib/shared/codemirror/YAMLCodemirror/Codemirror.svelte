@@ -142,6 +142,11 @@
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
+        <span class="cursor-position"
+            >Ln {cursorPosition.line === 0 ? 1 : cursorPosition.line}, Col {cursorPosition.col === 0
+                ? 1
+                : cursorPosition.col}
+        </span>
         <div class="icon-btn-wrap">
             <button
                 on:click={downloadClick}
@@ -182,7 +187,7 @@
     .footer {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
         padding: 0 12px;
         height: 54px;
         background: #030711;
@@ -210,6 +215,12 @@
             background: #040f1e;
             color: #e1e1e1;
         }
+    }
+
+    .cursor-position {
+        font-family: "NotoSans-Regular", sans-serif;
+        font-size: 12px;
+        color: #7d8799;
     }
 
     .field_wrapper {

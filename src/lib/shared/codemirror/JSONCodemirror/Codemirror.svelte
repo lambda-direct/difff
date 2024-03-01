@@ -153,8 +153,8 @@
         <span class="cursor-position"
             >Ln {cursorPosition.line === 0 ? 1 : cursorPosition.line}, Col {cursorPosition.col === 0
                 ? 1
-                : cursorPosition.col}</span
-        >
+                : cursorPosition.col}
+        </span>
         <div class="icon-btn-wrap">
             <button
                 on:click={downloadClick}
@@ -224,6 +224,7 @@
             color: #e1e1e1;
         }
     }
+
     .cursor-position {
         font-family: "NotoSans-Regular", sans-serif;
         font-size: 12px;
