@@ -11,6 +11,7 @@
     import { createEditorState, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
     import JsonFormatter from "~/utils/JSONFormatter";
     import { stateExtensions } from "./codemirrorJSON";
+    import type { SelectionRange } from "@codemirror/state";
 
     let value: string = "";
     let view: EditorView;
@@ -21,6 +22,7 @@
     let updateFromState: boolean = false;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
+    let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
     const extensions = [
         ...stateExtensions,
@@ -36,12 +38,26 @@
             state: createEditorState(value, extensions),
             dispatch(transaction) {
                 view.update([transaction]);
+                if (transaction.selection || transaction.docChanged) {
+                    trackCursorPosition(view);
+                }
                 if (!updateFromProp && transaction.docChanged) onChange();
             },
             extensions: [extensions]
         });
 
         return codemirror;
+    };
+
+    const trackCursorPosition = (editorView: EditorView) => {
+        const { doc, selection } = editorView.state;
+        const mainRange: SelectionRange = selection.main;
+
+        const lineInfo = doc.lineAt(mainRange.head);
+        const line = lineInfo.number;
+        const col = mainRange.head - lineInfo.from;
+
+        cursorPosition = { line, col };
     };
 
     const update = (value: string): void => {
@@ -134,6 +150,11 @@
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
+        <span class="cursor-position"
+            >Ln {cursorPosition.line === 0 ? 1 : cursorPosition.line}, Col {cursorPosition.col === 0
+                ? 1
+                : cursorPosition.col}</span
+        >
         <div class="icon-btn-wrap">
             <button
                 on:click={downloadClick}
@@ -174,7 +195,7 @@
     .footer {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
         padding: 0 12px;
         height: 54px;
         border-top: 1px solid #313345;
@@ -202,6 +223,11 @@
             background: #040f1e;
             color: #e1e1e1;
         }
+    }
+    .cursor-position {
+        font-family: "NotoSans-Regular", sans-serif;
+        font-size: 12px;
+        color: #7d8799;
     }
 
     .field_wrapper {

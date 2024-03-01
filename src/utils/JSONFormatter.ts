@@ -57,8 +57,7 @@ class JSONDataOperations {
                 removeHighlightedLines(view);
             })
             .catch((err) => {
-                if (this.isFormatError(err))
-                    highlightErrorLineJSON(view, err.loc.start.column, err.loc.start.line);
+                if (this.isFormatError(err)) highlightErrorLineJSON(view, err.loc.start.line);
             });
     };
 

@@ -50,18 +50,14 @@ export const addHighlightedLineJSON = (
     showError.set(true);
 };
 
-export const highlightErrorLineJSON = (
-    view: EditorView,
-    columnNumber: number,
-    lineNumber: number
-) => {
+export const highlightErrorLineJSON = (view: EditorView, lineNumber: number) => {
     removeHighlightedLines(view);
     const line = view.state.doc.line(lineNumber);
     if (line.from === 0) {
         view.dispatch({
             effects: [
                 addHighlight.of({
-                    from: columnNumber,
+                    from: line.from,
                     to: line.to
                 })
             ]
