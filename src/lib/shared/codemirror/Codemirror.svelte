@@ -186,7 +186,7 @@
     });
 </script>
 
-<SearchField bind:view />
+<!-- <SearchField bind:view /> -->
 <Header bind:value bind:view {format} />
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
