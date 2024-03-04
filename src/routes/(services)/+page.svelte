@@ -1,6 +1,6 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import CodeMirror from "~/lib/shared/codemirror/JSONCodemirror/Codemirror.svelte";
+    import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
 <svelte:head>
@@ -18,7 +18,10 @@
     </header>
     <section class="formatter_field-wrapper">
         {#if browser}
-            <CodeMirror />
+            <CodeMirror
+                format="json"
+                placeholder="Put your JSON, provide a link, or Drag & Drop a file"
+            />
         {:else}
             <div class="back-field" />
         {/if}

@@ -7,27 +7,35 @@
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
     import ErrorModal from "~/lib/shared/ErrorModal.svelte";
-    import Header from "~/lib/shared/codemirror/JSONCodemirror/CodemirrorHeader.svelte";
-    import { createEditorState, removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
-    import JsonFormatter from "~/utils/JSONFormatter";
-    import { stateExtensions } from "./codemirrorJSON";
+    import Header from "~/lib/shared/codemirror/CodemirrorHeader.svelte";
+    import {
+        createEditorState,
+        removeHighlightedLines,
+        stateExtensions
+    } from "~/lib/shared/codemirror/codemirror";
+    import YamlFormatter from "~/utils/YamlFormatter";
+    import JSONFormatter from "~/utils/JSONFormatter";
     import type { SelectionRange } from "@codemirror/state";
+    import { json } from "@codemirror/lang-json";
+    import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
+    import { StreamLanguage } from "@codemirror/language";
+
+    export let format: "json" | "yaml";
+    export let placeholder: string;
+
+    let fieldFormat = format === "json" ? json() : StreamLanguage.define(yamlMode.yaml);
 
     let value: string = "";
     let view: EditorView;
 
-    let element: HTMLDivElement;
+    const extensions = [...stateExtensions, placeholderSet(placeholder), fieldFormat];
 
+    let element: HTMLDivElement;
     let updateFromProp: boolean = false;
     let updateFromState: boolean = false;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
     let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
-
-    const extensions = [
-        ...stateExtensions,
-        placeholderSet("Put your JSON, provide a link, or Drag & Drop a file")
-    ];
 
     $: view && update(value);
     $: onChange = handleChange;
@@ -49,20 +57,9 @@
         return codemirror;
     };
 
-    const trackCursorPosition = (editorView: EditorView) => {
-        const { doc, selection } = editorView.state;
-        const mainRange: SelectionRange = selection.main;
-
-        const lineInfo = doc.lineAt(mainRange.head);
-        const line = lineInfo.number;
-        const col = mainRange.head - lineInfo.from;
-
-        cursorPosition = { line, col };
-    };
-
     const update = (value: string): void => {
         if (value === "") removeHighlightedLines(view);
-        if (value) JsonFormatter.validateJSON(value, view);
+        if (value && format === "json") JSONFormatter.validateJSON(value, view);
         if (updateFromState) {
             updateFromState = false;
             return;
@@ -83,6 +80,17 @@
         value = new_value;
     };
 
+    const trackCursorPosition = (editorView: EditorView) => {
+        const { doc, selection } = editorView.state;
+        const mainRange: SelectionRange = selection.main;
+
+        const lineInfo = doc.lineAt(mainRange.head);
+        const line = lineInfo.number;
+        const col = mainRange.head - lineInfo.from;
+
+        cursorPosition = { line, col };
+    };
+
     const downloadClick = () => {
         isDownloadClicked = true;
         setTimeout(() => {
@@ -93,7 +101,7 @@
 
         const aTag = document.createElement("a");
         aTag.href = url;
-        aTag.download = `data.json`;
+        aTag.download = `data.${format}`;
         document.body.appendChild(aTag);
         aTag.click();
         document.body.removeChild(aTag);
@@ -109,10 +117,14 @@
     };
 
     const onPaste = async () => {
-        value = await JsonFormatter.prettierFormatJSON(value, view);
+        if (format === "json") {
+            value = await JSONFormatter.prettierFormatJSON(value, view);
+        } else if (format === "yaml") {
+            value = YamlFormatter.formatYAML(value, view);
+        }
     };
 
-    const onDrop = async (event: DragEvent) => {
+    const onDrop = (event: DragEvent) => {
         event.preventDefault();
         if (event.dataTransfer && event.dataTransfer.files.length > 0) {
             value = "";
@@ -120,7 +132,11 @@
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                value = await JsonFormatter.prettierFormatJSON(droppedData, view);
+                if (format === "json") {
+                    value = await JSONFormatter.prettierFormatJSON(droppedData, view);
+                } else if (format === "yaml") {
+                    value = YamlFormatter.formatYAML(droppedData, view);
+                }
             };
             reader.readAsText(file);
         }
@@ -146,7 +162,7 @@
     });
 </script>
 
-<Header bind:value bind:view />
+<Header bind:value bind:view {format} />
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     <footer class="footer">
@@ -204,8 +220,8 @@
         justify-content: space-between;
         padding: 0 12px;
         height: 54px;
-        border-top: 1px solid #313345;
         background: #030711;
+        border-top: 1px solid #313345;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }
@@ -218,9 +234,8 @@
     .icon-button {
         display: flex;
         align-items: center;
-        gap: 4px;
         height: 36px;
-        padding: 0 6px;
+        padding: 0 7px;
         background: #030711;
         border: 1px solid #313345;
         border-radius: 8px;
@@ -234,7 +249,6 @@
 
     .cursor-position {
         font-family: "NotoSans-Regular", sans-serif;
-        font-weight: 700;
         font-size: 12px;
         color: #7d8799;
     }

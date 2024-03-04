@@ -1,8 +1,8 @@
 import * as yaml from "js-yaml";
 import { EditorView } from "@codemirror/view";
 import type { FormatYamlError } from "~/types";
-import { removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
-import { addHighlightedLineYaml } from "~/lib/shared/codemirror/YAMLCodemirror/codemirrorYAML";
+import { addHighlightedLineYaml } from "~/lib/shared/codemirror/codemirrorYAML";
+import { removeHighlightedLines } from "~/lib/shared/codemirror/codemirror";
 
 class YAMLDataOperations {
     private isYamlError = (error: unknown): error is FormatYamlError => {

@@ -1,11 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 48 48" {...$$props}>
-    <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
-        <path
-            stroke-linecap="round"
-            d="M13 12.432v-4.62A2.813 2.813 0 0 1 15.813 5h24.374A2.813 2.813 0 0 1 43 7.813v24.375A2.813 2.813 0 0 1 40.188 35h-4.672"
-        />
-        <path
-            d="M32.188 13H7.811A2.813 2.813 0 0 0 5 15.813v24.374A2.813 2.813 0 0 0 7.813 43h24.375A2.813 2.813 0 0 0 35 40.188V15.811A2.813 2.813 0 0 0 32.188 13Z"
-        />
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" {...$$props}>
+    <path
+        fill="currentColor"
+        d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm-4 4q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22z"
+    />
 </svg>

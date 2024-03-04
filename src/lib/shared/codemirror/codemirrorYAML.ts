@@ -1,16 +1,6 @@
-import { search } from "@codemirror/search";
-import { themeExtensions } from "~/lib/shared/codemirror/themes/theme";
-import { EditorView, basicSetup } from "codemirror";
-import {
-    addHighlight,
-    lineHighlightField,
-    removeHighlightedLines
-} from "~/lib/shared/codemirror/codeMirror";
+import { EditorView } from "codemirror";
 import { errorMessage, showError } from "~/lib/storages";
-import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
-import { StreamLanguage } from "@codemirror/language";
-
-const yaml = StreamLanguage.define(yamlMode.yaml);
+import { addHighlight, removeHighlightedLines } from "~/lib/shared/codemirror/codemirror";
 
 export const addHighlightedLineYaml = (
     view: EditorView,
@@ -55,10 +45,3 @@ export const addHighlightedLineYaml = (
     }
     showError.set(true);
 };
-export const stateExtensions = [
-    basicSetup,
-    lineHighlightField,
-    yaml,
-    themeExtensions,
-    search({ top: true })
-];

@@ -10,17 +10,25 @@
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
     import { dropDownOptions } from "~/utils/services";
     import YamlFormatter from "~/utils/YamlFormatter";
+    import JSONFormatter from "~/utils/JSONFormatter";
 
     export let value: string = "";
     export let view: EditorView;
+    export let format: "json" | "yaml";
+
+    const formatFunction = async () => {
+        if (format === "yaml") {
+            setTimeout(() => {
+                value = YamlFormatter.formatYAML(value, view);
+            }, 10); // REDO THIS
+        } else if (format === "json") {
+            value = await JSONFormatter.prettierFormatJSON(value, view);
+        }
+    };
 
     let showDropDown: boolean = false;
     let searchMenuOpened: boolean = false;
     let fileInput: HTMLInputElement;
-
-    const formatClick = () => {
-        value = YamlFormatter.formatYAML(value, view);
-    };
 
     const handleDropDownClick = () => {
         showDropDown = !showDropDown;
@@ -71,9 +79,7 @@
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
                 value = droppedData;
-                setTimeout(() => {
-                    value = YamlFormatter.formatYAML(value, view);
-                }, 10); // REDO THIS
+                formatFunction();
             };
             reader.readAsText(file);
         }
@@ -92,7 +98,7 @@
     <nav class="drop-down-wrapper">
         <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown}>
             {#each dropDownOptions as options}
-                <div on:click|stopPropagation class="dropdown_content">
+                <div role="button" tabindex="0" on:click|stopPropagation class="dropdown_content">
                     <p class="content_label">
                         {options.title}
                     </p>
@@ -109,7 +115,7 @@
             {/each}
         </div>
         <button on:click|stopPropagation={handleDropDownClick} class="button text">
-            <span class="btn_title">YAML Formatter</span>
+            <span class="btn_title">{`${format.toUpperCase()} Formatter`}</span>
             {#if showDropDown}
                 <DropDownOpenIcon />
             {:else}
@@ -118,7 +124,7 @@
         </button>
     </nav>
     <button
-        on:click={formatClick}
+        on:click={formatFunction}
         class="button text format-button"
         aria-label="format"
         aria-labelledby="format"
@@ -131,7 +137,7 @@
     </button>
     <div class="button-wrapper">
         <button
-            class="icon button"
+            class="button"
             title="search"
             aria-label="search"
             aria-labelledby="search"
@@ -141,7 +147,7 @@
             <SearchIcon />
         </button>
         <button
-            class="icon button"
+            class="button"
             title="upload"
             aria-label="upload"
             aria-labelledby="upload"
@@ -272,10 +278,6 @@
 
     .text {
         padding: 0 12px;
-    }
-
-    .icon {
-        padding: 0 7px;
     }
 
     .format-button {

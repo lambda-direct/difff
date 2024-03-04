@@ -1,12 +1,5 @@
-import { search } from "@codemirror/search";
-import { themeExtensions } from "~/lib/shared/codemirror/themes/theme";
-import { EditorView, basicSetup } from "codemirror";
-import { json } from "@codemirror/lang-json";
-import {
-    addHighlight,
-    lineHighlightField,
-    removeHighlightedLines
-} from "~/lib/shared/codemirror/codeMirror";
+import { EditorView } from "codemirror";
+import { addHighlight, removeHighlightedLines } from "~/lib/shared/codemirror/codemirror";
 import { errorMessage, showError } from "~/lib/storages";
 
 export const addHighlightedLineJSON = (
@@ -83,11 +76,3 @@ export const highlightErrorLineJSON = (view: EditorView, lineNumber: number) => 
         });
     }
 };
-
-export const stateExtensions = [
-    basicSetup,
-    lineHighlightField,
-    json(),
-    themeExtensions,
-    search({ top: true })
-];

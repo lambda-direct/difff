@@ -1,6 +1,9 @@
 import { EditorState, StateEffect, StateField, type Extension } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 import { errorMessage, showError } from "~/lib/storages";
+import { themeExtensions } from "./themes/theme";
+import { search } from "@codemirror/search";
+import { basicSetup } from "codemirror";
 
 export const removeHighlightedLines = (view: EditorView) => {
     view.dispatch({
@@ -53,3 +56,10 @@ export const addHighlight = StateEffect.define<{ from: number; to: number }>({
 const removeHighlights = StateEffect.define();
 
 const lineHighlight = Decoration.mark({ class: "error" });
+
+export const stateExtensions = [
+    basicSetup,
+    lineHighlightField,
+    themeExtensions,
+    search({ top: true })
+];

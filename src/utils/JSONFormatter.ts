@@ -3,12 +3,12 @@ import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
 import { EditorView } from "@codemirror/view";
-import { removeHighlightedLines } from "~/lib/shared/codemirror/codeMirror";
+import { removeHighlightedLines } from "~/lib/shared/codemirror/codemirror";
 import type { FormatError } from "~/types";
 import {
     addHighlightedLineJSON,
     highlightErrorLineJSON
-} from "~/lib/shared/codemirror/JSONCodemirror/codemirrorJSON";
+} from "~/lib/shared/codemirror/codemirrorJSON";
 
 class JSONDataOperations {
     private optionsJSON = {
