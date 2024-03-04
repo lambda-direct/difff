@@ -171,7 +171,7 @@
                 type="file"
                 class="file-input"
                 bind:this={fileInput}
-                on:change={handleFileChange}
+                on:change|preventDefault={handleFileChange}
             />
             <UploadIcon />
         </button>

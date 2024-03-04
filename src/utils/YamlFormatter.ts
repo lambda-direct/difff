@@ -15,12 +15,9 @@ class YAMLDataOperations {
         try {
             yaml.load(input);
             removeHighlightedLines(view);
-            return;
         } catch (err) {
-            if (this.isYamlError(err)) {
+            if (this.isYamlError(err))
                 addHighlightedLineYaml(view, err.mark.position, err.mark.line, err.reason);
-            }
-            return;
         }
     };
 
@@ -30,6 +27,9 @@ class YAMLDataOperations {
                 const yamlObject = yaml.load(userInput);
                 const formattedYaml = yaml.dump(yamlObject);
                 removeHighlightedLines(view);
+                view.dispatch({
+                    effects: [EditorView.scrollIntoView(1, { y: "center" })]
+                });
                 return formattedYaml;
             } catch (err) {
                 if (this.isYamlError(err)) {

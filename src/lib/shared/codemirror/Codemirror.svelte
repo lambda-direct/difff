@@ -19,6 +19,7 @@
     import { json } from "@codemirror/lang-json";
     import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
     import { StreamLanguage } from "@codemirror/language";
+    import SearchField from "~/lib/shared/SearchField.svelte";
 
     export let format: "json" | "yaml";
     export let placeholder: string;
@@ -58,24 +59,33 @@
     };
 
     const update = (value: string): void => {
+        const currentPosition = view.state.selection.main.head;
         if (value === "") removeHighlightedLines(view);
         if (value && format === "json") JSONFormatter.validateJSON(value, view);
+        if (value && format === "yaml") {
+            setTimeout(() => {
+                YamlFormatter.formatYAML(value, view);
+            }, 10); // REDO
+        }
         if (updateFromState) {
             updateFromState = false;
             return;
         }
         updateFromProp = true;
-        view.setState(createEditorState(value, extensions));
 
+        view.setState(createEditorState(value, extensions));
+        const goto = currentPosition === 0 ? 1 : currentPosition;
         view.dispatch({
-            effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
+            effects: [EditorView.scrollIntoView(goto, { y: "center" })]
         });
+
         updateFromProp = false;
     };
 
     const handleChange = async (): Promise<void> => {
         const new_value = view.state.doc.toString();
         if (new_value === value) return;
+
         updateFromState = true;
         value = new_value;
     };
@@ -117,27 +127,41 @@
     };
 
     const onPaste = async () => {
+        const oldValue = value;
         if (format === "json") {
             value = await JSONFormatter.prettierFormatJSON(value, view);
         } else if (format === "yaml") {
             value = YamlFormatter.formatYAML(value, view);
         }
+        if (value !== oldValue) {
+            view.dispatch({
+                effects: [EditorView.scrollIntoView(1, { y: "nearest" })]
+            });
+        }
     };
 
     const onDrop = (event: DragEvent) => {
         event.preventDefault();
+
         if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+            const oldValue = value;
             value = "";
             const file = event.dataTransfer.files[0];
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
+                value = droppedData;
                 if (format === "json") {
                     value = await JSONFormatter.prettierFormatJSON(droppedData, view);
                 } else if (format === "yaml") {
                     value = YamlFormatter.formatYAML(droppedData, view);
                 }
             };
+            if (value !== oldValue) {
+                view.dispatch({
+                    effects: [EditorView.scrollIntoView(1, { y: "nearest" })]
+                });
+            }
             reader.readAsText(file);
         }
     };
@@ -162,6 +186,7 @@
     });
 </script>
 
+<SearchField bind:view />
 <Header bind:value bind:view {format} />
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
