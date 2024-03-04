@@ -62,6 +62,13 @@
         handleSearchMenuClick();
     };
 
+    const handleEnterClick = (event: KeyboardEvent) => {
+        event.preventDefault();
+        if (event.key === "Enter") {
+            handleDropDownClick();
+        }
+    };
+
     const handleFileUpload = () => {
         if (fileInput) {
             fileInput.click();
@@ -98,7 +105,13 @@
     <nav class="drop-down-wrapper">
         <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown}>
             {#each dropDownOptions as options}
-                <div role="button" tabindex="0" on:click|stopPropagation class="dropdown_content">
+                <div
+                    role="button"
+                    tabindex="0"
+                    on:click|stopPropagation
+                    on:keydown={handleEnterClick}
+                    class="dropdown_content"
+                >
                     <p class="content_label">
                         {options.title}
                     </p>
