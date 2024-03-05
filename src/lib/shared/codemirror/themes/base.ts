@@ -240,7 +240,6 @@ export const baseTheme: Extension = EditorView.baseTheme({
     },
     ".cm-line": {
         minHeight: "18px !important",
-        maxHeight: "18px !important",
         lineHeight: "18px !important"
     },
     ".cm-gutter": {

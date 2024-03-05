@@ -11,6 +11,7 @@
     import { dropDownOptions } from "~/utils/services";
     import YamlFormatter from "~/utils/YamlFormatter";
     import JSONFormatter from "~/utils/JSONFormatter";
+    import { updateCodemirror } from "./codemirror";
 
     export let value: string = "";
     export let view: EditorView;
@@ -19,10 +20,10 @@
     const formatFunction = async () => {
         if (format === "yaml") {
             setTimeout(() => {
-                value = YamlFormatter.formatYAML(value, view);
+                YamlFormatter.formatYAML(value, view);
             }, 10); // REDO THIS
         } else if (format === "json") {
-            value = await JSONFormatter.prettierFormatJSON(value, view);
+            await JSONFormatter.prettierFormatJSON(value, view);
         }
     };
 
@@ -85,7 +86,7 @@
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                value = droppedData;
+                updateCodemirror(view, droppedData);
                 formatFunction();
             };
             reader.readAsText(file);

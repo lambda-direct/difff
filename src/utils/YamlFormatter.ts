@@ -2,7 +2,7 @@ import * as yaml from "js-yaml";
 import { EditorView } from "@codemirror/view";
 import type { FormatYamlError } from "~/types";
 import { addHighlightedLineYaml } from "~/lib/shared/codemirror/codemirrorYAML";
-import { removeHighlightedLines } from "~/lib/shared/codemirror/codemirror";
+import { removeHighlightedLines, updateCodemirror } from "~/lib/shared/codemirror/codemirror";
 
 class YAMLDataOperations {
     private isYamlError = (error: unknown): error is FormatYamlError => {
@@ -22,24 +22,18 @@ class YAMLDataOperations {
     };
 
     public formatYAML = (userInput: string, view: EditorView) => {
-        if (userInput) {
-            try {
-                const yamlObject = yaml.load(userInput);
-                const formattedYaml = yaml.dump(yamlObject);
-                removeHighlightedLines(view);
-                view.dispatch({
-                    effects: [EditorView.scrollIntoView(1, { y: "center" })]
-                });
-                return formattedYaml;
-            } catch (err) {
-                if (this.isYamlError(err)) {
-                    addHighlightedLineYaml(view, err.mark.position, err.mark.line, err.reason);
-                }
-                return userInput;
-            }
-        } else {
+        try {
+            const yamlObject = yaml.load(userInput);
+            const formattedYaml = yaml.dump(yamlObject);
             removeHighlightedLines(view);
-            return userInput;
+
+            updateCodemirror(view, formattedYaml);
+
+            return;
+        } catch (err) {
+            if (this.isYamlError(err))
+                addHighlightedLineYaml(view, err.mark.position, err.mark.line, err.reason);
+            return;
         }
     };
 }
