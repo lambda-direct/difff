@@ -33,7 +33,6 @@
             text or upload a file containing your YAML. Our service will identify is your YAML valid
             or not. Display errors if any are present. Our formatting tool for valid YAML is <a
                 href="https://github.com/nodeca/js-yaml#readme"
-                rel="nofollow noopener noreferrer"
                 target="_blank"
                 class="prettier-href">js-yaml</a
             >.

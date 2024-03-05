@@ -66,6 +66,7 @@ const removeHighlights = StateEffect.define();
 const lineHighlight = Decoration.mark({ class: "error" });
 
 export const stateExtensions = [
+    EditorView.lineWrapping,
     basicSetup,
     lineHighlightField,
     themeExtensions,
