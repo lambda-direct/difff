@@ -34,14 +34,7 @@
             text, provide a link to your JSON, or upload a file containing your JSON. Whether your
             JSON is valid or not, our service will identify and display errors if any are present.
             For valid JSON, it will be formatted using
-            <a
-                href="https://prettier.io/"
-                rel="nofollow noopener noreferrer"
-                target="_blank"
-                class="prettier-href"
-            >
-                Prettier
-            </a>
+            <a href="https://prettier.io/" target="_blank" class="prettier-href"> Prettier </a>
         </p>
     </article>
 </main>

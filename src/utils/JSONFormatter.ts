@@ -3,7 +3,7 @@ import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
 import { EditorView } from "@codemirror/view";
-import { removeHighlightedLines } from "~/lib/shared/codemirror/codemirror";
+import { removeHighlightedLines, updateCodemirror } from "~/lib/shared/codemirror/codemirror";
 import type { FormatError } from "~/types";
 import {
     addHighlightedLineJSON,
@@ -18,7 +18,7 @@ class JSONDataOperations {
         singleQuote: false,
         trailingComma: "none" as const,
         endOfLine: "lf" as const,
-        printWidth: 100,
+        printWidth: 1000,
         bracketSameLine: true,
         parser: "json-stringify",
         plugins: [parserBabel, prettierPluginEstree]
@@ -62,23 +62,20 @@ class JSONDataOperations {
     };
 
     public prettierFormatJSON = async (userInput: string, view: EditorView) => {
-        if (userInput) {
-            try {
-                const json = await this.dataFromUrl(userInput);
-                const formattedJSON = await prettier.format(json, this.optionsJSON);
-                removeHighlightedLines(view);
-                view.dispatch({
-                    effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
-                });
-                return formattedJSON;
-            } catch (err) {
-                if (this.isFormatError(err))
-                    addHighlightedLineJSON(view, err.loc.start.column, err.loc.start.line);
-                return userInput;
-            }
-        } else {
+        try {
+            const originalCode = await this.dataFromUrl(userInput);
+            const formattedResult = await prettier.format(originalCode, this.optionsJSON);
+
             removeHighlightedLines(view);
-            return userInput;
+
+            if (originalCode !== formattedResult) {
+                updateCodemirror(view, formattedResult);
+            }
+            return;
+        } catch (err) {
+            if (this.isFormatError(err))
+                addHighlightedLineJSON(view, err.loc.start.column, err.loc.start.line);
+            return;
         }
     };
 }

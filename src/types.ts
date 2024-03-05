@@ -15,6 +15,7 @@ export type FormatYamlError = {
 
 export type ToolsRoute = {
     name: string;
+    group: string;
     path: string;
 };
 

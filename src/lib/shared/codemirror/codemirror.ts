@@ -53,11 +53,20 @@ export const addHighlight = StateEffect.define<{ from: number; to: number }>({
     })
 });
 
+export const updateCodemirror = (view: EditorView, newValue: string) => {
+    const transition = view.state.update({
+        changes: { from: 0, to: view.state.doc.length, insert: newValue }
+    });
+
+    view.dispatch(transition);
+};
+
 const removeHighlights = StateEffect.define();
 
 const lineHighlight = Decoration.mark({ class: "error" });
 
 export const stateExtensions = [
+    EditorView.lineWrapping,
     basicSetup,
     lineHighlightField,
     themeExtensions,

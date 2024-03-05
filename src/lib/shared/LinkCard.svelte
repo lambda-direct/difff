@@ -12,8 +12,7 @@
         justify-content: center;
         align-items: center;
         height: 42px;
-        min-width: 216px;
-        width: 260px;
+        min-width: 240px;
         border: 1px solid #292828;
         border-radius: 4px;
         background: #171717;
@@ -26,7 +25,6 @@
         &:hover {
             background: #1d1d1d;
         }
-        
     }
     .name {
         margin: 0;

@@ -11,6 +11,7 @@
     import { dropDownOptions } from "~/utils/services";
     import YamlFormatter from "~/utils/YamlFormatter";
     import JSONFormatter from "~/utils/JSONFormatter";
+    import { updateCodemirror } from "./codemirror";
 
     export let value: string = "";
     export let view: EditorView;
@@ -18,11 +19,9 @@
 
     const formatFunction = async () => {
         if (format === "yaml") {
-            setTimeout(() => {
-                value = YamlFormatter.formatYAML(value, view);
-            }, 10); // REDO THIS
+            YamlFormatter.formatYAML(value, view);
         } else if (format === "json") {
-            value = await JSONFormatter.prettierFormatJSON(value, view);
+            await JSONFormatter.prettierFormatJSON(value, view);
         }
     };
 
@@ -62,6 +61,13 @@
         handleSearchMenuClick();
     };
 
+    const handleEnterClick = (event: KeyboardEvent) => {
+        event.preventDefault();
+        if (event.key === "Enter") {
+            handleDropDownClick();
+        }
+    };
+
     const handleFileUpload = () => {
         if (fileInput) {
             fileInput.click();
@@ -78,8 +84,10 @@
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
-                value = droppedData;
-                formatFunction();
+                updateCodemirror(view, droppedData);
+                setTimeout(() => {
+                    formatFunction();
+                }, 10); // REDO
             };
             reader.readAsText(file);
         }
@@ -98,7 +106,13 @@
     <nav class="drop-down-wrapper">
         <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown}>
             {#each dropDownOptions as options}
-                <div role="button" tabindex="0" on:click|stopPropagation class="dropdown_content">
+                <div
+                    role="button"
+                    tabindex="0"
+                    on:click|stopPropagation
+                    on:keydown={handleEnterClick}
+                    class="dropdown_content"
+                >
                     <p class="content_label">
                         {options.title}
                     </p>
@@ -158,7 +172,7 @@
                 type="file"
                 class="file-input"
                 bind:this={fileInput}
-                on:change={handleFileChange}
+                on:change|preventDefault={handleFileChange}
             />
             <UploadIcon />
         </button>

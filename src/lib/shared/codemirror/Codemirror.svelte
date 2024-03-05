@@ -10,8 +10,8 @@
     import Header from "~/lib/shared/codemirror/CodemirrorHeader.svelte";
     import {
         createEditorState,
-        removeHighlightedLines,
-        stateExtensions
+        stateExtensions,
+        updateCodemirror
     } from "~/lib/shared/codemirror/codemirror";
     import YamlFormatter from "~/utils/YamlFormatter";
     import JSONFormatter from "~/utils/JSONFormatter";
@@ -31,13 +31,10 @@
     const extensions = [...stateExtensions, placeholderSet(placeholder), fieldFormat];
 
     let element: HTMLDivElement;
-    let updateFromProp: boolean = false;
-    let updateFromState: boolean = false;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
     let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
-    $: view && update(value);
     $: onChange = handleChange;
 
     const createEditorView = (): EditorView => {
@@ -48,8 +45,8 @@
                 view.update([transaction]);
                 if (transaction.selection || transaction.docChanged) {
                     trackCursorPosition(view);
+                    onChange();
                 }
-                if (!updateFromProp && transaction.docChanged) onChange();
             },
             extensions: [extensions]
         });
@@ -57,26 +54,14 @@
         return codemirror;
     };
 
-    const update = (value: string): void => {
-        if (value === "") removeHighlightedLines(view);
-        if (value && format === "json") JSONFormatter.validateJSON(value, view);
-        if (updateFromState) {
-            updateFromState = false;
-            return;
-        }
-        updateFromProp = true;
-        view.setState(createEditorState(value, extensions));
-
-        view.dispatch({
-            effects: [EditorView.scrollIntoView(1, { y: "nearest", x: "start" })]
-        });
-        updateFromProp = false;
-    };
-
     const handleChange = async (): Promise<void> => {
         const new_value = view.state.doc.toString();
         if (new_value === value) return;
-        updateFromState = true;
+        if (format === "json") {
+            JSONFormatter.validateJSON(new_value, view);
+        } else if (format === "yaml") {
+            YamlFormatter.validateYAML(new_value, view);
+        }
         value = new_value;
     };
 
@@ -118,26 +103,32 @@
 
     const onPaste = async () => {
         if (format === "json") {
-            value = await JSONFormatter.prettierFormatJSON(value, view);
+            await JSONFormatter.prettierFormatJSON(value, view);
         } else if (format === "yaml") {
-            value = YamlFormatter.formatYAML(value, view);
+            YamlFormatter.formatYAML(value, view);
         }
     };
 
     const onDrop = (event: DragEvent) => {
         event.preventDefault();
         if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-            value = "";
+            const oldValue = value;
             const file = event.dataTransfer.files[0];
             const reader = new FileReader();
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
+                updateCodemirror(view, droppedData);
                 if (format === "json") {
-                    value = await JSONFormatter.prettierFormatJSON(droppedData, view);
+                    await JSONFormatter.prettierFormatJSON(droppedData, view);
                 } else if (format === "yaml") {
-                    value = YamlFormatter.formatYAML(droppedData, view);
+                    YamlFormatter.formatYAML(droppedData, view);
                 }
             };
+            if (value !== oldValue) {
+                view.dispatch({
+                    effects: [EditorView.scrollIntoView(1, { y: "nearest" })]
+                });
+            }
             reader.readAsText(file);
         }
     };
@@ -162,6 +153,7 @@
     });
 </script>
 
+<!-- <SearchField bind:view /> -->
 <Header bind:value bind:view {format} />
 <section class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
@@ -173,7 +165,7 @@
                     ? 1
                     : cursorPosition.col}
             </span>
-            <span class="cursor-position">Tab Size: 2</span>
+            <span class="cursor-position">Tab Size: 4</span>
         </div>
         <div class="icon-btn-wrap">
             <button

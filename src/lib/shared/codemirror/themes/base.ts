@@ -214,7 +214,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
         "&:not(:first-child)": {
             display: "flex",
             "align-items": "center",
-            "justify-content": "center",
+            "justify-content": "flex-end",
             padding: "0 0 0 4px"
         }
     },
@@ -240,7 +240,6 @@ export const baseTheme: Extension = EditorView.baseTheme({
     },
     ".cm-line": {
         minHeight: "18px !important",
-        maxHeight: "18px !important",
         lineHeight: "18px !important"
     },
     ".cm-gutter": {
