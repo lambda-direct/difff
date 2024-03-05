@@ -59,6 +59,8 @@
         if (new_value === value) return;
         if (format === "json") {
             JSONFormatter.validateJSON(new_value, view);
+        } else if (format === "yaml") {
+            YamlFormatter.validateYAML(new_value, view);
         }
         value = new_value;
     };

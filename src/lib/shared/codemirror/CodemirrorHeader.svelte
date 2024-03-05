@@ -19,9 +19,7 @@
 
     const formatFunction = async () => {
         if (format === "yaml") {
-            setTimeout(() => {
-                YamlFormatter.formatYAML(value, view);
-            }, 10); // REDO THIS
+            YamlFormatter.formatYAML(value, view);
         } else if (format === "json") {
             await JSONFormatter.prettierFormatJSON(value, view);
         }
@@ -87,7 +85,9 @@
             reader.onload = async (e: ProgressEvent<FileReader>) => {
                 const droppedData = e.target?.result as string;
                 updateCodemirror(view, droppedData);
-                formatFunction();
+                setTimeout(() => {
+                    formatFunction();
+                }, 10); // REDO
             };
             reader.readAsText(file);
         }
