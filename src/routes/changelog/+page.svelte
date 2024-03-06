@@ -6,10 +6,10 @@
 </script>
 
 <svelte:head>
-    <title>Difff Change & Decision log</title>
+    <title>Difff | Change & Decision log</title>
     <meta
         name="description"
-        content="Latest features, improvements, and fixes we’ve implemented."
+        content="Change And Decision log, Explore Latest Features, Improvements, And Fixes of JSON Online Formatter And Validator."
     />
 
     <meta name="twitter:card" content="summary" />
@@ -23,7 +23,7 @@
     <meta property="og:url" content="https://difff.app/changelog" />
     <meta
         property="og:title"
-        content="Features, improvements, and fixes we’ve implemented in difff.app"
+        content="Difff | Change & Decision log"
     />
 
     <meta property="og:image" content="https://site.com/post.jpg" />
