@@ -1,32 +1,18 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
+    import Head from "~/lib/shared/Head.svelte";
     import { formattedDate } from "~/utils/helpers.js";
 
     export let data;
 </script>
 
-<svelte:head>
-    <title>{data.metadata.metaTitle}</title>
-    <meta name="description" content={data.metadata.metaDescription} />
-
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:description" content="content" />
-    <meta name="twitter:title" content="Post" />
-    <meta name="twitter:image" content="https://site.com/past.png" />
-    <meta name="twitter:site" content="@sitename" />
-
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://difff.app/changelog/10-02-2024" />
-    <meta property="og:title" content="SEO for beginners." />
-
-    <meta property="og:image" content="https://site.com/post.jpg" />
-    <meta
-        property="og:description"
-        content="Get FREE SEO report by 100+ parameters with the best website checker. Detailed site auditing will help to find errors in meta tags, images, links. Step-by-step guides for correcting any error and growing SEO score. The average time of site auditing is 15 seconds. Free use regardless of the number of website review."
-    />
-</svelte:head>
+<Head
+    title={data.metadata.metaTitle}
+    description={data.metadata.metaDescription}
+    twitter={{}}
+    openGraph={{ type: "article", locale: "en_US" }}
+/>
 
 <section class="article">
     <header class="header">

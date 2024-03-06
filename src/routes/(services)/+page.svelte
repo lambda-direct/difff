@@ -1,46 +1,15 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { page } from "$app/stores";
+    import Head from "~/lib/shared/Head.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
-
-<svelte:head>
-    <title>Difff | JSON Formatter Online Tool, Beautifier & Validator</title>
-    <meta
-        name="description"
-        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
-    />
-    <meta name="twitter:card" content="summary" />
-    <meta
-        name="twitter:description"
-        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
-    />
-    <meta
-        name="twitter:title"
-        content="Difff | JSON Formatter Online Tool, Beautifier & Validator"
-    />
-    <meta
-        name="twitter:image"
-        content={`${$page.url.origin}/pages/formatter/json-formatter.webp`}
-    />
-    <meta name="twitter:site" content="@sitename" />
-
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={$page.url.origin} />
-    <meta
-        property="og:title"
-        content="Difff | JSON Formatter Online Tool, Beautifier & Validator"
-    />
-
-    <meta property="og:image" content={`${$page.url.origin}/pages/formatter/json-formatter.webp`} />
-
-    <meta
-        property="og:description"
-        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
-    />
-</svelte:head>
+<Head
+    title="Difff | JSON Formatter Online Tool, Beautifier & Validator"
+    description="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
+    twitter={{}}
+    openGraph={{ type: "website", locale: "en_US" }}
+/>
 
 <main class="main">
     <header>

@@ -1,34 +1,17 @@
 <script lang="ts">
+    import Head from "~/lib/shared/Head.svelte";
     import "~/styles/index.css";
 
     export let data;
     const { posts } = data;
 </script>
 
-<svelte:head>
-    <title>Difff | Change & Decision log</title>
-    <meta
-        name="description"
-        content="Change And Decision log, Explore Latest Features, Improvements, And Fixes of JSON Online Formatter And Validator."
-    />
-
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:description" content="content" />
-    <meta name="twitter:title" content="Post" />
-    <meta name="twitter:image" content="https://site.com/past.png" />
-    <meta name="twitter:site" content="@sitename" />
-
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://difff.app/changelog" />
-    <meta property="og:title" content="Difff | Change & Decision log" />
-
-    <meta property="og:image" content="https://site.com/post.jpg" />
-    <meta
-        property="og:description"
-        content="Change And Decision log, Explore Latest Features, Improvements, And Fixes of JSON Online Formatter And Validator."
-    />
-</svelte:head>
+<Head
+    title="Difff | Change & Decision log"
+    description="Change And Decision log, Explore Latest Features, Improvements, And Fixes of JSON Online Formatter And Validator."
+    twitter={{}}
+    openGraph={{ type: "website", locale: "en_US" }}
+/>
 
 <header class="header">
     <h1 class="title">Difff Change & Decision Log</h1>

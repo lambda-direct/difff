@@ -1,35 +1,15 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import Head from "~/lib/shared/Head.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
-<svelte:head>
-    <title>YAML Formatter Online Tool, Beautifier & Validator - Difff</title>
-    <meta
-        name="description"
-        content="Format & Validate YAML Online with difff.app. Our online tool provides YAML pretty print, beautifies, and converts text files effortlessly."
-    />
-
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:description" content="content" />
-    <meta name="twitter:title" content="Post" />
-    <meta name="twitter:image" content="https://site.com/past.png" />
-    <meta name="twitter:site" content="@sitename" />
-
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://difff.app/formatter/yaml" />
-    <meta
-        property="og:title"
-        content="Free YAML Formatter Online. Validate, Format & Prettify your YAML"
-    />
-
-    <meta property="og:image" content="https://site.com/post.jpg" />
-    <meta
-        property="og:description"
-        content="Get FREE SEO report by 100+ parameters with the best website checker. Detailed site auditing will help to find errors in meta tags, images, links. Step-by-step guides for correcting any error and growing SEO score. The average time of site auditing is 15 seconds. Free use regardless of the number of website review."
-    />
-</svelte:head>
+<Head
+    title="YAML Formatter Online Tool, Beautifier & Validator - Difff"
+    description="Format & Validate YAML Online with difff.app. Our online tool provides YAML pretty print, beautifies, and converts text files effortlessly."
+    twitter={{}}
+    openGraph={{ type: "website", locale: "en_US" }}
+/>
 
 <main class="main">
     <header>
@@ -45,23 +25,160 @@
     </section>
 
     <article class="footer_article">
-        <h2 class="footer_article_title">How to Format YAML Using an Online Tool (Easy Method)</h2>
+        <h2 class="footer_article_title">How to Format YAML Using an Online Tool</h2>
+        <h3 class="footer_article_subtitle">At first some YAML basics.</h3>
+        <ul class="footer_article_list">
+            <li class="footer_article_list_element">YAML is a case-sensitive format.</li>
+            <li class="footer_article_list_element">
+                Indentation defines the structure, so YAML is space sensitive, also it doesn`t
+                accept tabs for indentation.
+            </li>
+            <li class="footer_article_list_element">
+                In YAML values are key value pairs. They act like scalar types(numbers, boolean &
+                quoted or unquoted string). Arrays are denoted using dashes.
+            </li>
+        </ul>
+        <h3 class="footer_article_subtitle">
+            Simply to use our formatter just paste key value pair data. As in example below.
+        </h3>
         <p class="footer_article_text">
-            YAML formatter & validator helps to beautify your YAML Inline syntax gets expanded and
-            indented with two spaces per data structure depth level. We help you to format your YAML
-            effortlessly with our online tool. Put compressed(as example to JavaScript Object) YAML
-            text or upload a file containing your YAML. Our service will identify is your YAML valid
-            or not. Display errors if any are present. Our formatting tool for valid YAML is <a
-                href="https://github.com/nodeca/js-yaml#readme"
-                target="_blank"
-                rel="noreferrer nofollow noopener"
-                class="prettier-href">js-yaml</a
-            >.
+            Don't write everything in 1 line, write down new key value pair from new row or write it
+            down like js object
         </p>
+        <span class="footer_article_mini-title">Input:</span>
+        <pre>
+            <code>
+{`someData   : "trees"
+randomNumber: 322
+nullValue : ~
+moreValues : 
+  21
+  22
+ 23
+array: [null,22, "true"]
+boolean : false
+obj    :     {val1: "value", val2: "value",
+val3: true}`}
+            </code>
+        </pre>
+        <span class="footer_article_mini-title">or</span>
+        <pre>
+            <code>
+{`{someData:"trees",randomNumber:322,nullValue:~,moreValues: 21 23,array:[null,22, "true"],boolean:false,obj:{val1: "value",}}`}
+            </code>
+        </pre>
+        <span class="footer_article_mini-title">Output:</span>
+        <pre>
+            <code>
+someData: trees
+randomNumber: 322
+nullValue: null
+moreValues: 21 22 23
+array:
+  - null
+  - 22
+  - 'true'
+boolean: false
+obj:
+  val1: value
+  val2: value
+  val3: true
+          </code>
+        <h3 class="footer_article_subtitle">Now lets see some more examples how it work.</h3>
+        <p class="footer_article_text">
+            As I've said about strings, in most cases, you don`t need to wrap them in quotes. But
+            here some situations when you should do it.
+        </p>
+        <span class="footer_article_mini-title">Input:</span>
+        <pre>
+            <code>
+foo: "hello world quoted\n" 
+bar: hello world unquoted\n
+            </code>
+        </pre>
+        <span class="footer_article_mini-title">Output:</span>
+        <pre>
+            <code>
+foo: |
+    hello world quoted
+bar: hello world unquoted\n
+          </code>
+        </pre>
+        <p class="footer_article_text">
+            Formatter processes quoted value as ending with linefeed. So unquoted value, YAML
+            formatter treats the \n as two characters.
+        </p>
+        <span class="footer_article_mini-title">Input:</span>
+        <pre>
+            <code>
+number: 22
+string: "22"
+boolean: true
+alsoString: "true"
+            </code>
+        </pre>
+        <span class="footer_article_mini-title">Output:</span>
+        <pre>
+            <code>
+number: 22
+string: '22'
+boolean: true
+alsoString: 'true'
+          </code>
+        </pre>
+        <p class="footer_article_text">
+            Conclusion after this example, if you want value as string quote it. Also some of
+            examples how Yaml output format will be consider as.
+        </p>
+        <span class="footer_article_mini-title">Example:</span>
+        <pre>
+            <code
+                    >{` 
+null:
+    "canonical"   -> "~"
+    "lowercase"   => "null"
+    "uppercase"   -> "NULL"
+    "camelcase"   -> "Null"
+          
+int:
+    "binary"      -> "0b1", "0b101010", "0b1110001111010"
+    "octal"       -> "0o1", "0o52", "0o16172"
+    "decimal"     => "1", "42", "7290"
+    "hexadecimal" -> "0x1", "0x2A", "0x1C7A"
+          
+bool:
+    "lowercase"   => "true", "false"
+    "uppercase"   -> "TRUE", "FALSE"
+    "camelcase"   -> "True", "False"
+          
+float:
+    "lowercase"   => ".nan", '.inf'
+    "uppercase"   -> ".NAN", '.INF'
+    "camelcase"   -> ".NaN", '.Inf'`}
+    </code>
+        </pre>
+        <p class="footer_article_text">
+            Our tool for validating & formatting YAML is <a
+                    href="https://github.com/nodeca/js-yaml#readme"
+                    target="_blank"
+                    rel="noreferrer nofollow noopener"
+                    class="prettier-href">js-yaml</a
+                >.
+        </p>
+    </pre>
     </article>
 </main>
 
 <style>
+    code {
+        display: block;
+        padding: 10px;
+        background-color: #030711;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #77849b;
+        overflow: auto;
+    }
     .main {
         margin: 0 auto;
         display: flex;
@@ -78,5 +195,43 @@
 
     .prettier-href {
         text-decoration: underline;
+    }
+
+    .footer_article_subtitle {
+        text-align: center;
+        margin: 14px 0 0;
+    }
+
+    .footer_article_list {
+        margin: 12px 0 0 12px;
+        list-style: disc;
+        color: #eaeaea;
+    }
+
+    .footer_article_list_element {
+        font-family: "NotoSans-Regular", sans-serif;
+        margin: 4px;
+        font-size: 16px;
+        color: #eaeaea;
+    }
+
+    .footer_article_text {
+        margin: 12px 0 0 0;
+        text-align: start;
+        &:last-child {
+            margin: 0;
+        }
+    }
+
+    .footer_article_mini-title {
+        color: #eaeaea;
+        font-size: 12px;
+        @media (min-width: 420px) {
+            font-size: 14px;
+        }
+    }
+
+    .footer_article_text + .footer_article_mini-title {
+        margin: 8px 0 0 0;
     }
 </style>
