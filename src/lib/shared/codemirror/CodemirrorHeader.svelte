@@ -109,6 +109,8 @@
                 <div
                     role="button"
                     tabindex="0"
+                    aria-labelledby="Dropdown"
+                    aria-label="Dropdown"
                     on:click|stopPropagation
                     on:keydown={handleEnterClick}
                     class="dropdown_content"
@@ -128,7 +130,12 @@
                 </div>
             {/each}
         </div>
-        <button on:click|stopPropagation={handleDropDownClick} class="button text">
+        <button
+            on:click|stopPropagation={handleDropDownClick}
+            aria-labelledby="Formats dropdown"
+            aria-label="Formats dropdown"
+            class="button text"
+        >
             <span class="btn_title">{`${format.toUpperCase()} Formatter`}</span>
             {#if showDropDown}
                 <DropDownOpenIcon />
@@ -179,7 +186,7 @@
     </div>
 </header>
 
-<style>
+<style lang="scss">
     .dropdown_options {
         padding: 4px;
         border-radius: 4px;
@@ -277,7 +284,6 @@
     .button {
         display: flex;
         align-items: center;
-        gap: 4px;
         height: 36px;
         background: #040b1a;
         border: 1px solid #313345;
@@ -296,7 +302,11 @@
 
     .format-button {
         margin: auto;
+        @media (max-width: 420px) {
+            margin: 0;
+        }
     }
+
     .btn_title {
         @media (max-width: 420px) {
             display: none;
@@ -308,7 +318,11 @@
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
-        gap: 6px;
-        width: 20%;
+        gap: 4px;
+        width: 15%;
+        @media (min-width: 420px) {
+            gap: 6px;
+            width: 20%;
+        }
     }
 </style>

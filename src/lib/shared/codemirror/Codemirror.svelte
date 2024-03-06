@@ -181,7 +181,7 @@
                 {:else}
                     <DownLoadIcon />
                 {/if}
-                Download
+                <span class="btn_title">Download</span>
             </button>
             <button
                 on:click={copyClick}
@@ -196,7 +196,7 @@
                 {:else}
                     <CopyIcon />
                 {/if}
-                Copy
+                <span class="btn_title">Copy</span>
             </button>
         </div>
     </footer>
@@ -247,5 +247,11 @@
 
     .field_wrapper {
         position: relative;
+    }
+
+    .btn_title {
+        @media (max-width: 420px) {
+            display: none;
+        }
     }
 </style>

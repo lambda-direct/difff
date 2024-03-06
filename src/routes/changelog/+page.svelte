@@ -1,8 +1,8 @@
 <script lang="ts">
     import "~/styles/index.css";
-    
-    export let data 
-    const {posts} = data
+
+    export let data;
+    const { posts } = data;
 </script>
 
 <svelte:head>
@@ -17,32 +17,28 @@
     <h1 class="title">Change & Decision log</h1>
     <h2 class="subtitle">
         Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
-        <a
-            href="/"
-            class="diff_link">
-            Difff.app
-        </a>
+        <a href="/" class="diff_link"> Difff.app </a>
     </h2>
 </header>
 <nav>
     <ul class="list">
         {#each posts as post}
             <li class="list_element">
-                <a class="week-content" href={`changelog/${post.date}`} >
+                <a class="week-content" href={`changelog/${post.date}`}>
                     <p class="week-num">WEEK {post.weekNumber}</p>
-                    <div class="vertical-line"/>
+                    <div class="vertical-line" />
                     <div class="post-info">
                         <p class="post-title">{post.title}</p>
                         <p class="post-description">{post.description}</p>
-                    </div> 
+                    </div>
                 </a>
             </li>
         {/each}
     </ul>
 </nav>
 
-<style>
-    .header{
+<style lang="scss">
+    .header {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -59,7 +55,6 @@
         margin: 16px 0 0;
         font-weight: 500;
         text-align: center;
-        
     }
 
     .diff_link {
@@ -76,13 +71,13 @@
         list-style-image: none;
     }
 
-    .list_element{
+    .list_element {
         border-top: 1px solid #323232;
         transition: all 0.2s;
-        &:hover{
+        &:hover {
             background: #171717;
         }
-        &:last-child{
+        &:last-child {
             border-bottom: 1px solid #323232;
         }
     }
@@ -98,33 +93,35 @@
     }
 
     .week-num {
-        font-size: 20px;
+        text-align: center;
+        font-size: 24px;
+        width: 45%;
         @media (min-width: 420px) {
-            font-size: 46px;
+            font-size: 30px;
         }
         @media (min-width: 768px) {
             font-size: 68px;
+            width: 40%;
         }
     }
 
-    .vertical-line{
+    .vertical-line {
         width: 2px;
         min-height: 80px;
         background-color: #323232;
-        margin: 0 8px;
+        margin: 0 12px 0 0;
         @media (min-width: 768px) {
             margin: 0 18px;
         }
     }
 
-    .post-info{
+    .post-info {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-    
     }
-    
-    .post-title{
+
+    .post-title {
         margin: 6px 0 12px;
         font-size: 14px;
         font-weight: 600;
@@ -134,9 +131,9 @@
         }
     }
 
-    .post-description{
+    .post-description {
         color: #e1e1e1;
-        font-size: 14px;;
+        font-size: 14px;
         @media (min-width: 768px) {
             font-size: 16px;
         }

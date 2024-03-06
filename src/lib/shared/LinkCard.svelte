@@ -6,19 +6,22 @@
     <p class="name">{name}</p>
 </div>
 
-<style>
+<style lang="scss">
     .card {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 42px;
+        height: 36px;
         min-width: 240px;
         border: 1px solid #292828;
         border-radius: 4px;
         background: #171717;
-        padding: 0 8px;
+        padding: 0 4px;
+        @media (min-width: 420px) {
+            height: 42px;
+            padding: 0 8px;
+        }
         @media (min-width: 1024px) {
-            gap: 4px;
             height: 52px;
             padding: 0 12px;
         }

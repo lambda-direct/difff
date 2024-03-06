@@ -1,5 +1,5 @@
 <script context="module">
-    import a from "~/lib/shared/a.svelte";
+    import a from "~/lib/mdsvexComponents/a.svelte";
     export { a };
 </script>
 

@@ -15,28 +15,24 @@
             <div class="list_column">
                 <h3>Formatter</h3>
                 <ul class="list_column_link-group">
-                    {#each routesToShow as route}
-                        {#if route.group === "Formatter"}
-                            <li>
-                                <a href={route.path}>
-                                    <NavLink name={route.name} />
-                                </a>
-                            </li>
-                        {/if}
+                    {#each routesToShow.filter((element) => element.group === "Formatter") as route}
+                        <li>
+                            <a href={route.path}>
+                                <NavLink name={route.name} />
+                            </a>
+                        </li>
                     {/each}
                 </ul>
             </div>
             <div>
                 <h3>Blog</h3>
                 <ul class="list_column_link-group">
-                    {#each routesToShow as route}
-                        {#if route.group === "Blog"}
-                            <li>
-                                <a href={route.path}>
-                                    <NavLink name={route.name} />
-                                </a>
-                            </li>
-                        {/if}
+                    {#each routesToShow.filter((element) => element.group === "Blog") as route}
+                        <li>
+                            <a href={route.path}>
+                                <NavLink name={route.name} />
+                            </a>
+                        </li>
                     {/each}
                 </ul>
             </div>
@@ -44,7 +40,7 @@
     </div>
 </footer>
 
-<style>
+<style lang="scss">
     h3 {
         text-align: center;
         margin: 0 0 12px 0;
@@ -62,12 +58,20 @@
 
     .lists-wrapper {
         display: flex;
+        flex-direction: column;
         justify-content: space-around;
+        @media (min-width: 768px) {
+            flex-direction: row;
+        }
     }
 
     .list_column {
         display: flex;
         flex-direction: column;
+        margin: 0 0 16px 0;
+        @media (min-width: 768px) {
+            margin: 0;
+        }
     }
 
     .list_column_link-group {
@@ -76,6 +80,11 @@
         gap: 12px;
         list-style: none;
         list-style-image: none;
+        @media (max-width: 768px) {
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: center;
+        }
     }
 
     .footer-title {

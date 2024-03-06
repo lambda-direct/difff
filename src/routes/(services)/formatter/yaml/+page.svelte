@@ -34,6 +34,7 @@
             or not. Display errors if any are present. Our formatting tool for valid YAML is <a
                 href="https://github.com/nodeca/js-yaml#readme"
                 target="_blank"
+                rel="noreferrer nofollow noopener"
                 class="prettier-href">js-yaml</a
             >.
         </p>
