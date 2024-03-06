@@ -1,15 +1,15 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import Head from "~/lib/shared/Head.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
-<svelte:head>
-    <title>JSON Formatter Online Tool, Beautifier & Validator - Difff</title>
-    <meta
-        name="description"
-        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files effortlessly."
-    />
-</svelte:head>
+<Head
+    title="Difff | JSON Formatter Online Tool, Beautifier & Validator"
+    description="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
+    twitter={{}}
+    openGraph={{ type: "website", locale: "en_US" }}
+/>
 
 <main class="main">
     <header>

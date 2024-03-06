@@ -36,3 +36,15 @@ type Coordinates = {
     line: number;
     column: number;
 };
+
+export type TwitterCard = {
+    title?: string;
+    description?: string;
+};
+
+export type OGCard = {
+    title?: string;
+    description?: string;
+    locale: string;
+    type: string;
+};
