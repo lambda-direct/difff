@@ -164,7 +164,13 @@
                     ? 1
                     : cursorPosition.col}
             </span>
-            <span class="cursor-position">Tab Size: 4</span>
+            <span class="cursor-position"
+                >{#if format === "json"}
+                    Tab Size: 4
+                {:else}
+                    Spaces: 2
+                {/if}
+            </span>
         </div>
         <div class="icon-btn-wrap">
             <button
