@@ -24,28 +24,59 @@
         {/if}
     </section>
 
-    <article class="footer_article">
-        <h2 class="footer_article_title">How to Format YAML Using an Online Tool</h2>
-        <h3 class="footer_article_subtitle">At first some YAML basics.</h3>
-        <ul class="footer_article_list">
-            <li class="footer_article_list_element">YAML is a case-sensitive format.</li>
-            <li class="footer_article_list_element">
+    <article class="article_style">
+        <h2>How to Format YAML Using an Online Tool</h2>
+        <h3>What is YAML file format?</h3>
+        <p>
+            YAML - Ain't Markup Language. It is a data serialization language, also easy for humans
+            to read. Used as a format for configuration files (.yaml .yml). Let's take a look at a
+            YAML file structure example.
+        </p>
+        <pre>
+            <code>
+---
+Aidan Gillen:
+    array:
+        - Game of Thrones
+        - The Wire
+    string: some string
+    int: '2'
+    otherint: 4
+    aboolean: 'true'
+    boolean: false
+    object:
+        foo: bar
+    Amy Ryan:
+        - In Treatment
+        - The Wire
+    Annie Fitzgerald:
+        - True Blood
+        - Big Love
+        - The Sopranos
+        - Oz
+            </code>
+        </pre>
+        <p>
+            First row starts with 3 dashes. They indicate start of a new YAML document, cos YAML can
+            support multiple documents.
+        </p>
+        <ul>
+            <li>YAML is a case-sensitive format.</li>
+            <li>
                 Indentation defines the structure, so YAML is space sensitive, also it doesn`t
                 accept tabs for indentation.
             </li>
-            <li class="footer_article_list_element">
-                In YAML values are key value pairs. They act like scalar types(numbers, boolean &
-                quoted or unquoted string). Arrays are denoted using dashes.
+            <li>
+                In YAML values are key-value pairs. They act like scalar types(numbers, boolean &
+                quoted or unquoted string). Array elements indicated by using dashes.
             </li>
         </ul>
-        <h3 class="footer_article_subtitle">
-            Simply to use our formatter just paste key value pair data. As in example below.
-        </h3>
-        <p class="footer_article_text">
+        <h3>How to use Format YAML.</h3>
+        <p>
             Don't write everything in 1 line, write down new key value pair from new row or write it
             down like js object
         </p>
-        <span class="footer_article_mini-title">Input:</span>
+        <span>Input:</span>
         <pre>
             <code>
 {`someData   : "trees"
@@ -61,13 +92,13 @@ obj    :     {val1: "value", val2: "value",
 val3: true}`}
             </code>
         </pre>
-        <span class="footer_article_mini-title">or</span>
+        <span>or</span>
         <pre>
             <code>
-{`{someData:"trees",randomNumber:322,nullValue:~,moreValues: 21 23,array:[null,22, "true"],boolean:false,obj:{val1: "value",}}`}
+{`{someData   : "trees", randomNumber: 322, nullValue : ~, moreValues : 21 22 23, array: [null,22, "true"], boolean : false,obj    :     {val1: "value", val2: "value",val3: true}}`}
             </code>
         </pre>
-        <span class="footer_article_mini-title">Output:</span>
+        <span>Output:</span>
         <pre>
             <code>
 someData: trees
@@ -85,19 +116,19 @@ obj:
   val3: true
           </code>
         </pre>
-        <h3 class="footer_article_subtitle">Now lets see some more examples how it work.</h3>
-        <p class="footer_article_text">
+        <h3>Now lets see some more examples how it work.</h3>
+        <p>
             As I've said about strings, in most cases, you don`t need to wrap them in quotes. But
             here some situations when you should do it.
         </p>
-        <span class="footer_article_mini-title">Input:</span>
+        <span>Input:</span>
         <pre>
             <code>
 foo: "hello world quoted\n" 
 bar: hello world unquoted\n
             </code>
         </pre>
-        <span class="footer_article_mini-title">Output:</span>
+        <span>Output:</span>
         <pre>
             <code>
 foo: |
@@ -105,11 +136,11 @@ foo: |
 bar: hello world unquoted\n
           </code>
         </pre>
-        <p class="footer_article_text">
+        <p>
             Formatter processes quoted value as ending with linefeed. So unquoted value, YAML
             formatter treats the \n as two characters.
         </p>
-        <span class="footer_article_mini-title">Input:</span>
+        <span>Input:</span>
         <pre>
             <code>
 number: 22
@@ -118,7 +149,7 @@ boolean: true
 alsoString: "true"
             </code>
         </pre>
-        <span class="footer_article_mini-title">Output:</span>
+        <span>Output:</span>
         <pre>
             <code>
 number: 22
@@ -127,11 +158,11 @@ boolean: true
 alsoString: 'true'
           </code>
         </pre>
-        <p class="footer_article_text">
+        <p>
             Conclusion after this example, if you want value as string quote it. Also some of
             examples how Yaml output format will be consider as.
         </p>
-        <span class="footer_article_mini-title">Example:</span>
+        <span>Example:</span>
         <pre>
             <code
                 >{` 
@@ -158,7 +189,7 @@ float:
     "camelcase"   -> ".NaN", '.Inf'`}
     </code>
         </pre>
-        <p class="footer_article_text">
+        <p>
             Our tool for validating & formatting YAML is <a
                 href="https://github.com/nodeca/js-yaml#readme"
                 target="_blank"
@@ -195,43 +226,5 @@ float:
 
     .prettier-href {
         text-decoration: underline;
-    }
-
-    .footer_article_subtitle {
-        text-align: center;
-        margin: 14px 0 0;
-    }
-
-    .footer_article_list {
-        margin: 12px 0 0 12px;
-        list-style: disc;
-        color: #eaeaea;
-    }
-
-    .footer_article_list_element {
-        font-family: "NotoSans-Regular", sans-serif;
-        margin: 4px;
-        font-size: 16px;
-        color: #eaeaea;
-    }
-
-    .footer_article_text {
-        margin: 12px 0 0 0;
-        text-align: start;
-        &:last-child {
-            margin: 0;
-        }
-    }
-
-    .footer_article_mini-title {
-        color: #eaeaea;
-        font-size: 12px;
-        @media (min-width: 420px) {
-            font-size: 14px;
-        }
-    }
-
-    .footer_article_text + .footer_article_mini-title {
-        margin: 8px 0 0 0;
     }
 </style>

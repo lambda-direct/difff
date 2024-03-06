@@ -28,14 +28,12 @@
             </ul>
         </nav>
     </header>
-    <article class="blog_page">
+    <article class="article_style">
         <svelte:component this={data.content} />
     </article>
 </section>
 
 <style>
-    @import "styles.module.css";
-
     .article {
         display: flex;
         flex-direction: column;
