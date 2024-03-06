@@ -1,5 +1,6 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import { page } from "$app/stores";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
 </script>
 
@@ -18,18 +19,21 @@
         name="twitter:title"
         content="Difff | JSON Formatter Online Tool, Beautifier & Validator"
     />
-    <meta name="twitter:image" content="/pages/formatter/json-formatter.webp" />
+    <meta
+        name="twitter:image"
+        content={`${$page.url.origin}/pages/formatter/json-formatter.webp`}
+    />
     <meta name="twitter:site" content="@sitename" />
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="/" />
+    <meta property="og:url" content={$page.url.origin} />
     <meta
         property="og:title"
         content="Difff | JSON Formatter Online Tool, Beautifier & Validator"
     />
 
-    <meta property="og:image" content="/pages/formatter/json-formatter.webp" />
+    <meta property="og:image" content={`${$page.url.origin}/pages/formatter/json-formatter.webp`} />
 
     <meta
         property="og:description"
