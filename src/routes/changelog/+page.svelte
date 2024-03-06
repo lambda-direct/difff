@@ -34,7 +34,7 @@
     <h1 class="title">Difff Change & Decision Log</h1>
     <h2 class="subtitle">
         Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
-        <a href="/" class="diff_link"> Difff.app </a>. 
+        <a href="/" class="diff_link"> Difff.app</a>.
     </h2>
 </header>
 <nav>

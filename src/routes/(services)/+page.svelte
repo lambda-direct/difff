@@ -4,30 +4,36 @@
 </script>
 
 <svelte:head>
-    <title>JSON Formatter Online Tool, Beautifier & Validator - Difff</title>
+    <title>Difff | JSON Formatter Online Tool, Beautifier & Validator</title>
     <meta
         name="description"
-        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files effortlessly."
+        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
     />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:description" content="content" />
-    <meta name="twitter:title" content="Post" />
-    <meta name="twitter:image" content="https://site.com/past.png" />
+    <meta
+        name="twitter:description"
+        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
+    />
+    <meta
+        name="twitter:title"
+        content="Difff | JSON Formatter Online Tool, Beautifier & Validator"
+    />
+    <meta name="twitter:image" content="/pages/formatter/json-formatter.webp" />
     <meta name="twitter:site" content="@sitename" />
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://difff.app/" />
+    <meta property="og:url" content="/" />
     <meta
         property="og:title"
-        content="Free JSON Formatter Online. Validate, Format & Prettify your JSON"
+        content="Difff | JSON Formatter Online Tool, Beautifier & Validator"
     />
 
-    <meta property="og:image" content="https://site.com/post.jpg" />
+    <meta property="og:image" content="/pages/formatter/json-formatter.webp" />
 
     <meta
         property="og:description"
-        content="Get FREE SEO report by 100+ parameters with the best website checker. Detailed site auditing will help to find errors in meta tags, images, links. Step-by-step guides for correcting any error and growing SEO score. The average time of site auditing is 15 seconds. Free use regardless of the number of website review."
+        content="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
     />
 </svelte:head>
 
