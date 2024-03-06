@@ -21,23 +21,20 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://difff.app/changelog" />
-    <meta
-        property="og:title"
-        content="Difff | Change & Decision log"
-    />
+    <meta property="og:title" content="Difff | Change & Decision log" />
 
     <meta property="og:image" content="https://site.com/post.jpg" />
     <meta
         property="og:description"
-        content="Get FREE SEO report by 100+ parameters with the best website checker. Detailed site auditing will help to find errors in meta tags, images, links. Step-by-step guides for correcting any error and growing SEO score. The average time of site auditing is 15 seconds. Free use regardless of the number of website review."
+        content="Change And Decision log, Explore Latest Features, Improvements, And Fixes of JSON Online Formatter And Validator."
     />
 </svelte:head>
 
 <header class="header">
-    <h1 class="title">Change & Decision log</h1>
+    <h1 class="title">Difff Change & Decision Log</h1>
     <h2 class="subtitle">
         Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
-        <a href="/" class="diff_link"> Difff.app </a>
+        <a href="/" class="diff_link"> Difff.app </a>. 
     </h2>
 </header>
 <nav>
