@@ -84,6 +84,7 @@ obj:
   val2: value
   val3: true
           </code>
+        </pre>
         <h3 class="footer_article_subtitle">Now lets see some more examples how it work.</h3>
         <p class="footer_article_text">
             As I've said about strings, in most cases, you don`t need to wrap them in quotes. But
@@ -133,7 +134,7 @@ alsoString: 'true'
         <span class="footer_article_mini-title">Example:</span>
         <pre>
             <code
-                    >{` 
+                >{` 
 null:
     "canonical"   -> "~"
     "lowercase"   => "null"
@@ -159,13 +160,12 @@ float:
         </pre>
         <p class="footer_article_text">
             Our tool for validating & formatting YAML is <a
-                    href="https://github.com/nodeca/js-yaml#readme"
-                    target="_blank"
-                    rel="noreferrer nofollow noopener"
-                    class="prettier-href">js-yaml</a
-                >.
+                href="https://github.com/nodeca/js-yaml#readme"
+                target="_blank"
+                rel="noreferrer nofollow noopener"
+                class="prettier-href">js-yaml</a
+            >.
         </p>
-    </pre>
     </article>
 </main>
 
