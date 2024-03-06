@@ -11,8 +11,6 @@
     <meta name="description" content={data.metadata.metaDescription} />
 </svelte:head>
 
-
-
 <section class="article">
     <header class="header">
         <nav class="navigation">
@@ -35,14 +33,13 @@
 <style>
     @import "styles.module.css";
 
-    .article{
+    .article {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    .header{
-        
+    .header {
         @media (min-width: 768px) {
             min-width: 680px;
         }
@@ -70,14 +67,14 @@
         margin: 0;
         font-weight: 500;
         font-size: 14px;
-        color:#b4b4b4;
+        color: #b4b4b4;
     }
 
     .list_item_link {
         display: flex;
         align-items: center;
         &:hover {
-            color: #ededed
+            color: #ededed;
         }
     }
 
