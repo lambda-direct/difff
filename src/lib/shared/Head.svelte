@@ -5,7 +5,7 @@
     export let title: string;
     export let description: string;
 
-    export let twitter: TwitterCard;
+    export let twitter: TwitterCard | undefined | null = null;
     export let openGraph: OGCard;
 </script>
 
@@ -13,11 +13,8 @@
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="twitter:card" content="summary" />
-    <meta
-        name="twitter:description"
-        content={twitter.description ? twitter.description : description}
-    />
-    <meta name="twitter:title" content={twitter.title ? twitter.title : title} />
+    <meta name="twitter:description" content={twitter?.description || description} />
+    <meta name="twitter:title" content={twitter?.title || title} />
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content={openGraph.type} />
