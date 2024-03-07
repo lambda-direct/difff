@@ -25,15 +25,19 @@
     </section>
 
     <article class="article_style">
-        <h2>How to Format YAML Using an Online Tool</h2>
+        <h2 class="article_style_tittle">How to Format YAML Using an Online Tool</h2>
         <h3>What is YAML file format?</h3>
         <p>
-            YAML - Ain't Markup Language. It is a data serialization language, also easy for humans
-            to read. Used as a format for configuration files (.yaml .yml). Let's take a look at a
-            YAML file structure example.
+            YAML - Ain't Markup Language. It is a data serialization language, easy for humans to
+            read. Used as a format for configuration files, create YAML file you can with extension
+            (.yaml) or (.yml). Yaml structured as key-value pairs, the key is always a string an the
+            restriction that each of the keys is unique. Comments identified with a hash symbol (#).
+            Note: YAML doesn`t support multi-lane comments. Let's take a look at a YAML file
+            structure example.
         </p>
         <pre>
             <code>
+#Comment: This is an example using YAML
 ---
 Aidan Gillen:
     array:
@@ -57,26 +61,26 @@ Aidan Gillen:
             </code>
         </pre>
         <p>
-            First row starts with 3 dashes. They indicate start of a new YAML document, cos YAML can
-            support multiple documents.
+            As you can see after comment, row starts with 3 dashes. They indicate start of a new
+            YAML document, cos YAML can support multiple documents and each document ends with three
+            dots. Also YAML is a case and space sensitive format. Indentation defines it's
+            structure, YAML doesn`t accept tabs. Values in key-value pair act like scalar
+            types(numbers, dates, boolean & quoted or unquoted string). If as value we got an array,
+            it's elements indicates by using dashes.
         </p>
-        <ul>
-            <li>YAML is a case-sensitive format.</li>
-            <li>
-                Indentation defines the structure, so YAML is space sensitive, also it doesn`t
-                accept tabs for indentation.
-            </li>
-            <li>
-                In YAML values are key-value pairs. They act like scalar types(numbers, boolean &
-                quoted or unquoted string). Array elements indicated by using dashes.
-            </li>
-        </ul>
         <h3>How to use Format YAML.</h3>
         <p>
-            Don't write everything in 1 line, write down new key value pair from new row or write it
-            down like js object
+            If you want write down everything in a single line, you need to wrap it in curly
+            brackets and separate key-value pairs with coma(like in js object). Or you can write
+            down new key-value pair from a new row.
         </p>
-        <span>Input:</span>
+        <h5>Input:</h5>
+        <pre>
+            <code>
+{`{someData   : "trees", randomNumber: 322, nullValue : ~, moreValues : 21 22 23, array: [null,22, "true"], boolean : false,obj    :     {val1: "value", val2: "value",val3: true}}`}
+            </code>
+        </pre>
+        <h5>or</h5>
         <pre>
             <code>
 {`someData   : "trees"
@@ -92,13 +96,7 @@ obj    :     {val1: "value", val2: "value",
 val3: true}`}
             </code>
         </pre>
-        <span>or</span>
-        <pre>
-            <code>
-{`{someData   : "trees", randomNumber: 322, nullValue : ~, moreValues : 21 22 23, array: [null,22, "true"], boolean : false,obj    :     {val1: "value", val2: "value",val3: true}}`}
-            </code>
-        </pre>
-        <span>Output:</span>
+        <h5>Output:</h5>
         <pre>
             <code>
 someData: trees
@@ -119,16 +117,17 @@ obj:
         <h3>Now lets see some more examples how it work.</h3>
         <p>
             As I've said about strings, in most cases, you don`t need to wrap them in quotes. But
-            here some situations when you should do it.
+            here some situations when you should do it. Formatter processes quoted value as ending
+            with linefeed. So unquoted value, YAML formatter treats the \n as two characters.
         </p>
-        <span>Input:</span>
+        <h5>Input:</h5>
         <pre>
             <code>
 foo: "hello world quoted\n" 
 bar: hello world unquoted\n
             </code>
         </pre>
-        <span>Output:</span>
+        <h5>Output:</h5>
         <pre>
             <code>
 foo: |
@@ -137,32 +136,72 @@ bar: hello world unquoted\n
           </code>
         </pre>
         <p>
-            Formatter processes quoted value as ending with linefeed. So unquoted value, YAML
-            formatter treats the \n as two characters.
+            In YAML nesting indication relies on whitespace. Once again about it, tab characters
+            cannot be used for indentation, only spaces. The number of spaces used for indentation
+            doesn`t matter as long as they are consistent.
         </p>
-        <span>Input:</span>
+        <h5>Example:</h5>
         <pre>
             <code>
-number: 22
-string: "22"
-boolean: true
-alsoString: "true"
+---
+tutorial:  #nesting level 1
+  - yaml:  #nesting level 2 (2 spaces used for indentation)
+      name: "YAML Ain't Markup Language" #string #nesting level 3 (4 spaces used for indentation)
+      type: awesome #string
+      born: 2001 #number
+...
             </code>
         </pre>
-        <span>Output:</span>
+        <p>
+            YAML has own naming for data structures. Mappings - structure that store key-value
+            pairs. Represent complex data structures like hashes or dictionaries. Sequences - simple
+            structures where each item placed on its own line that start with an opening dash like
+            arrays or tuples. And Scalar - the simplest data type represent basic types such as
+            boolean,Date, Timestamp, integers, and floating numbers.
+        </p>
+        <h5>Example:</h5>
         <pre>
             <code>
-number: 22
-string: '22'
-boolean: true
-alsoString: 'true'
+---
+# key: value [mapping]
+company: spacelift
+# key: value is an array [sequence]
+domain:
+ - devops
+ - devsecops
+tutorial:
+  - yaml:
+      name: "YAML Ain't Markup Language" #string [literal]
+      type: awesome #string [literal]
+      born: 2001 #number [literal]
+  - json:
+      name: JavaScript Object Notation #string [literal]
+      type: great #string [literal]
+      born: 2001 #number [literal]
+  - xml:
+      name: Extensible Markup Language #string [literal]
+      type: good #string [literal]
+      born: 1996 #number [literal]
+...
           </code>
         </pre>
+
         <p>
-            Conclusion after this example, if you want value as string quote it. Also some of
-            examples how Yaml output format will be consider as.
+            YAML autodetect types. However, often necessary to specify the type using a tag. To
+            force a type indication, you can prefix the type with a (!!) symbol.
         </p>
-        <span>Example:</span>
+        <h5>Example:</h5>
+        <pre>
+            <code>
+age: !!float 23
+dead: !!str false
+binary: !!int 0b101010
+hexadecimal: !!int 0x1C7A
+name: !!str "James"
+    </code>
+        </pre>
+        <p>Some of examples how Yaml output format will be consider as.</p>
+        <h5>Example:</h5>
         <pre>
             <code
                 >{` 
@@ -222,6 +261,10 @@ float:
         flex-direction: column;
         margin: 32px 0 0;
         width: 100%;
+    }
+
+    .article_style_tittle {
+        text-align: center;
     }
 
     .prettier-href {

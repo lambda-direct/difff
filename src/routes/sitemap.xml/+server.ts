@@ -10,14 +10,6 @@ export async function GET() {
             <changefreq>yearly</changefreq>
             <priority>1.0</priority>
         </url>
-        
-        <url>
-            <loc>http://difff.app/</loc>
-            <lastmod>2024-03-01</lastmod>
-            <changefreq>yearly</changefreq>
-            <priority>1.0</priority>
-            <redirect>https://difff.app/</redirect>
-        </url>
 
         <url>
             <loc>https://difff.app/changelog</loc>

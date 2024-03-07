@@ -137,7 +137,6 @@ button {
     h2,
     h3,
     h4,
-    h5,
     h6 {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         margin: 0;
@@ -196,6 +195,16 @@ button {
         color: #dfdada;
     }
 
+    & h5 {
+        font-family: "source serif", Georgia, Cambria, "Times New Roman", Times, serif;
+        color: #eaeaea;
+        font-size: 12px;
+        font-weight: 400;
+        @media (min-width: 420px) {
+            font-size: 14px;
+        }
+    }
+
     & em {
         font-size: 18px;
     }
@@ -210,6 +219,7 @@ button {
         margin: 0 auto;
         width: 100%;
     }
+
     & blockquote {
         margin: 0 0 0 -20px;
         padding: 0 0 0 23px;
@@ -254,15 +264,32 @@ button {
             font-size: 18px;
         }
     }
-    p + span {
-        margin: 8px 0 0 0;
+
+    p + h5 {
+        margin: 12px 0 0 0;
     }
-    span {
-        font-family: "source serif", Georgia, Cambria, "Times New Roman", Times, serif;
-        color: #eaeaea;
-        font-size: 12px;
-        @media (min-width: 420px) {
-            font-size: 14px;
-        }
+    pre + p {
+        margin: 0;
+    }
+
+    ::-webkit-scrollbar {
+        padding: 0;
+        margin: 0;
+        width: 12px;
+        height: 12px;
+    }
+    ::-webkit-scrollbar-corner {
+        background: #1c1f28;
+    }
+    ::-webkit-scrollbar-track {
+        border-radius: 2px;
+        background: #1c1f28;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 2px;
+        background: #353840;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #363d44;
     }
 }
