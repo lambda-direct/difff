@@ -1,23 +1,23 @@
 <script lang="ts">
+    import Head from "~/lib/shared/Head.svelte";
     import "~/styles/index.css";
 
     export let data;
     const { posts } = data;
 </script>
 
-<svelte:head>
-    <title>Difff Change & Decision log</title>
-    <meta
-        name="description"
-        content="Latest features, improvements, and fixes we’ve implemented."
-    />
-</svelte:head>
+<Head
+    title="Difff | Change & Decision log"
+    description="Change And Decision log, Explore Latest Features, Improvements, And Fixes of JSON Online Formatter And Validator."
+    twitter={{}}
+    openGraph={{ type: "website", locale: "en_US" }}
+/>
 
 <header class="header">
-    <h1 class="title">Change & Decision log</h1>
+    <h1 class="title">Difff Change & Decision Log</h1>
     <h2 class="subtitle">
         Stay in the loop with the latest features, improvements, and fixes we’ve implemented in
-        <a href="/" class="diff_link"> Difff.app </a>
+        <a href="/" class="diff_link"> Difff.app</a>.
     </h2>
 </header>
 <nav>

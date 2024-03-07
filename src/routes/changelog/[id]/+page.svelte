@@ -1,15 +1,18 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
+    import Head from "~/lib/shared/Head.svelte";
     import { formattedDate } from "~/utils/helpers.js";
 
     export let data;
 </script>
 
-<svelte:head>
-    <title>{data.metadata.metaTitle}</title>
-    <meta name="description" content={data.metadata.metaDescription} />
-</svelte:head>
+<Head
+    title={data.metadata.metaTitle}
+    description={data.metadata.metaDescription}
+    twitter={{}}
+    openGraph={{ type: "article", locale: "en_US" }}
+/>
 
 <section class="article">
     <header class="header">
@@ -25,14 +28,12 @@
             </ul>
         </nav>
     </header>
-    <article class="blog_page">
+    <article class="article_style">
         <svelte:component this={data.content} />
     </article>
 </section>
 
 <style>
-    @import "styles.module.css";
-
     .article {
         display: flex;
         flex-direction: column;
