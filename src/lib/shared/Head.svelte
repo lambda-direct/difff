@@ -27,6 +27,8 @@
         content={openGraph.description ? openGraph.description : description}
     />
 
+    <meta property="og:image" content="" />
+
     <meta
         property="og:description"
         content={openGraph.description ? openGraph.description : description}
