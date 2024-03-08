@@ -164,11 +164,12 @@
                     ? 1
                     : cursorPosition.col}
             </span>
-            <span class="cursor-position"
-                >{#if format === "json"}
-                    Tab Size: 4
+            <span class="cursor-position">
+                Spaces:
+                {#if format === "json"}
+                    4
                 {:else}
-                    Spaces: 2
+                    2
                 {/if}
             </span>
         </div>
@@ -227,7 +228,6 @@
         display: flex;
         gap: 8px;
     }
-
     .icon-button {
         display: flex;
         align-items: center;
@@ -245,6 +245,8 @@
     }
 
     .cursor-position {
+        display: inline-flex;
+        align-items: center;
         font-family: "NotoSans-Regular", sans-serif;
         font-size: 12px;
         color: #7d8799;

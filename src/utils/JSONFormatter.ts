@@ -18,7 +18,7 @@ class JSONDataOperations {
         singleQuote: false,
         trailingComma: "none" as const,
         endOfLine: "lf" as const,
-        printWidth: 1000,
+        printWidth: 100,
         bracketSameLine: true,
         parser: "json-stringify",
         plugins: [parserBabel, prettierPluginEstree]
