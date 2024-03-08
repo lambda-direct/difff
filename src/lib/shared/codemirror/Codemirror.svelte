@@ -25,6 +25,7 @@
 
     let fieldFormat = format === "json" ? json() : StreamLanguage.define(yamlMode.yaml);
 
+    let spaceValue = format === "json" ? 4 : 2;
     let value: string = "";
     let view: EditorView;
 
@@ -165,12 +166,7 @@
                     : cursorPosition.col}
             </span>
             <span class="cursor-position">
-                Spaces:
-                {#if format === "json"}
-                    4
-                {:else}
-                    2
-                {/if}
+                Spaces: {spaceValue}
             </span>
         </div>
         <div class="icon-btn-wrap">
@@ -211,7 +207,7 @@
     {/if}
 </section>
 
-<style>
+<style lang="scss">
     .footer {
         display: flex;
         align-items: center;
@@ -228,6 +224,7 @@
         display: flex;
         gap: 8px;
     }
+
     .icon-button {
         display: flex;
         align-items: center;
@@ -245,8 +242,6 @@
     }
 
     .cursor-position {
-        display: inline-flex;
-        align-items: center;
         font-family: "NotoSans-Regular", sans-serif;
         font-size: 12px;
         color: #7d8799;
