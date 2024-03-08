@@ -52,6 +52,7 @@
         "@lezer/highlight": "^1.2.0",
         "axios": "^1.6.7",
         "codemirror": "^6.0.1",
+        "highlight.js": "^11.9.0",
         "js-yaml": "^4.1.0",
         "svelte-codemirror-editor": "^1.2.0"
     }

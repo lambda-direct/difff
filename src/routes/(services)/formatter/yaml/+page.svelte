@@ -2,6 +2,14 @@
     import { browser } from "$app/environment";
     import Head from "~/lib/shared/Head.svelte";
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
+    import hljs from "highlight.js";
+    import "./style.css";
+    import yaml from "highlight.js/lib/languages/yaml";
+
+    if (browser) {
+        hljs.highlightAll();
+        hljs.registerLanguage("yaml", yaml);
+    }
 </script>
 
 <Head
@@ -28,62 +36,84 @@
         <h2 class="article_style_tittle">How to Format YAML Using an Online Tool</h2>
         <h3>What is YAML file format?</h3>
         <p>
-            YAML - Ain't Markup Language. It is a data serialization language, easy for humans to
-            read. Used as a format for configuration files, create YAML file you can with extension
-            (.yaml) or (.yml). Yaml structured as key-value pairs, the key is always a string an the
-            restriction that each of the keys is unique. Comments identified with a hash symbol (#).
-            Note: YAML doesn`t support multi-lane comments. Let's take a look at a YAML file
-            structure example.
+            YAML (<strong>A</strong>'t <strong>M</strong>arkup <strong>L</strong>anguage). It is a
+            data serialization language. YAML used as a format for configuration files, create it
+            with extension (.yaml) or (.yml). <strong>YAML</strong> structured as key-value pairs, the
+            key is always a string. Structure example.
+        </p>
+        <ul>
+            <li>Restriction that each of the keys is unique</li>
+            <li>Comments identified with a hash symbol (#)</li>
+            <li>Doesn`t support multi-lane comments</li>
+            <li>Case and space sensitive format</li>
+            <li>Doesn`t accept tabs</li>
+            <li>Can support multiple documents</li>
+        </ul>
+        <p>
+            For multiple documents starts each with three dashes and end it with three dots.
+            Indentation defines it's structure, <strong>YAML</strong> values in key-value pair act like
+            scalar types(numbers, dates, boolean & quoted or unquoted string). If value is an array,
+            elements indicates by using dashes. Nesting indication relies on whitespace. Tab characters
+            cannot be used for indentation, only spaces it's number must be consistent.
+        </p>
+        <h3>YAML naming for data structures.</h3>
+        <p>
+            <strong>Mappings</strong> - store key-value pairs. Represent complex structures like
+            hashes or dictionaries.<br /> <strong>Sequences</strong> - simple structures, each item
+            placed on its own line & that start with an opening dash serve for arrays or tuples.
+            <br /><strong>Scalar</strong> - equivalent basic types boolean, Date, Timestamp, integers,
+            and floating numbers.
         </p>
         <pre>
-            <code>
+            <code class="language-yaml hljs">
+                
 #Comment: This is an example using YAML
+
 ---
-Aidan Gillen:
-    array:
-        - Game of Thrones
-        - The Wire
-    string: some string
-    int: '2'
-    otherint: 4
-    aboolean: 'true'
-    boolean: false
-    object:
-        foo: bar
-    Amy Ryan:
-        - In Treatment
-        - The Wire
-    Annie Fitzgerald:
-        - True Blood
-        - Big Love
-        - The Sopranos
-        - Oz
+tutorial:  #nesting level 1
+  - yaml:  #nesting level 2 (2 spaces used for indentation)
+      name: "YAML Ain't Markup Language" #string #nesting level 3 (4 spaces used for indentation)
+      type: awesome #string
+      born: 2001 #number
+...
+
+---
+# key: value [mapping]
+company: spacelift
+# key: value is an array [sequence]
+domain:
+ - devops
+ - devsecops
+tutorial:
+  - yaml:
+      name: "YAML Ain't Markup Language" #string [scalar]
+      type: awesome #string [scalar]
+      born: 2001 #number [scalar]
+  - json:
+      name: JavaScript Object Notation #string [scalar]
+      type: great #string [scalar]
+      born: 2001 #number [scalar]
+  - xml:
+      name: Extensible Markup Language #string [scalar]
+      type: good #string [scalar]
+      born: 1996 #number [scalar]
+...
             </code>
         </pre>
+        <h3>How to use Formatter</h3>
         <p>
-            As you can see after comment, row starts with 3 dashes. They indicate start of a new
-            YAML document, cos YAML can support multiple documents and each document ends with three
-            dots. Also YAML is a case and space sensitive format. Indentation defines it's
-            structure, YAML doesn`t accept tabs. Values in key-value pair act like scalar
-            types(numbers, dates, boolean & quoted or unquoted string). If as value we got an array,
-            it's elements indicates by using dashes.
-        </p>
-        <h3>How to use Format YAML.</h3>
-        <p>
-            If you want write down everything in a single line, you need to wrap it in curly
-            brackets and separate key-value pairs with coma(like in js object). Or you can write
-            down new key-value pair from a new row.
+            Put your YAML as single line, but wrap it in curly brackets and separate key-value pairs
+            with coma(like in js object) or write new key-value pair from a new row.
         </p>
         <h5>Input:</h5>
+
         <pre>
-            <code>
+            <code class="language-yaml hljs">
 {`{someData   : "trees", randomNumber: 322, nullValue : ~, moreValues : 21 22 23, array: [null,22, "true"], boolean : false,obj    :     {val1: "value", val2: "value",val3: true}}`}
-            </code>
-        </pre>
-        <h5>or</h5>
-        <pre>
-            <code>
-{`someData   : "trees"
+
+
+
+someData   : "trees"
 randomNumber: 322
 nullValue : ~
 moreValues : 
@@ -92,13 +122,13 @@ moreValues :
  23
 array: [null,22, "true"]
 boolean : false
-obj    :     {val1: "value", val2: "value",
-val3: true}`}
+obj    :     val1: "value", val2: "value",
+val3: true
             </code>
         </pre>
         <h5>Output:</h5>
         <pre>
-            <code>
+            <code class="language-yaml hljs">
 someData: trees
 randomNumber: 322
 nullValue: null
@@ -114,85 +144,15 @@ obj:
   val3: true
           </code>
         </pre>
-        <h3>Now lets see some more examples how it work.</h3>
+        <h3>How YAML formatter types work</h3>
         <p>
-            As I've said about strings, in most cases, you don`t need to wrap them in quotes. But
-            here some situations when you should do it. Formatter processes quoted value as ending
-            with linefeed. So unquoted value, YAML formatter treats the \n as two characters.
-        </p>
-        <h5>Input:</h5>
-        <pre>
-            <code>
-foo: "hello world quoted\n" 
-bar: hello world unquoted\n
-            </code>
-        </pre>
-        <h5>Output:</h5>
-        <pre>
-            <code>
-foo: |
-    hello world quoted
-bar: hello world unquoted\n
-          </code>
-        </pre>
-        <p>
-            In YAML nesting indication relies on whitespace. Once again about it, tab characters
-            cannot be used for indentation, only spaces. The number of spaces used for indentation
-            doesn`t matter as long as they are consistent.
+            YAML autodetects types. However, you can specify the type.To force a type indication use
+            a prefix (!!) before type. To force a type indication, you can prefix the type with a
+            (!!).
         </p>
         <h5>Example:</h5>
         <pre>
-            <code>
----
-tutorial:  #nesting level 1
-  - yaml:  #nesting level 2 (2 spaces used for indentation)
-      name: "YAML Ain't Markup Language" #string #nesting level 3 (4 spaces used for indentation)
-      type: awesome #string
-      born: 2001 #number
-...
-            </code>
-        </pre>
-        <p>
-            YAML has own naming for data structures. Mappings - structure that store key-value
-            pairs. Represent complex data structures like hashes or dictionaries. Sequences - simple
-            structures where each item placed on its own line that start with an opening dash like
-            arrays or tuples. And Scalar - the simplest data type represent basic types such as
-            boolean,Date, Timestamp, integers, and floating numbers.
-        </p>
-        <h5>Example:</h5>
-        <pre>
-            <code>
----
-# key: value [mapping]
-company: spacelift
-# key: value is an array [sequence]
-domain:
- - devops
- - devsecops
-tutorial:
-  - yaml:
-      name: "YAML Ain't Markup Language" #string [literal]
-      type: awesome #string [literal]
-      born: 2001 #number [literal]
-  - json:
-      name: JavaScript Object Notation #string [literal]
-      type: great #string [literal]
-      born: 2001 #number [literal]
-  - xml:
-      name: Extensible Markup Language #string [literal]
-      type: good #string [literal]
-      born: 1996 #number [literal]
-...
-          </code>
-        </pre>
-
-        <p>
-            YAML autodetect types. However, often necessary to specify the type using a tag. To
-            force a type indication, you can prefix the type with a (!!) symbol.
-        </p>
-        <h5>Example:</h5>
-        <pre>
-            <code>
+            <code class="language-yaml hljs">
 age: !!float 23
 dead: !!str false
 binary: !!int 0b101010
@@ -200,55 +160,54 @@ hexadecimal: !!int 0x1C7A
 name: !!str "James"
     </code>
         </pre>
-        <p>Some of examples how Yaml output format will be consider as.</p>
-        <h5>Example:</h5>
-        <pre>
-            <code
-                >{` 
-null:
-    "canonical"   -> "~"
-    "lowercase"   => "null"
-    "uppercase"   -> "NULL"
-    "camelcase"   -> "Null"
-          
-int:
-    "binary"      -> "0b1", "0b101010", "0b1110001111010"
-    "octal"       -> "0o1", "0o52", "0o16172"
-    "decimal"     => "1", "42", "7290"
-    "hexadecimal" -> "0x1", "0x2A", "0x1C7A"
-          
-bool:
-    "lowercase"   => "true", "false"
-    "uppercase"   -> "TRUE", "FALSE"
-    "camelcase"   -> "True", "False"
-          
-float:
-    "lowercase"   => ".nan", '.inf'
-    "uppercase"   -> ".NAN", '.INF'
-    "camelcase"   -> ".NaN", '.Inf'`}
-    </code>
-        </pre>
         <p>
-            Our tool for validating & formatting YAML is <a
-                href="https://github.com/nodeca/js-yaml#readme"
-                target="_blank"
-                rel="noreferrer nofollow noopener"
-                class="prettier-href">js-yaml</a
-            >.
+            If want to use special characters wrap string in single quotes. With a backslash more
+            handy to use double quoted, cos formatter processes quoted value as ending with
+            linefeed. In unquoted, it treats the \n as two characters. Also it will convert some of
+            the values uppercase or camelCase to lowercase. To use single quote(') doubled it.
         </p>
+        <h5>Input:</h5>
+        <pre>
+            <code class="language-yaml hljs">
+foo: "hello world quoted\n" 
+bar: hello world unquoted\n
+nullExample: [~, NULL, Null]
+nullExample2:  #empty
+intExample: [0b1110001111010, 0o16172, 0x1C7A] #binary, octal, hexadecimal to int
+boolExample: [TRUE, True]
+floatExample: [.NAN, .NaN, .INF]
+quote: 'A single quote '' inside a single-quoted string'
+            </code>
+        </pre>
+        <h5>Output:</h5>
+        <pre>
+            <code class="language-yaml hljs">
+foo: |
+  hello world quoted
+bar: hello world unquoted\n
+nullExample:
+  - null
+  - null
+  - null
+nullExample2: null
+intExample:
+  - 7290
+  - 7290
+  - 7290
+boolExample:
+  - true
+  - true
+floatExample:
+  - .nan
+  - .nan
+  - .inf
+quote: A single quote ' inside a single-quoted string
+          </code>
+        </pre>
     </article>
 </main>
 
 <style>
-    code {
-        display: block;
-        padding: 10px;
-        background-color: #030711;
-        border-radius: 5px;
-        font-size: 14px;
-        color: #77849b;
-        overflow: auto;
-    }
     .main {
         margin: 0 auto;
         display: flex;
@@ -262,12 +221,10 @@ float:
         margin: 32px 0 0;
         width: 100%;
     }
-
+    .article_style {
+        max-width: 100%;
+    }
     .article_style_tittle {
         text-align: center;
-    }
-
-    .prettier-href {
-        text-decoration: underline;
     }
 </style>
