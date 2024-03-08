@@ -9,7 +9,6 @@
 <Head
     title="Difff | Change & Decision log"
     description="Change And Decision log, Explore Latest Features, Improvements, And Fixes of JSON Online Formatter And Validator."
-    twitter={{}}
     openGraph={{ type: "website", locale: "en_US" }}
 />
 

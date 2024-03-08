@@ -5,17 +5,19 @@
     import hljs from "highlight.js";
     import "./style.css";
     import yaml from "highlight.js/lib/languages/yaml";
+    import { onMount } from "svelte";
 
-    if (browser) {
-        hljs.highlightAll();
-        hljs.registerLanguage("yaml", yaml);
-    }
+    onMount(() => {
+        if (browser) {
+            hljs.highlightAll();
+            hljs.registerLanguage("yaml", yaml);
+        }
+    });
 </script>
 
 <Head
     title="YAML Formatter Online Tool, Beautifier & Validator - Difff"
     description="Format & Validate YAML Online with difff.app. Our online tool provides YAML pretty print, beautifies, and converts text files effortlessly."
-    twitter={{}}
     openGraph={{ type: "website", locale: "en_US" }}
 />
 

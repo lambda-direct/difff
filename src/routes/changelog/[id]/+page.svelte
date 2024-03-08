@@ -10,7 +10,6 @@
 <Head
     title={data.metadata.metaTitle}
     description={data.metadata.metaDescription}
-    twitter={{}}
     openGraph={{ type: "article", locale: "en_US" }}
 />
 

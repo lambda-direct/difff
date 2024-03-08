@@ -7,7 +7,6 @@
 <Head
     title="Difff | JSON Formatter Online Tool, Beautifier & Validator"
     description="Format & Validate JSON Online with difff.app. Our online tool provides JSON pretty print, beautifies, and converts text files."
-    twitter={{}}
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
