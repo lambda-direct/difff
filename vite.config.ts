@@ -5,14 +5,14 @@ import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
 
 export default defineConfig({
-	optimizeDeps: {
-		exclude: ["@biomejs/wasm-bundler", "@codemirror/*"],
-	},
-	plugins: [sveltekit(), wasm(), topLevelAwait()],
-	resolve: {
-		alias: {
-			"~": path.resolve("./src"),
-			"$md/": path.resolve("./src/md"),
-		},
-	},
+    optimizeDeps: {
+        exclude: ["@biomejs/wasm-bundler", "@codemirror/*"]
+    },
+    plugins: [sveltekit(), wasm(), topLevelAwait()],
+    resolve: {
+        alias: {
+            "~": path.resolve("./src"),
+            "$md/": path.resolve("./src/md")
+        }
+    }
 });
