@@ -57,8 +57,7 @@
             <strong>Mappings</strong> - store key-value pairs. Represent complex structures like
             hashes or dictionaries.<br /> <strong>Sequences</strong> - simple structures, each item
             placed on its own line & that start with an opening dash serve for arrays or tuples.
-            <br /><strong>Scalar</strong> - equivalent basic types boolean, Date, Timestamp, integers,
-            and floating numbers.
+            <br /><strong>Scalar</strong> - equivalent basic types boolean, Date, integers, and floating.
         </p>
         <pre>
             <code class="language-yaml hljs">    
@@ -105,13 +104,13 @@ nestingExample:  #nesting level 1
       born: 2001 #number
 ...
 
-# Key case sensitivity. Two valid key-value pair
+# Key case sensitivity. Two different key-value pair
 ---
 caseExample: true #boolean
 caseexample: !!str false #string
 ...
 
-# YAML autodetects types. To force a type indication usea prefix (!!) before type. 
+# YAML autodetects types. To force a type indication use prefix (!!) before type. 
 ---
 age: !!float 23
 dead: !!str false
@@ -130,10 +129,11 @@ quote: 'A single quote '' inside a single-quoted string'
 
 #output:
 foo: |
-  hello world quoted #formatter processes quoted value as ending with linefeed
+  hello world quoted 
+  #formatter processes quoted value as ending with linefeed
 bar: hello world unquoted\n #unquoted, it treats the \n as two characters
-quote: A single quote ' inside a single-quoted string #To use single quote(') doubled it
-
+quote: A single quote ' inside a single-quoted string  
+  #to use single quote(') doubled it
 
 # Also it will convert other values
 
