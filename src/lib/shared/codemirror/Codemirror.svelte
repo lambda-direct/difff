@@ -1,6 +1,6 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { showError } from "~/lib/storages";
+    import { isSettingsOpen, showError } from "~/lib/storages";
     import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
     import { onDestroy, onMount } from "svelte";
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
@@ -19,21 +19,23 @@
     import { json } from "@codemirror/lang-json";
     import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
     import { StreamLanguage } from "@codemirror/language";
+    import SettingsModal from "../SettingsModal.svelte";
 
     export let format: "json" | "yaml";
     export let placeholder: string;
 
     let fieldFormat = format === "json" ? json() : StreamLanguage.define(yamlMode.yaml);
 
-    let spaceValue = format === "json" ? 4 : 2;
     let value: string = "";
     let view: EditorView;
-
     const extensions = [...stateExtensions, placeholderSet(placeholder), fieldFormat];
 
     let element: HTMLDivElement;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
+
+    let useTabs: boolean = false;
+    let indentationLevel: number = format === "json" ? 4 : 2;
     let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
     $: onChange = handleChange;
@@ -134,6 +136,10 @@
         }
     };
 
+    const openSettings = () => {
+        $isSettingsOpen = !$isSettingsOpen;
+    };
+
     onMount(() => {
         view = createEditorView();
         if (browser) {
@@ -165,9 +171,16 @@
                     ? 1
                     : cursorPosition.col}
             </span>
-            <span class="cursor-position">
-                Spaces: {spaceValue}
-            </span>
+            <button
+                on:click={openSettings}
+                title="settings"
+                aria-label="settings"
+                aria-labelledby="settings"
+                name="settings-btn"
+                class="cursor-position"
+            >
+                {useTabs ? "Tab Size" : "Spaces"}: {indentationLevel}
+            </button>
         </div>
         <div class="icon-btn-wrap">
             <button
@@ -202,6 +215,9 @@
             </button>
         </div>
     </footer>
+    {#if $isSettingsOpen}
+        <SettingsModal bind:useTabs bind:indentationLevel />
+    {/if}
     {#if $showError}
         <ErrorModal />
     {/if}
@@ -245,6 +261,8 @@
         font-family: "NotoSans-Regular", sans-serif;
         font-size: 12px;
         color: #7d8799;
+        background: transparent;
+        border: none;
     }
 
     .field_wrapper {

@@ -15,17 +15,16 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:description" content={twitter?.description || description} />
     <meta name="twitter:title" content={twitter?.title || title} />
+    <meta name="twitter:image" content={`${$page.url.origin}/og`} />
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content={openGraph.type} />
     <meta property="og:url" content={$page.url.origin} />
+    <meta property="og:image" content={`${$page.url.origin}/og`} />
     <meta
         property="og:title"
         content={openGraph.description ? openGraph.description : description}
     />
-
-    <meta property="og:image" content="" />
-
     <meta
         property="og:description"
         content={openGraph.description ? openGraph.description : description}
