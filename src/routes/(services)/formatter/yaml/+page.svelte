@@ -99,7 +99,7 @@ human:
 
 
 # array
-name:
+arrayName:
   - true
   - "string"
   - 2024
@@ -107,8 +107,8 @@ name:
 # Redeclare types
 age: !!float 23
 dead: !!str false
-binary: !!int 0b101010
-hexadecimal: !!int 0x1C7A
+binaryNum: !!int 0b101010
+hexadecimalNum: !!int 0x1C7A
 name: !!str "James"
 ...
             </code>

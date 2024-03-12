@@ -1,7 +1,7 @@
 import { EditorState, StateEffect, StateField, type Extension } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 import { errorMessage, showError } from "~/lib/storages";
-import { themeExtensions } from "./themes/theme";
+
 import { search } from "@codemirror/search";
 import { basicSetup } from "codemirror";
 
@@ -69,6 +69,5 @@ export const stateExtensions = [
     EditorView.lineWrapping,
     basicSetup,
     lineHighlightField,
-    themeExtensions,
     search({ top: true })
 ];

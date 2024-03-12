@@ -4,9 +4,35 @@ import { EditorView } from "@codemirror/view";
 import { tags as t } from "@lezer/highlight";
 import { baseTheme } from "./base";
 
+const invalid = "#eaeaea";
+const cyan = "#56b6c2";
+const malibu = "#61afef";
+const violet = "#c678dd";
 const darkBackground = "#21252b";
 const tooltipBackground = "#FBFBFA";
 const tooltipColor = "#373530";
+
+export const themeYaml = EditorView.theme({
+    ".cm-line": {
+        color: "#dadf6e"
+    },
+    ".ͼx": {
+        color: "#c15897"
+    },
+
+    ".ͼ13": {
+        color: "#67badb"
+    },
+    ".ͼv": {
+        color: "#704fdb"
+    },
+    ".ͼq": {
+        color: "#b067c5"
+    },
+    ".ͼ14": {
+        color: "#e1e77b"
+    }
+});
 
 export const theme = [
     baseTheme,
@@ -14,48 +40,30 @@ export const theme = [
         {
             "&": {
                 height: "60vh",
-                color: "#abb2bf",
-                background: "#030711"
-            },
-            ".cm-line": {
-                color: "#dadf6e"
-            },
-            ".ͼs": {
-                color: "#c15897"
-            },
-            ".ͼw": {
-                color: "#67badb"
-            },
-            ".ͼ12": {
-                color: "#704fdb"
-            },
-            ".ͼx": {
-                color: "#b067c5"
-            },
-            ".ͼq": {
-                color: "#e1e77b"
+                color: "var(--cursor, #abb2bf)",
+                background: "var(--editor-background, #030711)"
             },
             "&.cm-focused": {
                 outline: "unset"
             },
             ".cm-content": {
-                caretColor: "#abb2bf"
+                caretColor: "var(--cursor, #abb2bf)"
             },
             "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground": {
                 backgroundColor: "#3e445157"
             },
             ".cm-cursor, .cm-dropCursor": {
-                borderLeftColor: "#abb2bf"
+                borderLeftColor: "var(--cursor, #abb2bf)"
             },
 
             ".cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
                 {
-                    background: "#3e4451"
+                    background: "var(--selection, #3e4451)"
                 },
 
             ".cm-panels": {
                 background: darkBackground,
-                color: "#abb2bf)"
+                color: "var(--cursor, #abb2bf)"
             },
             ".cm-panels.cm-panels-top": {
                 borderBottom: "2px solid black"
@@ -65,17 +73,17 @@ export const theme = [
             },
 
             ".cm-activeLine": {
-                background: "#f5f5f014"
+                background: "var(--highlight-background, #f5f5f014)"
             },
 
             ".cm-gutters": {
-                background: "#030711",
-                color: "#7d8799",
+                background: "var(--editor-background, #030711)",
+                color: "var(--line-number, #7d8799)",
                 border: "none"
             },
 
             ".cm-activeLineGutter": {
-                background: "#f5f5f014"
+                background: "var(--highlight-background, #f5f5f014)"
             },
 
             ".cm-foldPlaceholder": {
@@ -102,8 +110,8 @@ export const theme = [
 
             ".cm-tooltip-autocomplete": {
                 "& > ul > li[aria-selected]": {
-                    background: "#f5f5f014",
-                    color: "#abb2bf"
+                    background: "var(--highlight-background, #f5f5f014)",
+                    color: "var(--cursor, #abb2bf)"
                 }
             }
         },
@@ -111,34 +119,18 @@ export const theme = [
     )
 ];
 
-const themeHighlightStyle = HighlightStyle.define([
-    { tag: t.comment, color: "#6272a4" },
-    { tag: t.string, color: "#f1fa8c" },
-    { tag: t.atom, color: "#bd93f9" },
-    { tag: t.meta, color: "#f8f8f2" },
-    { tag: [t.keyword, t.operator, t.tagName], color: "#ff79c6" },
-    { tag: [t.function(t.propertyName), t.propertyName], color: "#66d9ef" },
+export const themeHighlightStyle = HighlightStyle.define([
+    { tag: t.keyword, color: violet },
     {
-        tag: [
-            t.definition(t.variableName),
-            t.function(t.variableName),
-            t.className,
-            t.attributeName
-        ],
-        color: "#50fa7b"
+        tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
+        color: "var(--property-name, #e06c75)"
     },
-    { tag: t.atom, color: "#bd93f9" },
-    { tag: t.keyword, color: "#c678dd" },
-    {
-        tag: [t.name, t.deleted, t.character, t.macroName],
-        color: "#e06c75"
-    },
-    { tag: [t.function(t.variableName), t.labelName], color: "#61afef" },
+    { tag: [t.function(t.variableName), t.labelName], color: malibu },
     {
         tag: [t.color, t.constant(t.name), t.standard(t.name)],
-        color: "#d19a66"
+        color: "var(--boolean-value, #d19a66)"
     },
-    { tag: [t.definition(t.name), t.separator], color: "#abb2bf" },
+    { tag: [t.definition(t.name), t.separator], color: "var(--cursor, #abb2bf)" },
     {
         tag: [
             t.typeName,
@@ -150,34 +142,49 @@ const themeHighlightStyle = HighlightStyle.define([
             t.self,
             t.namespace
         ],
-        color: "#e5c07b"
+        color: "var(--number-color, #e5c07b)"
     },
     {
-        tag: [t.operatorKeyword, t.url, t.escape, t.regexp, t.link, t.special(t.string)],
-        color: "#56b6c2"
+        tag: [
+            t.operator,
+            t.operatorKeyword,
+            t.url,
+            t.escape,
+            t.regexp,
+            t.link,
+            t.special(t.string)
+        ],
+        color: cyan
     },
+    { tag: [t.meta, t.comment], color: "var(--line-number, #7d8799)" },
     { tag: t.strong, fontWeight: "bold" },
     { tag: t.emphasis, fontStyle: "italic" },
     { tag: t.strikethrough, textDecoration: "line-through" },
     {
         tag: t.link,
-        color: "#7d8799",
+        color: "var(--line-number, #7d8799)",
         textDecoration: "underline"
     },
     {
         tag: t.heading,
         fontWeight: "bold",
-        color: "#e06c75"
+        color: "var(--property-name, #e06c75)"
     },
     {
-        tag: [t.bool, t.special(t.variableName)],
-        color: "#d19a66"
+        tag: [t.atom, t.bool, t.special(t.variableName)],
+        color: "var(--boolean-value, #d19a66)"
     },
     {
-        tag: [t.processingInstruction, t.inserted],
-        color: "#98c379"
+        tag: [t.processingInstruction, t.string, t.inserted],
+        color: "var(--string-value, #98c379)"
     },
-    { tag: t.invalid, color: "#eaeaea" }
+    { tag: t.invalid, color: invalid }
 ]);
 
-export const themeExtensions: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];
+export const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];
+
+export const themeExtensionsYaml: Extension = [
+    theme,
+    themeYaml,
+    syntaxHighlighting(themeHighlightStyle)
+];

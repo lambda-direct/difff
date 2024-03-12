@@ -53,7 +53,7 @@
                 <label
                     class="toggler-inner"
                     for="toggler"
-                    style="background: {useTabs ? '#e1e1e1' : '#27272a'}"
+                    style="background: {useTabs ? '#e1e1e1' : '#F5F5f014'}"
                 >
                     <span class="toggler-switcher" />
                 </label>
@@ -77,6 +77,7 @@
 
 <style>
     .settings {
+        user-select: none;
         display: flex;
         align-items: flex-start;
         flex-direction: column;
@@ -154,7 +155,6 @@
     }
 
     .toggler-inner {
-        user-select: none;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -163,24 +163,27 @@
         height: 18px;
         border-radius: 100px;
         position: relative;
-        transition: background-color 0.2s;
+        transition:
+            background-color 0.3s,
+            padding 0.3s;
     }
 
     .toggler-inner .toggler-switcher {
         content: "";
-        user-select: none;
         position: absolute;
         width: 14px;
         height: 14px;
         margin-left: 2px;
         border-radius: 100%;
-        transition: left 0.2s;
-        background: #000;
+        transition:
+            left 0.2s,
+            background-color 0.3s;
+        background: #040b1a;
     }
 
     .switch-checkbox:checked + .toggler-inner .toggler-switcher {
         left: calc(100% - 3.5px);
-        user-select: none;
+
         transform: translateX(-100%);
     }
 </style>

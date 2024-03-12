@@ -21,10 +21,10 @@ class YAMLDataOperations {
         }
     };
 
-    public formatYAML = (userInput: string, view: EditorView) => {
+    public formatYAML = (userInput: string, view: EditorView, options: { indent: number }) => {
         try {
             const yamlObject = yaml.load(userInput);
-            const formattedYaml = yaml.dump(yamlObject);
+            const formattedYaml = yaml.dump(yamlObject, options);
             removeHighlightedLines(view);
 
             updateCodemirror(view, formattedYaml);

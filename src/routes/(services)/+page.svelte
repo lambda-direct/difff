@@ -17,10 +17,7 @@
     </header>
     <section class="formatter_field-wrapper">
         {#if browser}
-            <CodeMirror
-                format="json"
-                placeholder="Put your JSON, provide a link, or Drag & Drop a file"
-            />
+            <CodeMirror format="json" placeholder="Provide a JSON, link, or Drag & Drop a file" />
         {:else}
             <div class="back-field" />
         {/if}

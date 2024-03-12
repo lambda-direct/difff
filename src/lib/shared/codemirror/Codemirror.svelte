@@ -21,15 +21,20 @@
     import { StreamLanguage } from "@codemirror/language";
     import SettingsModal from "../SettingsModal.svelte";
     import { getTypedStorageItem } from "~/utils/helpers";
-
     export let format: "json" | "yaml";
     export let placeholder: string;
+    import { themeExtensionsJson, themeExtensionsYaml } from "./themes/theme";
 
     let fieldFormat = format === "json" ? json() : StreamLanguage.define(yamlMode.yaml);
-
+    let themeExtension = format === "json" ? themeExtensionsJson : themeExtensionsYaml;
     let value: string = "";
     let view: EditorView;
-    const extensions = [...stateExtensions, placeholderSet(placeholder), fieldFormat];
+    const extensions = [
+        ...stateExtensions,
+        themeExtension,
+        placeholderSet(placeholder),
+        fieldFormat
+    ];
 
     let element: HTMLDivElement;
     let isDownloadClicked: boolean = false;
@@ -108,9 +113,12 @@
 
     const onPaste = async () => {
         if (format === "json") {
-            await JSONFormatter.prettierFormatJSON(value, view);
+            await JSONFormatter.prettierFormatJSON(value, view, {
+                tabWidth: storage ? storage.spaces : 4,
+                useTabs: storage && "tab" in storage ? storage.tab : false
+            });
         } else if (format === "yaml") {
-            YamlFormatter.formatYAML(value, view);
+            YamlFormatter.formatYAML(value, view, { indent: storage ? storage.spaces : 2 });
         }
     };
 
@@ -124,9 +132,14 @@
                 const droppedData = e.target?.result as string;
                 updateCodemirror(view, droppedData);
                 if (format === "json") {
-                    await JSONFormatter.prettierFormatJSON(droppedData, view);
+                    await JSONFormatter.prettierFormatJSON(droppedData, view, {
+                        tabWidth: storage ? storage.spaces : 4,
+                        useTabs: storage && "tab" in storage ? storage.tab : false
+                    });
                 } else if (format === "yaml") {
-                    YamlFormatter.formatYAML(droppedData, view);
+                    YamlFormatter.formatYAML(droppedData, view, {
+                        indent: storage ? storage.spaces : 2
+                    });
                 }
             };
             if (value !== oldValue) {

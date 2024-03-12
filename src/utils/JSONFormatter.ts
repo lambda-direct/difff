@@ -12,9 +12,7 @@ import {
 
 class JSONDataOperations {
     private optionsJSON = {
-        tabWidth: 4,
         semi: true,
-        useTabs: false,
         singleQuote: false,
         trailingComma: "none" as const,
         endOfLine: "lf" as const,
@@ -61,10 +59,17 @@ class JSONDataOperations {
             });
     };
 
-    public prettierFormatJSON = async (userInput: string, view: EditorView) => {
+    public prettierFormatJSON = async (
+        userInput: string,
+        view: EditorView,
+        options: { tabWidth: number; useTabs: boolean }
+    ) => {
         try {
             const originalCode = await this.dataFromUrl(userInput);
-            const formattedResult = await prettier.format(originalCode, this.optionsJSON);
+            const formattedResult = await prettier.format(originalCode, {
+                ...this.optionsJSON,
+                ...options
+            });
 
             removeHighlightedLines(view);
 
