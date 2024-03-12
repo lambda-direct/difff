@@ -4,10 +4,6 @@ import { EditorView } from "@codemirror/view";
 import { tags as t } from "@lezer/highlight";
 import { baseTheme } from "./base";
 
-const invalid = "#eaeaea";
-const cyan = "#56b6c2";
-const malibu = "#61afef";
-const violet = "#c678dd";
 const darkBackground = "#21252b";
 const tooltipBackground = "#FBFBFA";
 const tooltipColor = "#373530";
@@ -18,30 +14,30 @@ export const theme = [
         {
             "&": {
                 height: "60vh",
-                color: "var(--cursor, #abb2bf)",
-                background: "var(--editor-background, #030711)"
+                color: "#abb2bf",
+                background: "#030711"
             },
             "&.cm-focused": {
                 outline: "unset"
             },
             ".cm-content": {
-                caretColor: "var(--cursor, #abb2bf)"
+                caretColor: "#abb2bf"
             },
             "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground": {
                 backgroundColor: "#3e445157"
             },
             ".cm-cursor, .cm-dropCursor": {
-                borderLeftColor: "var(--cursor, #abb2bf)"
+                borderLeftColor: "#abb2bf"
             },
 
             ".cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
                 {
-                    background: "var(--selection, #3e4451)"
+                    background: "#3e4451"
                 },
 
             ".cm-panels": {
                 background: darkBackground,
-                color: "var(--cursor, #abb2bf)"
+                color: "#abb2bf)"
             },
             ".cm-panels.cm-panels-top": {
                 borderBottom: "2px solid black"
@@ -51,17 +47,17 @@ export const theme = [
             },
 
             ".cm-activeLine": {
-                background: "var(--highlight-background, #f5f5f014)"
+                background: "#f5f5f014"
             },
 
             ".cm-gutters": {
-                background: "var(--editor-background, #030711)",
-                color: "var(--line-number, #7d8799)",
+                background: "#030711",
+                color: "#7d8799",
                 border: "none"
             },
 
             ".cm-activeLineGutter": {
-                background: "var(--highlight-background, #f5f5f014)"
+                background: "#f5f5f014"
             },
 
             ".cm-foldPlaceholder": {
@@ -88,8 +84,8 @@ export const theme = [
 
             ".cm-tooltip-autocomplete": {
                 "& > ul > li[aria-selected]": {
-                    background: "var(--highlight-background, #f5f5f014)",
-                    color: "var(--cursor, #abb2bf)"
+                    background: "#f5f5f014",
+                    color: "#abb2bf"
                 }
             }
         },
@@ -97,18 +93,34 @@ export const theme = [
     )
 ];
 
-export const themeHighlightStyle = HighlightStyle.define([
-    { tag: t.keyword, color: violet },
+const themeHighlightStyle = HighlightStyle.define([
+    { tag: t.comment, color: "#6272a4" },
+    { tag: t.string, color: "#f1fa8c" },
+    { tag: t.atom, color: "#bd93f9" },
+    { tag: t.meta, color: "#f8f8f2" },
+    { tag: [t.keyword, t.operator, t.tagName], color: "#ff79c6" },
+    { tag: [t.function(t.propertyName), t.propertyName], color: "#66d9ef" },
     {
-        tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
-        color: "var(--property-name, #e06c75)"
+        tag: [
+            t.definition(t.variableName),
+            t.function(t.variableName),
+            t.className,
+            t.attributeName
+        ],
+        color: "#50fa7b"
     },
-    { tag: [t.function(t.variableName), t.labelName], color: malibu },
+    { tag: t.atom, color: "#bd93f9" },
+    { tag: t.keyword, color: "#c678dd" },
+    {
+        tag: [t.name, t.deleted, t.character, t.macroName],
+        color: "#e06c75"
+    },
+    { tag: [t.function(t.variableName), t.labelName], color: "#61afef" },
     {
         tag: [t.color, t.constant(t.name), t.standard(t.name)],
-        color: "var(--boolean-value, #d19a66)"
+        color: "#d19a66"
     },
-    { tag: [t.definition(t.name), t.separator], color: "var(--cursor, #abb2bf)" },
+    { tag: [t.definition(t.name), t.separator], color: "#abb2bf" },
     {
         tag: [
             t.typeName,
@@ -120,43 +132,34 @@ export const themeHighlightStyle = HighlightStyle.define([
             t.self,
             t.namespace
         ],
-        color: "var(--number-color, #e5c07b)"
+        color: "#e5c07b"
     },
     {
-        tag: [
-            t.operator,
-            t.operatorKeyword,
-            t.url,
-            t.escape,
-            t.regexp,
-            t.link,
-            t.special(t.string)
-        ],
-        color: cyan
+        tag: [t.operatorKeyword, t.url, t.escape, t.regexp, t.link, t.special(t.string)],
+        color: "#56b6c2"
     },
-    { tag: [t.meta, t.comment], color: "var(--line-number, #7d8799)" },
     { tag: t.strong, fontWeight: "bold" },
     { tag: t.emphasis, fontStyle: "italic" },
     { tag: t.strikethrough, textDecoration: "line-through" },
     {
         tag: t.link,
-        color: "var(--line-number, #7d8799)",
+        color: "#7d8799",
         textDecoration: "underline"
     },
     {
         tag: t.heading,
         fontWeight: "bold",
-        color: "var(--property-name, #e06c75)"
+        color: "#e06c75"
     },
     {
-        tag: [t.atom, t.bool, t.special(t.variableName)],
-        color: "var(--boolean-value, #d19a66)"
+        tag: [t.bool, t.special(t.variableName)],
+        color: "#d19a66"
     },
     {
-        tag: [t.processingInstruction, t.string, t.inserted],
-        color: "var(--string-value, #98c379)"
+        tag: [t.processingInstruction, t.inserted],
+        color: "#98c379"
     },
-    { tag: t.invalid, color: invalid }
+    { tag: t.invalid, color: "#eaeaea" }
 ]);
 
 export const themeExtensions: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];

@@ -1,14 +1,6 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
-    import {
-        openSearchPanel,
-        findNext,
-        findPrevious,
-        replaceNext,
-        replaceAll,
-        selectMatches
-    } from "@codemirror/search";
-    import { SearchQuery } from "@codemirror/search";
+    import { SearchQuery, setSearchQuery } from "@codemirror/search";
     import type { EditorView } from "codemirror";
     import AllIcon from "~/lib/icons/searchFieldIcons/AllIcon.svelte";
     import NextIcon from "~/lib/icons/searchFieldIcons/NextIcon.svelte";
@@ -24,32 +16,13 @@
 
     export let view: EditorView;
 
-    export let searchValue: string = "";
-    export let replaceValue: string = "";
+    let searchValue: string = "";
+    let replaceValue: string = "";
 
     let matchCaseChecked = false;
     let wholeWordChecked = false;
     let regexChecked = false;
-    let query: any = null;
-    let store;
-
-    onMount(() => {
-        if (!view) return;
-        openSearchPanel(view);
-        store = view.state;
-    });
-
-    onDestroy(() => {
-        // Cleanup logic, if needed
-    });
-
-    let formData = {
-        search: "",
-        replace: "",
-        caseSensitive: false,
-        regexp: false,
-        wholeWord: false
-    };
+    let newQuery;
 
     let showDropDown: boolean = false;
 
@@ -58,41 +31,23 @@
     };
 
     $: {
-        const newQuery = new SearchQuery({
-            search: formData.search,
-            caseSensitive: formData.caseSensitive,
-            regexp: formData.regexp,
-            wholeWord: formData.wholeWord,
-            replace: formData.replace
+        newQuery = new SearchQuery({
+            search: searchValue,
+            caseSensitive: matchCaseChecked,
+            regexp: regexChecked,
+            wholeWord: wholeWordChecked,
+            replace: replaceValue
         });
-
-        // view.dispatch({ effects: setSearchQuery.of(newQuery) });
-
-        if (!query || !query.eq(newQuery)) {
-            query = newQuery;
-            // view.dispatch({ effects: setSearchQuery.of(newQuery) });
-        }
+        if (view) view.dispatch({ effects: setSearchQuery.of(newQuery) });
     }
 
-    const handleFindNext = () => {
-        findNext(view);
-    };
+    onMount(() => {
+        if (!view) return;
+    });
 
-    const handleFindPrevious = () => {
-        findPrevious(view);
-    };
-
-    const handleSelectMatches = () => {
-        selectMatches(view);
-    };
-
-    const handleReplaceNext = () => {
-        replaceNext(view);
-    };
-
-    const handleReplaceAll = () => {
-        replaceAll(view);
-    };
+    onDestroy(() => {
+        view?.destroy();
+    });
 </script>
 
 <form class="form">
@@ -142,9 +97,13 @@
                         </button>
                     </div>
                 </div>
-                <button class="icon_buttons main"> <PreciousIcon /> </button>
+                <button class="icon_buttons main">
+                    <PreciousIcon />
+                </button>
                 <button class="icon_buttons main"> <NextIcon /> </button>
-                <button class="icon_buttons main"> <AllIcon /> </button>
+                <button class="icon_buttons main">
+                    <AllIcon />
+                </button>
                 <button class="icon_buttons main"> <CloseIcon /> </button>
             </div>
             {#if showDropDown}
