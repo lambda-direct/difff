@@ -39,7 +39,7 @@
         <h3>What is YAML file format?</h3>
         <p>
             <strong>YAML (Ain't Markup Language)</strong> - data serialization language used as a format
-            for configuration files, with (.yaml) or (.yml) extension. Structured with key-value pairs,
+            for configuration files, with (.yaml) or (.yml) extensions. Structured with key-value pairs,
             where key is always a string.
         </p>
         <p>Basic principles:</p>
@@ -49,7 +49,7 @@
             <li>Multi-lane comments unsupported</li>
             <li>Case and space sensitive</li>
             <li>Uses spaces instead of tabs</li>
-            <li>Indentation, each level multiplies spaces num</li>
+            <li>Each level of indentation multiplies spaces num</li>
             <li>Support multiple documents in one file</li>
         </ul>
         <h3>YAML naming for data structures</h3>
