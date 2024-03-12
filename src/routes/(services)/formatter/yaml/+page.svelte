@@ -7,6 +7,8 @@
     import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import "./style.css";
 
+    export let data;
+
     onMount(() => {
         if (browser) {
             hljs.highlightAll();
@@ -35,140 +37,7 @@
     </section>
 
     <article class="article_style">
-        <h2>What is YAML file format?</h2>
-        <p>
-            <strong>YAML (Ain't Markup Language)</strong> - data serialization language used as a format
-            for configuration files, with (.yaml) or (.yml) extensions. Structured with key-value pairs,
-            where key is always a string.
-        </p>
-        <h3>YAML Basic principles:</h3>
-        <ul>
-            <li>Each key is unique</li>
-            <li>Comments are identified by (#)</li>
-            <li>Multi-lane comments unsupported</li>
-            <li>Case and space sensitive</li>
-            <li>Uses spaces instead of tabs</li>
-            <li>Each level of indentation multiplies spaces num</li>
-            <li>Support multiple documents in one file</li>
-        </ul>
-        <h2>YAML naming for data structures</h2>
-        <p>
-            <strong>Mappings</strong> - store key-value pairs. Represent complex structures like
-            hashes or dictionaries.<br /> <strong>Sequences</strong> - simple structures, each item
-            placed on its own line & that start with an opening dash serve for arrays or tuples.
-            <br /><strong>Scalar</strong> - equivalent basic types boolean, date, integers, and floating.
-        </p>
-        <pre>
-            <code class="language-yaml hljs">    
-# Each documents starts with three dashes, ends with three dots. 
----
-# string
-quoted: "YAML"
-singleQuoted: 'YAML'
-unquoted: YAML
-
-# number
-decimal: 7290
-binary: 0b1110001111010
-octal: 0o16172
-hexadecimal: 0x1C7A
-
-# boolean 
-null: 
-  - ~
-  - NULL
-  - Null
-  - null
-  -      # empty also null
-
-# boolean 
-
-boolean: 
-  - TRUE
-  - True
-  - true
-
-# object
-human:
-  name: James
-  age: 51
-  children:
-    - Bob
-    - Joana
-
-
-# array
-arrayName:
-  - true
-  - "string"
-  - 2024
-
-# Redeclare types
-integer: !!float 23
-bool: !!str false
-binaryNumber: !!int 0b101010
-hexadecimalNumber: !!int 0x1C7A
-stringExample: !!str "James"
-...
-            </code>
-        </pre>
-        <h2>How to use YAML formatter</h2>
-        <p>
-            Put JSON, JavaScript object or an undecorated YAML. We'll validate input and format it.
-        </p>
-        <h5>Input:</h5>
-        <pre>
-            <code class="language-yaml hljs">
-# JSON
-{`{
-    "someData": "trees",
-    "randomNumber": 322,
-    "nullValue": "~",
-    "moreValues": "21 22 23",
-    "array": [ null, 22, "true"],
-    "boolean": false,
-    "obj": {
-        "val1": "value",
-        "val2": "value",
-        "val3": true
-    }
-}`}
-
-# JS object
-{`{someData   : "trees", randomNumber: 322, nullValue : ~, moreValues : 21 22 23, array: [null,22, "true"], boolean : false,obj    :     {val1: "value", val2: "value",val3: true}}`}
-
-# badly decorated YAML
-someData   : "trees"
-randomNumber: 322
-nullValue : ~
-moreValues : 
-  21
-  22
- 23
-array: [null,22, "true"]
-boolean : false
-obj    :     val1: "value", val2: "value",
-val3: true
-            </code>
-        </pre>
-        <h5>Output:</h5>
-        <pre>
-            <code class="language-yaml hljs">
-someData: trees
-randomNumber: 322
-nullValue: null
-moreValues: 21 22 23
-array:
-  - null
-  - 22
-  - 'true'
-boolean: false
-obj:
-  val1: value
-  val2: value
-  val3: true
-          </code>
-        </pre>
+        <svelte:component this={data.content} />
     </article>
 </main>
 

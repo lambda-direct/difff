@@ -212,9 +212,10 @@ article {
         }
     }
 
-    p + h5 {
-        margin: 12px 0 0 0;
+    h5 {
+        margin: 12px 0;
     }
+
     pre + p {
         margin: 0;
     }
