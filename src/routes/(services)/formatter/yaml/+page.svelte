@@ -41,7 +41,7 @@
             for configuration files, with (.yaml) or (.yml) extensions. Structured with key-value pairs,
             where key is always a string.
         </p>
-        <h3> YAML Basic principles: </h3>
+        <h3>YAML Basic principles:</h3>
         <ul>
             <li>Each key is unique</li>
             <li>Comments are identified by (#)</li>
@@ -98,17 +98,17 @@ human:
 
 
 # array
-name:
+arrayName:
   - true
   - "string"
   - 2024
 
 # Redeclare types
-age: !!float 23
-dead: !!str false
-binary: !!int 0b101010
-hexadecimal: !!int 0x1C7A
-name: !!str "James"
+integer: !!float 23
+bool: !!str false
+binaryNumber: !!int 0b101010
+hexadecimalNumber: !!int 0x1C7A
+stringExample: !!str "James"
 ...
             </code>
         </pre>
