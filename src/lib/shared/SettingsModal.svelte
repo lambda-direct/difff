@@ -1,44 +1,61 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
-    import { isSettingsOpen } from "../storages";
     import { page } from "$app/stores";
+    import { onMount } from "svelte";
+    import { isSettingsOpen } from "../storages";
+    import { browser } from "$app/environment";
+    import { setTypedStorageItem } from "~/utils/helpers";
 
     export let useTabs: boolean;
     export let indentationLevel: number;
-    $: console.log("indentationLevel:", typeof indentationLevel);
 
-    const handleBodyClick = (event: MouseEvent) => {
-        const modal = document.querySelector(".settings");
-        if (
-            modal &&
-            !modal.contains(event.target as Node) &&
-            event.target &&
-            (event.target as HTMLInputElement).name !== "settings-btn"
-        ) {
-            isSettingsOpen.set(false);
+    const handleMenuClose = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+
+        const isSettingsButton =
+            target.closest("[name=settings]") !== null ||
+            target.closest("[name=settings] svg") !== null;
+
+        const isInsideModal = target.closest(".settings") === null;
+
+        if (!isSettingsButton && isInsideModal) {
+            $isSettingsOpen = false;
+            if (browser) document.body.removeEventListener("click", handleMenuClose);
         }
     };
+
+    $: {
+        if ($page.url.pathname.includes("yaml")) {
+            setTypedStorageItem("yaml", { spaces: indentationLevel });
+        }
+        if (!$page.url.pathname.includes("yaml")) {
+            setTypedStorageItem("json", {
+                tab: useTabs,
+                spaces: indentationLevel
+            });
+        }
+    }
     onMount(() => {
-        document.body.addEventListener("click", handleBodyClick);
-
-        return () => {
-            document.body.removeEventListener("click", handleBodyClick);
-        };
-    });
-
-    onDestroy(() => {
-        document.body.removeEventListener("click", handleBodyClick);
+        document.addEventListener("click", handleMenuClose);
     });
 </script>
 
 <div class="settings">
     {#if !$page.url.pathname.includes("yaml")}
         <div class="setting_option">
-            <p class="option_label">Tabs</p>
+            <p class="option_label">Tabs:</p>
             <div class="switch">
-                <label>
-                    <input type="checkbox" bind:checked={useTabs} />
-                    <span class="slider"></span>
+                <input
+                    bind:checked={useTabs}
+                    class="switch-checkbox"
+                    id="toggler"
+                    type="checkbox"
+                />
+                <label
+                    class="toggler-inner"
+                    for="toggler"
+                    style="background: {useTabs ? '#e1e1e1' : '#27272a'}"
+                >
+                    <span class="toggler-switcher" />
                 </label>
             </div>
         </div>
@@ -46,23 +63,19 @@
     <div class="setting_option">
         <p class="option_label">Indentation-level:</p>
         <select bind:value={indentationLevel} name="indentationLevel" class="indentation_select">
-            <option hidden disabled value="" selected>{indentationLevel}</option>
-            <option class="potion" value={1}>1</option>
-            <option class="potion" value={2}>2</option>
-            <option class="potion" value={3}>3</option>
-            <option class="potion" value={4}>4</option>
-            <option class="potion" value={5}>5</option>
-            <option class="potion" value={6}>6</option>
-            <option class="potion" value={8}>8</option>
-            <option class="potion" value={10}>10</option>
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+            <option value={5}>5</option>
+            <option value={6}>6</option>
+            <option value={7}>7</option>
+            <option value={8}>8</option>
         </select>
     </div>
 </div>
 
-<style lang="scss">
-    .potion {
-        border-radius: 4px;
-    }
+<style>
     .settings {
         display: flex;
         align-items: flex-start;
@@ -73,16 +86,16 @@
         border-radius: 6px;
         box-shadow: 0px 1px 10px #000;
         color: #b1b1b1;
-        bottom: 60px;
+        top: 6px;
         position: absolute;
-        left: 12px;
+        right: 24px;
         z-index: 5;
         animation: floatIn 0.2s ease-in-out 0s forwards;
     }
 
     @keyframes floatIn {
         to {
-            bottom: 66px;
+            top: 12px;
         }
     }
 
@@ -105,8 +118,8 @@
     }
 
     .switch {
-        width: 35px;
-        height: 10px;
+        width: 36px;
+        height: 14px;
         display: inline-block;
         position: relative;
     }
@@ -125,39 +138,49 @@
         }
     }
 
-    .slider {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: #424242;
-        border-radius: 34px;
-        cursor: pointer;
-        position: absolute;
-        transition: 0.4s;
-        &::before {
-            height: 20px;
-            width: 20px;
-            left: -1px;
-            top: -5px;
-            content: "";
-            position: absolute;
-            background: #737373;
-            border-radius: 50%;
-            outline: none;
-            transition: 0.4s;
+    input {
+        opacity: 0;
+        &:disabled {
+            cursor: default;
         }
     }
 
-    input {
-        opacity: 0;
+    .switch-checkbox {
+        height: 0;
+        width: 0;
+        user-select: none;
+        visibility: hidden;
+        display: none;
     }
 
-    input:checked + .slider {
-        background-color: #296928;
+    .toggler-inner {
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        width: 32px;
+        height: 18px;
+        border-radius: 100px;
+        position: relative;
+        transition: background-color 0.2s;
     }
 
-    input:checked + .slider:before {
-        transform: translateX(17px);
+    .toggler-inner .toggler-switcher {
+        content: "";
+        user-select: none;
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        margin-left: 2px;
+        border-radius: 100%;
+        transition: left 0.2s;
+        background: #000;
+    }
+
+    .switch-checkbox:checked + .toggler-inner .toggler-switcher {
+        left: calc(100% - 3.5px);
+        user-select: none;
+        transform: translateX(-100%);
     }
 </style>

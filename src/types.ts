@@ -48,3 +48,13 @@ export type OGCard = {
     locale: string;
     type: string;
 };
+
+export type LocaleStorageSchema = {
+    json: {
+        tab: boolean;
+        spaces: number;
+    };
+    yaml: {
+        spaces: number;
+    };
+};

@@ -1,10 +1,43 @@
 <script lang="ts">
     import AlertIcon from "~/lib/icons/AlertIcon.svelte";
     import { errorMessage } from "../storages";
+    import { onMount } from "svelte";
+
+    let showErrorMessage = true;
+
+    const handleShowErrorClick = () => {
+        showErrorMessage = !showErrorMessage;
+    };
+
+    const handleEnterClick = (event: KeyboardEvent) => {
+        event.preventDefault();
+        if (event.key === "Enter") {
+            handleShowErrorClick();
+        }
+    };
+
+    onMount(() => {
+        setTimeout(() => {
+            showErrorMessage = false;
+        }, 5000);
+    });
 </script>
 
-<div class="modal">
-    <p class="title">Invalid {$errorMessage === "" ? "format" : $errorMessage}</p>
+<div
+    role="button"
+    tabindex="0"
+    aria-labelledby="showErrorMessage"
+    aria-label="showErrorMessage"
+    on:click={handleShowErrorClick}
+    on:keydown={handleEnterClick}
+    class="modal"
+    class:gap={showErrorMessage}
+>
+    <p class="title">
+        {#if showErrorMessage}
+            Invalid {$errorMessage === "" ? "format" : $errorMessage}
+        {/if}
+    </p>
     <AlertIcon color={"#eaeaea"} />
 </div>
 
@@ -16,7 +49,6 @@
     }
     .modal {
         display: flex;
-        gap: 4px;
         align-items: center;
         flex-direction: row-reverse;
         padding: 12px;
@@ -26,8 +58,14 @@
         position: absolute;
         right: 24px;
         z-index: 5;
+        cursor: pointer;
         animation: floatIn 0.3s ease-in-out 0s forwards;
     }
+
+    .gap {
+        gap: 4px;
+    }
+
     @keyframes floatIn {
         to {
             bottom: 66px;

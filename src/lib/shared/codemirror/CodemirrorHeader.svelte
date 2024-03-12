@@ -7,11 +7,13 @@
     import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
+    import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
     import { dropDownOptions } from "~/utils/services";
     import YamlFormatter from "~/utils/YamlFormatter";
     import JSONFormatter from "~/utils/JSONFormatter";
     import { updateCodemirror } from "./codemirror";
+    import { isSettingsOpen } from "~/lib/storages";
 
     export let value: string = "";
     export let view: EditorView;
@@ -72,6 +74,10 @@
         if (fileInput) {
             fileInput.click();
         }
+    };
+
+    const openSettings = () => {
+        $isSettingsOpen = !$isSettingsOpen;
     };
 
     const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
@@ -183,12 +189,21 @@
             />
             <UploadIcon />
         </button>
+        <button
+            class="button"
+            title="settings"
+            aria-label="settings"
+            aria-labelledby="settings"
+            name="settings"
+            on:click={openSettings}
+        >
+            <SettingsIcon />
+        </button>
     </div>
 </header>
 
 <style lang="scss">
     .dropdown_options {
-        padding: 4px;
         border-radius: 4px;
         background: transparent;
         font-size: 16px;
@@ -210,6 +225,7 @@
     }
 
     .option_link {
+        padding: 4px;
         display: block;
         width: 100%;
     }

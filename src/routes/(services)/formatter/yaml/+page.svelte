@@ -44,12 +44,12 @@
         </p>
         <p>Basic principles:</p>
         <ul>
-            <li>Each keys is unique</li>
-            <li>Comments identified by (#)</li>
+            <li>Each key is unique</li>
+            <li>Comments are identified by (#)</li>
             <li>Multi-lane comments unsupported</li>
             <li>Case and space sensitive</li>
             <li>Uses spaces instead of tabs</li>
-            <li>Spaces number must be consistent</li>
+            <li>Indentation, each level multiplies spaces num</li>
             <li>Support multiple documents in one file</li>
         </ul>
         <h3>YAML naming for data structures</h3>
@@ -57,116 +57,65 @@
             <strong>Mappings</strong> - store key-value pairs. Represent complex structures like
             hashes or dictionaries.<br /> <strong>Sequences</strong> - simple structures, each item
             placed on its own line & that start with an opening dash serve for arrays or tuples.
-            <br /><strong>Scalar</strong> - equivalent basic types boolean, Date, integers, and floating.
+            <br /><strong>Scalar</strong> - equivalent basic types boolean, date, integers, and floating.
         </p>
         <pre>
             <code class="language-yaml hljs">    
-# This is an example using YAML, each documents starts each with three dashes and end with three dots. 
-# Data structure example
-
+# Each documents starts with three dashes, ends with three dots. 
 ---
-# key: value [mapping]
-company: spacelift
+# string
+quoted: "YAML"
+singleQuoted: 'YAML'
+unquoted: YAML
 
-# key: value is an array [sequence]
-domain:
- - 22 #number 
- - true #boolean
- - 2024-02-10 #Date
+# number
+decimal: 7290
+binary: 0b1110001111010
+octal: 0o16172
+hexadecimal: 0x1C7A
 
-# key: value is a string [scalar]
-str1: "YAML" #string quoted
-str2: 'YAML' #string quoted
-str3: YAML #string unquoted
+# boolean 
+null: 
+  - ~
+  - NULL
+  - Null
+  - null
+  -      # empty also null
 
-# complex example
-tutorial:
-  - yaml:
-      name: "YAML Ain't Markup Language" #string 
-      someOption: true #boolean
-      born: 2001 #number
-  - json:
-      name: JavaScript Object Notation #string
-      someOption: great #string
-      born: 2001 #number
-  - xml:
-      name: Extensible Markup Language #string
-      someOption: 2024-02-10 #Date
-      born: 1996 #number
-...
+# boolean 
 
-# Indentation defines it's structure, using spaces.
----
-nestingExample:  #nesting level 1
-  - yaml:  #nesting level 2 (2 spaces)
-      name: "YAML Ain't Markup Language" #string #nesting level 3 (4 spaces)
-      type: awesome #string
-      born: 2001 #number
-...
+boolean: 
+  - TRUE
+  - True
+  - true
 
-# Key case sensitivity. Two different key-value pair
----
-caseExample: true #boolean
-caseexample: !!str false #string
-...
+# object
+human:
+  name: James
+  age: 51
+  children:
+    - Bob
+    - Joana
 
-# YAML autodetects types. To force a type indication use prefix (!!) before type. 
----
+
+# array
+name:
+  - true
+  - "string"
+  - 2024
+
+# Redeclare types
 age: !!float 23
 dead: !!str false
 binary: !!int 0b101010
 hexadecimal: !!int 0x1C7A
 name: !!str "James"
 ...
-
-# If want to use special characters wrap string in single quotes. 
-# With a backslash use double quote
-
-#input:
-foo: "hello world quoted\n" 
-bar: hello world unquoted\n
-quote: 'A single quote '' inside a single-quoted string'
-
-#output:
-foo: |
-  hello world quoted 
-  #formatter processes quoted value as ending with linefeed
-bar: hello world unquoted\n #unquoted, it treats the \n as two characters
-quote: A single quote ' inside a single-quoted string  
-  #to use single quote(') doubled it
-
-# Also it will convert other values
-
-#input:
-nullExample: [~, NULL, Null] #canonical, uppercase & camelCase to null
-nullExample2:  #empty to null
-intExample: [0b1110001111010, 0o16172, 0x1C7A] #binary, octal, hexadecimal to int
-boolExample: [TRUE, True] #uppercase & camelCase to bool
-floatExample: [.NAN, .NaN, .INF] #uppercase & camelCase to float
-
-#output:
-nullExample:
-  - null
-  - null
-  - null
-nullExample2: null
-intExample:
-  - 7290
-  - 7290
-  - 7290
-boolExample:
-  - true
-  - true
-floatExample:
-  - .nan
-  - .nan
-  - .inf
             </code>
         </pre>
         <h3>How to use YAML formatter</h3>
         <p>
-            Put JSON, js object or an undecorated YAML. We'll validate your input and return a
-            formatted YAML.
+            Put JSON, JavaScript object or an undecorated YAML. We'll validate input and format it.
         </p>
         <h5>Input:</h5>
         <pre>

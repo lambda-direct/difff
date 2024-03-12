@@ -20,6 +20,7 @@
     import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
     import { StreamLanguage } from "@codemirror/language";
     import SettingsModal from "../SettingsModal.svelte";
+    import { getTypedStorageItem } from "~/utils/helpers";
 
     export let format: "json" | "yaml";
     export let placeholder: string;
@@ -34,8 +35,9 @@
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
 
-    let useTabs: boolean = false;
-    let indentationLevel: number = format === "json" ? 4 : 2;
+    let storage = getTypedStorageItem(format);
+    let useTabs: boolean = storage && "tab" in storage ? storage.tab : false;
+    let indentationLevel: number = storage ? storage.spaces : format === "json" ? 4 : 2;
     let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
     $: onChange = handleChange;
@@ -136,10 +138,6 @@
         }
     };
 
-    const openSettings = () => {
-        $isSettingsOpen = !$isSettingsOpen;
-    };
-
     onMount(() => {
         view = createEditorView();
         if (browser) {
@@ -172,7 +170,7 @@
                     : cursorPosition.col}
             </span>
             <button
-                on:click={openSettings}
+                on:click={() => {}}
                 title="settings"
                 aria-label="settings"
                 aria-labelledby="settings"
