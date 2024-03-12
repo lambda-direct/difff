@@ -12,28 +12,6 @@ const darkBackground = "#21252b";
 const tooltipBackground = "#FBFBFA";
 const tooltipColor = "#373530";
 
-export const themeYaml = EditorView.theme({
-    ".cm-line": {
-        color: "#dadf6e"
-    },
-    ".ͼx": {
-        color: "#c15897"
-    },
-
-    ".ͼ13": {
-        color: "#67badb"
-    },
-    ".ͼv": {
-        color: "#704fdb"
-    },
-    ".ͼq": {
-        color: "#b067c5"
-    },
-    ".ͼ14": {
-        color: "#e1e77b"
-    }
-});
-
 export const theme = [
     baseTheme,
     EditorView.theme(
@@ -181,10 +159,48 @@ export const themeHighlightStyle = HighlightStyle.define([
     { tag: t.invalid, color: invalid }
 ]);
 
+export const themeHighlightStyleYaml = HighlightStyle.define([
+    { tag: t.keyword, color: "#d19a66" },
+    {
+        tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
+        color: "var(--property-name, #e06c75)"
+    },
+    { tag: [t.function(t.variableName), t.labelName], color: malibu },
+    { tag: [t.definition(t.name), t.separator], color: "var(--cursor, #abb2bf)" },
+    {
+        tag: [
+            t.typeName,
+            t.className,
+            t.number,
+            t.changed,
+            t.annotation,
+            t.modifier,
+            t.self,
+            t.namespace
+        ],
+        color: "var(--number-color, #e5c07b)"
+    },
+    { tag: [t.meta, t.comment], color: "var(--line-number, #Abb2bf)" },
+    {
+        tag: [t.atom],
+        color: "var(--boolean-value, #e06c75)"
+    },
+    {
+        tag: [t.processingInstruction, t.string, t.inserted, t.regexp],
+        color: "var(--string-value, #98c379)"
+    }
+]);
+
 export const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];
 
 export const themeExtensionsYaml: Extension = [
-    theme,
-    themeYaml,
-    syntaxHighlighting(themeHighlightStyle)
+    [
+        ...theme,
+        EditorView.theme({
+            ".cm-line": {
+                color: "var(--cursor, #98c379)"
+            }
+        })
+    ],
+    syntaxHighlighting(themeHighlightStyleYaml)
 ];
