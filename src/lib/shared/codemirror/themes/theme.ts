@@ -17,6 +17,24 @@ export const theme = [
                 color: "#abb2bf",
                 background: "#030711"
             },
+            ".cm-line": {
+                color: "#dadf6e"
+            },
+            ".ͼs": {
+                color: "#c15897"
+            },
+            ".ͼw": {
+                color: "#67badb"
+            },
+            ".ͼ12": {
+                color: "#704fdb"
+            },
+            ".ͼx": {
+                color: "#b067c5"
+            },
+            ".ͼq": {
+                color: "#e1e77b"
+            },
             "&.cm-focused": {
                 outline: "unset"
             },

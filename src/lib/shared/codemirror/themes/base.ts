@@ -35,6 +35,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
         border: "1px solid #313345 !important",
         color: "#e1e1e1"
     },
+
     ".cm-panels.cm-panels-top": {
         "z-index": "10",
         border: "none !important"
