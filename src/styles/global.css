@@ -66,12 +66,14 @@ a {
     color: inherit;
 }
 
-ul,
-ul:hover {
-    padding: 0;
+ol,
+ul {
     margin: 0;
+    padding: 0;
+}
+
+ul {
     list-style: none;
-    list-style-image: none;
 }
 pre {
     margin: 0;
@@ -84,56 +86,7 @@ button {
     }
 }
 
-.error {
-    background: #631515 !important;
-}
-
-.container {
-    margin: 0 auto;
-    width: 100%;
-    max-width: 1024px;
-    padding: 0 16px;
-    @media (min-width: 768px) {
-        padding: 0 24px;
-    }
-}
-
-.back-field {
-    height: calc(60vh + 54px + 54px);
-    resize: none;
-    background: #030711;
-    border-radius: 8px;
-}
-
-.footer_article {
-    margin: 32px auto 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.footer_article_title {
-    text-align: center;
-}
-
-.footer_article_text {
-    margin: 16px 0 0;
-    text-align: center;
-}
-
-.main_title {
-    margin: 28px 0 0;
-    text-align: center;
-}
-
-.main_subtitle {
-    margin: 16px 0 0;
-    text-align: center;
-}
-
-.article_style {
-    max-width: 680px;
-
+article {
     & h1,
     h2,
     h3,
@@ -144,16 +97,9 @@ button {
         padding: 0;
         color: #dfdada;
     }
-    & menu,
-    ol,
-    ul {
-        padding: 0;
-        margin: 0;
-        list-style: disc;
-        list-style-image: none;
-    }
 
     & ul {
+        list-style: disc;
         & ul {
             list-style: circle;
         }
@@ -165,7 +111,7 @@ button {
         font-size: 20px;
         color: #e1e1e1;
         &:first-child {
-            margin: 42px 0 0 30px;
+            margin: 32 px 0 0 30px;
         }
         & li {
             &:first-child {
@@ -192,7 +138,7 @@ button {
     }
 
     & h3 {
-        margin: 24px 0 0;
+        margin: 32px 0 0;
         color: #dfdada;
     }
 
@@ -293,4 +239,51 @@ button {
     ::-webkit-scrollbar-thumb:hover {
         background: #363d44;
     }
+}
+
+.error {
+    background: #631515 !important;
+}
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1024px;
+    padding: 0 16px;
+    @media (min-width: 768px) {
+        padding: 0 24px;
+    }
+}
+
+.back-field {
+    height: calc(60vh + 54px + 54px);
+    resize: none;
+    background: #030711;
+    border-radius: 8px;
+}
+
+.footer_article {
+    margin: 32px auto 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer_article_title {
+    text-align: center;
+}
+
+.footer_article_text {
+    margin: 16px 0 0;
+    text-align: center;
+}
+
+.main_title {
+    margin: 28px 0 0;
+    text-align: center;
+}
+
+.main_subtitle {
+    margin: 16px 0 0;
+    text-align: center;
 }

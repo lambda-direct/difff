@@ -13,7 +13,7 @@
     openGraph={{ type: "article", locale: "en_US" }}
 />
 
-<section class="article">
+<section class="wrapper">
     <header class="header">
         <nav class="navigation">
             <ul class="list">
@@ -33,10 +33,13 @@
 </section>
 
 <style>
-    .article {
+    .wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+    .article_style {
+        max-width: 680px;
     }
 
     .header {

@@ -1,11 +1,11 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import Head from "~/lib/shared/Head.svelte";
-    import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
     import hljs from "highlight.js";
-    import "./style.css";
     import yaml from "highlight.js/lib/languages/yaml";
     import { onMount } from "svelte";
+    import Head from "~/lib/shared/Head.svelte";
+    import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
+    import "./style.css";
 
     onMount(() => {
         if (browser) {
@@ -35,14 +35,13 @@
     </section>
 
     <article class="article_style">
-        <h2 class="article_style_tittle">How to Format YAML Using an Online Tool</h2>
-        <h3>What is YAML file format?</h3>
+        <h2>What is YAML file format?</h2>
         <p>
             <strong>YAML (Ain't Markup Language)</strong> - data serialization language used as a format
             for configuration files, with (.yaml) or (.yml) extensions. Structured with key-value pairs,
             where key is always a string.
         </p>
-        <p>Basic principles:</p>
+        <h3> YAML Basic principles: </h3>
         <ul>
             <li>Each key is unique</li>
             <li>Comments are identified by (#)</li>
@@ -52,7 +51,7 @@
             <li>Each level of indentation multiplies spaces num</li>
             <li>Support multiple documents in one file</li>
         </ul>
-        <h3>YAML naming for data structures</h3>
+        <h2>YAML naming for data structures</h2>
         <p>
             <strong>Mappings</strong> - store key-value pairs. Represent complex structures like
             hashes or dictionaries.<br /> <strong>Sequences</strong> - simple structures, each item
@@ -99,7 +98,7 @@ human:
 
 
 # array
-arrayName:
+name:
   - true
   - "string"
   - 2024
@@ -107,13 +106,13 @@ arrayName:
 # Redeclare types
 age: !!float 23
 dead: !!str false
-binaryNum: !!int 0b101010
-hexadecimalNum: !!int 0x1C7A
+binary: !!int 0b101010
+hexadecimal: !!int 0x1C7A
 name: !!str "James"
 ...
             </code>
         </pre>
-        <h3>How to use YAML formatter</h3>
+        <h2>How to use YAML formatter</h2>
         <p>
             Put JSON, JavaScript object or an undecorated YAML. We'll validate input and format it.
         </p>
@@ -189,8 +188,5 @@ obj:
     }
     .article_style {
         max-width: 100%;
-    }
-    .article_style_tittle {
-        text-align: center;
     }
 </style>
