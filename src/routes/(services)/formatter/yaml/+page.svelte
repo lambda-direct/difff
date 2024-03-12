@@ -35,8 +35,7 @@
             <div class="back-field" />
         {/if}
     </section>
-
-    <article class="article_style">
+    <article>
         <svelte:component this={data.content} />
     </article>
 </main>
@@ -54,8 +53,5 @@
         flex-direction: column;
         margin: 32px 0 0;
         width: 100%;
-    }
-    .article_style {
-        max-width: 100%;
     }
 </style>
