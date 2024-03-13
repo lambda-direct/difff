@@ -1,6 +1,6 @@
 ## What is XML file format?
 
-**XML (eXtensible Markup Language)** - file format(.xml) for any data. It's easy for human and machine readability.
+**XML (eXtensible Markup Language)** - file format(.xml) for any data. Stores data in plain text format with the standardized XML syntax. This helps to use a independent storing, transporting, and sharing data.Provide accessibility across various platforms and devices, including humans, computers, voice assistants, news feeds, and more.
 
 ### XML Components:
 
@@ -16,31 +16,30 @@
 
     <!--All the other tags in XML document are called elements-->
     <CATALOG>
-        <PLANT>
-            <COMMON>Bloodroot</COMMON>
-            <BOTANICAL>Sanguinaria canadensis</BOTANICAL>
-            <ZONE>4</ZONE>
-            <LIGHT>Mostly Shady</LIGHT>
-            <PRICE sale="true">$2.44</PRICE> <!--Descriptors names="values" called attributes-->
-            <AVAILABILITY>031599</AVAILABILITY>
-        </PLANT>
+        <CAR>
+            <Brand>Audi</Brand>
+            <Model>RS 6</Model>
+            <Color>Shady Green</Color>
+            <Price sale="true">$120 200.44</Price> <!--Descriptors names="values" called attributes-->
+            <BodyNumber>031599</BodyNumber>
+        </CAR>
 
         <!--Values inside tags is a content-->
-        <PLANT>
-            <COMMON>Columbine</COMMON>
-            <BOTANICAL>Aquilegia canadensis</BOTANICAL>
-            <ZONE>3</ZONE>
-            <LIGHT>Mostly Shady</LIGHT>
-            <PRICE>$9.37</PRICE>
-            <AVAILABILITY>030699</AVAILABILITY>
-        </PLANT>
+        <CAR>
+            <Brand>Porsche</Brand>
+            <Model>911</Model>
+            <Color>Bright Red</Color>
+            <Price>$230 000.37</Price>
+            <BodyNumber>02356599</BodyNumber>
+        </CAR>
     </CATALOG>`}
 
 </code>
 </pre>
 
-An XML file is plain text files. Tags define structure of the document and specify how it should be stored and transported over the internet. Elements can contain other elements.
-First is called the "root", all other elements in "root" are "child" elements. XML code formatted with indentation. Additionally, comments can be included using <!-- -->,
+XML is platform independent and language independent. Tags are not predefined, you must define your own tags. They structure the document and specify
+how it should be stored and transported over the internet. Tags can contain other tags.
+First is called the "root", all other tags in "root" are "child" tag. XML code formatted with indentation to make easier human readability. Additionally, comments can be included using <!-- -->,
 some rules about comments, cannot appear before XML declaration, can be anywhere in a document, can't have attributes &
 Comments can't be nested within other comments.
 
