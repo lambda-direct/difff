@@ -10,11 +10,9 @@
     import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
     import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import { isSettingsOpen } from "~/lib/storages";
-    import JSONFormatter from "~/utils/JSONFormatter";
-    import XMLFormatter from "~/utils/XMLFormatter";
-    import YamlFormatter from "~/utils/YamlFormatter";
-    import { dropDownOptions } from "~/utils/services";
+    import Formatter from "~/utils/Formatter";
     import { updateCodemirror } from "../codemirror";
+    import { dropDownOptions } from "./utils";
 
     export let value: string = "";
     export let view: EditorView;
@@ -24,18 +22,18 @@
 
     const formatFunction = async () => {
         if (format === "yaml") {
-            YamlFormatter.formatYAML(value, view, {
+            Formatter.formatYaml(value, view, {
                 indent: storage ? storage.spaces : 2
             });
         }
         if (format === "json") {
-            await JSONFormatter.prettierFormatJSON(value, view, {
+            await Formatter.formatJson(value, view, {
                 tabWidth: storage ? storage.spaces : 4,
                 useTabs: storage && "tab" in storage ? storage.tab : false
             });
         }
         if (format === "xml") {
-            XMLFormatter.formatXML(value, view, storage ? storage.spaces : 2);
+            Formatter.formatXml(value, view, storage ? storage.spaces : 2);
         }
     };
 

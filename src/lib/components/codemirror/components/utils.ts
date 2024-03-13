@@ -5,3 +5,13 @@ export const getLine = (value: number) => {
 export const getColumn = (value: number) => {
     return value + 1;
 };
+export const dropDownOptions = [
+    {
+        title: "Formatters",
+        values: [
+            { name: "JSON", path: "/" },
+            { name: "YAML", path: "/formatter/yaml" },
+            { name: "XML", path: "/formatter/xml" }
+        ]
+    }
+];

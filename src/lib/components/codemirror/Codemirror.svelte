@@ -16,9 +16,9 @@
     import ErrorModal from "~/lib/components/shared/ErrorModal.svelte";
     import SettingsModal from "~/lib/components/shared/SettingsModal.svelte";
     import { isSettingsOpen, showError } from "~/lib/storages";
-    import JSONFormatter from "~/utils/JSONFormatter";
-    import XMLFormatter from "~/utils/XMLFormatter";
-    import YamlFormatter from "~/utils/YamlFormatter";
+    import Formatter from "~/utils/Formatter";
+    import Validator from "~/utils/Validator";
+
     import Footer from "./components/Footer.svelte";
     import { themeExtensionsJson, themeExtensionsXML, themeExtensionsYaml } from "./themes/theme";
 
@@ -77,13 +77,13 @@
         const new_value = view.state.doc.toString();
         if (new_value === value) return;
         if (format === "json") {
-            JSONFormatter.validateJSON(new_value, view);
+            Validator.validateJSON(new_value, view);
         }
         if (format === "yaml") {
-            YamlFormatter.validateYAML(new_value, view);
+            Validator.validateYAML(new_value, view);
         }
         if (format === "xml") {
-            XMLFormatter.validateXML(new_value, view);
+            Validator.validateXML(new_value, view);
         }
         value = new_value;
     };
@@ -101,16 +101,16 @@
 
     const onPaste = async () => {
         if (format === "json") {
-            await JSONFormatter.prettierFormatJSON(value, view, {
+            await Formatter.formatJson(value, view, {
                 tabWidth: storage?.spaces || 4,
                 useTabs: storage?.tab || false
             });
         }
         if (format === "yaml") {
-            YamlFormatter.formatYAML(value, view, { indent: storage?.spaces || 2 });
+            Formatter.formatYaml(value, view, { indent: storage?.spaces || 2 });
         }
         if (format === "xml") {
-            XMLFormatter.formatXML(value, view, storage?.spaces || 2);
+            Formatter.formatXml(value, view, storage?.spaces || 2);
         }
     };
 
@@ -124,18 +124,18 @@
                 const droppedData = e.target?.result as string;
                 updateCodemirror(view, droppedData);
                 if (format === "json") {
-                    await JSONFormatter.prettierFormatJSON(droppedData, view, {
+                    await Formatter.formatJson(droppedData, view, {
                         tabWidth: storage?.spaces || 4,
                         useTabs: storage?.tab || false
                     });
                 }
                 if (format === "yaml") {
-                    YamlFormatter.formatYAML(droppedData, view, {
+                    Formatter.formatYaml(droppedData, view, {
                         indent: storage?.spaces || 2
                     });
                 }
                 if (format === "xml") {
-                    XMLFormatter.formatXML(value, view, storage?.spaces || 2);
+                    Formatter.formatXml(value, view, storage?.spaces || 2);
                 }
             };
             if (value !== oldValue) {

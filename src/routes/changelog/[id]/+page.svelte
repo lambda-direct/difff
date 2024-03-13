@@ -1,10 +1,18 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
     import Head from "~/lib/components/shared/Head.svelte";
-    import { formattedDate } from "~/utils/helpers.js";
+    import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
 
     export let data;
+
+    const formattedDate = (inputDate: string) => {
+        const [day, month, year] = inputDate.split("-");
+        return new Date(`${month}/${day}/${year}`).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        });
+    };
 </script>
 
 <Head

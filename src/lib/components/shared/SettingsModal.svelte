@@ -1,9 +1,9 @@
 <script lang="ts">
+    import { browser } from "$app/environment";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import { isSettingsOpen } from "~/lib/storages";
-    import { browser } from "$app/environment";
-    import { setTypedStorageItem } from "~/utils/helpers";
+    import LocalStorage from "~/storage/LocalStorage";
 
     export let useTabs: boolean;
     export let indentationLevel: number;
@@ -25,13 +25,13 @@
 
     $: {
         if ($page.url.pathname.includes("yaml")) {
-            setTypedStorageItem("yaml", { spaces: indentationLevel });
+            LocalStorage.set("yaml", { spaces: indentationLevel });
         }
         if ($page.url.pathname.includes("xml")) {
-            setTypedStorageItem("xml", { spaces: indentationLevel });
+            LocalStorage.set("xml", { spaces: indentationLevel });
         }
         if (!$page.url.pathname.includes("yaml") && !$page.url.pathname.includes("xml")) {
-            setTypedStorageItem("json", {
+            LocalStorage.set("json", {
                 tab: useTabs,
                 spaces: indentationLevel
             });
