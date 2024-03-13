@@ -12,6 +12,11 @@ export const toolsRoutes: ToolsRoute[] = [
         path: "/formatter/yaml"
     },
     {
+        name: "XML",
+        group: "Formatter",
+        path: "/formatter/xml"
+    },
+    {
         name: "Change & Decision log",
         group: "Blog",
         path: "/changelog"

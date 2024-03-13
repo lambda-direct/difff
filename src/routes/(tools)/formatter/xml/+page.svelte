@@ -1,7 +1,7 @@
 <script lang="ts">
     import { browser } from "$app/environment";
     import hljs from "highlight.js";
-    import yaml from "highlight.js/lib/languages/yaml";
+    import xml from "highlight.js/lib/languages/xml";
     import { onMount } from "svelte";
     import Head from "~/lib/components/shared/Head.svelte";
     import CodeMirror from "~/lib/components/codemirror/Codemirror.svelte";
@@ -12,25 +12,25 @@
     onMount(() => {
         if (browser) {
             hljs.highlightAll();
-            hljs.registerLanguage("yaml", yaml);
+            hljs.registerLanguage("xml", xml);
         }
     });
 </script>
 
 <Head
-    title="YAML Formatter Online Tool, Beautifier & Validator - Difff"
-    description="Format & Validate YAML Online with difff.app. Our online tool provides YAML pretty print, beautifies, and converts text files effortlessly."
+    title="XML Formatter Online Tool, Beautifier & Validator - Difff"
+    description="Format & Validate XML Online with difff.app. Our online tool provides XML pretty print, beautifies, and converts text files effortlessly."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
 <main class="main">
     <header>
-        <h1 class="main_title">YAML Formatter Online</h1>
-        <h2 class="main_subtitle">Validate, Format & Prettify your YAML</h2>
+        <h1 class="main_title">XML Formatter Online</h1>
+        <h2 class="main_subtitle">Validate, Format & Prettify your XML</h2>
     </header>
     <section class="formatter_field-wrapper">
         {#if browser}
-            <CodeMirror format="yaml" placeholder="Put your YAML or Drag & Drop a file" />
+            <CodeMirror format="xml" placeholder="Put your XML or Drag & Drop a file" />
         {:else}
             <div class="back-field" />
         {/if}

@@ -10,15 +10,16 @@
     import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
     import { dropDownOptions } from "~/utils/services";
-    import YamlFormatter from "~/utils/YamlFormatter";
-    import JSONFormatter from "~/utils/JSONFormatter";
     import { updateCodemirror } from "./codemirror";
     import { isSettingsOpen } from "~/lib/storages";
     import { getTypedStorageItem } from "~/utils/helpers";
+    import YamlFormatter from "~/utils/YamlFormatter";
+    import JSONFormatter from "~/utils/JSONFormatter";
+    import XMLFormatter from "~/utils/XMLFormatter";
 
     export let value: string = "";
     export let view: EditorView;
-    export let format: "json" | "yaml";
+    export let format: "json" | "yaml" | "xml";
 
     let storage = getTypedStorageItem(format);
 
@@ -27,11 +28,15 @@
             YamlFormatter.formatYAML(value, view, {
                 indent: storage ? storage.spaces : 2
             });
-        } else if (format === "json") {
+        }
+        if (format === "json") {
             await JSONFormatter.prettierFormatJSON(value, view, {
                 tabWidth: storage ? storage.spaces : 4,
                 useTabs: storage && "tab" in storage ? storage.tab : false
             });
+        }
+        if (format === "xml") {
+            XMLFormatter.formatXML(value, view, storage ? storage.spaces : 2);
         }
     };
 

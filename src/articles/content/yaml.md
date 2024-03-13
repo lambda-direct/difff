@@ -103,12 +103,9 @@ Put JSON, JavaScript object or an undecorated YAML. We'll validate input and for
 someData :   "trees"
 randomNumber     : 322
 nullValue    :  ~
-moreValues :
-    21
- 22
-  23
+moreValues : 21 22    23
 array  :    [null,22, "true"]
-   boolean : false
+boolean: false
 obj : {`{val1: "value",   val2: "value"}`}
 val3: true
 </code></pre>
@@ -117,8 +114,8 @@ val3: true
 
 <pre><code class="language-yaml hljs">someData: trees
 randomNumber: 322
-nullValue: '~'
-moreValues: 21 22 23
+nullValue: null
+moreValues: 21 22    23
 array:
   - null
   - 22
@@ -127,5 +124,5 @@ boolean: false
 obj:
   val1: value
   val2: value
-  val3: true
+val3: true
 </code></pre>

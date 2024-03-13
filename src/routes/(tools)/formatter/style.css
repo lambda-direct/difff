@@ -39,7 +39,7 @@ code.hljs {
 .hljs-selector-tag,
 .hljs-template-variable,
 .hljs-variable {
-    color: #5f8787;
+    color: #44a9a9;
 }
 
 .hljs-literal {
@@ -97,7 +97,7 @@ code.hljs {
 .hljs-meta,
 .hljs-meta .hljs-keyword,
 .hljs-meta .hljs-string {
-    color: #fff;
+    color: #888;
 }
 .hljs-meta .hljs-keyword,
 .hljs-meta-keyword {

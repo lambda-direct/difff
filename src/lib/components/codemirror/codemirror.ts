@@ -54,6 +54,7 @@ export const addHighlight = StateEffect.define<{ from: number; to: number }>({
 });
 
 export const updateCodemirror = (view: EditorView, newValue: string) => {
+    console.log(newValue);
     const transition = view.state.update({
         changes: { from: 0, to: view.state.doc.length, insert: newValue }
     });

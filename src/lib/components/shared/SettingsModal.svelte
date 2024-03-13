@@ -27,7 +27,10 @@
         if ($page.url.pathname.includes("yaml")) {
             setTypedStorageItem("yaml", { spaces: indentationLevel });
         }
-        if (!$page.url.pathname.includes("yaml")) {
+        if ($page.url.pathname.includes("xml")) {
+            setTypedStorageItem("xml", { spaces: indentationLevel });
+        }
+        if (!$page.url.pathname.includes("yaml") && !$page.url.pathname.includes("xml")) {
             setTypedStorageItem("json", {
                 tab: useTabs,
                 spaces: indentationLevel
@@ -40,7 +43,7 @@
 </script>
 
 <div class="settings">
-    {#if !$page.url.pathname.includes("yaml")}
+    {#if !$page.url.pathname.includes("yaml") && !$page.url.pathname.includes("xml")}
         <div class="setting_option">
             <p class="option_label">Tabs:</p>
             <div class="switch">

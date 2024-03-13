@@ -57,4 +57,7 @@ export type LocaleStorageSchema = {
     yaml: {
         spaces: number;
     };
+    xml: {
+        spaces: number;
+    };
 };

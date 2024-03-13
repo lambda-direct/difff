@@ -53,8 +53,10 @@
         "@uiw/codemirror-theme-dracula": "^4.21.24",
         "axios": "^1.6.7",
         "codemirror": "^6.0.1",
+        "fast-xml-parser": "^4.3.5",
         "highlight.js": "^11.9.0",
         "js-yaml": "^4.1.0",
-        "svelte-codemirror-editor": "^1.2.0"
+        "svelte-codemirror-editor": "^1.2.0",
+        "xml-formatter": "^3.6.2"
     }
 }

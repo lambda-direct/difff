@@ -15,18 +15,32 @@
     } from "~/lib/components/codemirror/codemirror";
     import YamlFormatter from "~/utils/YamlFormatter";
     import JSONFormatter from "~/utils/JSONFormatter";
+    import XMLFormatter from "~/utils/XMLFormatter";
     import type { SelectionRange } from "@codemirror/state";
     import { json } from "@codemirror/lang-json";
     import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
-    import { StreamLanguage } from "@codemirror/language";
+    import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
+    import { LanguageSupport, StreamLanguage } from "@codemirror/language";
     import { getTypedStorageItem } from "~/utils/helpers";
-    export let format: "json" | "yaml";
-    export let placeholder: string;
-    import { themeExtensionsJson, themeExtensionsYaml } from "./themes/theme";
+    import { themeExtensionsJson, themeExtensionsXML, themeExtensionsYaml } from "./themes/theme";
     import SettingsModal from "~/lib/components/shared/SettingsModal.svelte";
 
-    let fieldFormat = format === "json" ? json() : StreamLanguage.define(yamlMode.yaml);
-    let themeExtension = format === "json" ? themeExtensionsJson : themeExtensionsYaml;
+    export let format: "json" | "yaml" | "xml";
+    export let placeholder: string;
+
+    const fieldFormat: LanguageSupport | StreamLanguage<unknown> =
+        format === "json"
+            ? json()
+            : format === "yaml"
+              ? StreamLanguage.define(yamlMode.yaml)
+              : StreamLanguage.define(xmlMode.xml);
+
+    let themeExtension =
+        format === "json"
+            ? themeExtensionsJson
+            : format === "yaml"
+              ? themeExtensionsYaml
+              : themeExtensionsXML;
     let value: string = "";
     let view: EditorView;
     const extensions = [
@@ -69,8 +83,12 @@
         if (new_value === value) return;
         if (format === "json") {
             JSONFormatter.validateJSON(new_value, view);
-        } else if (format === "yaml") {
+        }
+        if (format === "yaml") {
             YamlFormatter.validateYAML(new_value, view);
+        }
+        if (format === "xml") {
+            XMLFormatter.validateXML(new_value, view);
         }
         value = new_value;
     };
@@ -117,8 +135,12 @@
                 tabWidth: storage ? storage.spaces : 4,
                 useTabs: storage && "tab" in storage ? storage.tab : false
             });
-        } else if (format === "yaml") {
+        }
+        if (format === "yaml") {
             YamlFormatter.formatYAML(value, view, { indent: storage ? storage.spaces : 2 });
+        }
+        if (format === "xml") {
+            XMLFormatter.formatXML(value, view, storage ? storage.spaces : 2);
         }
     };
 
@@ -136,10 +158,14 @@
                         tabWidth: storage ? storage.spaces : 4,
                         useTabs: storage && "tab" in storage ? storage.tab : false
                     });
-                } else if (format === "yaml") {
+                }
+                if (format === "yaml") {
                     YamlFormatter.formatYAML(droppedData, view, {
                         indent: storage ? storage.spaces : 2
                     });
+                }
+                if (format === "xml") {
+                    XMLFormatter.formatXML(value, view, storage ? storage.spaces : 2);
                 }
             };
             if (value !== oldValue) {

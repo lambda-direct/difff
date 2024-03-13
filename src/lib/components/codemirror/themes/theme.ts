@@ -191,7 +191,41 @@ export const themeHighlightStyleYaml = HighlightStyle.define([
     }
 ]);
 
+export const themeHighlightStyleXML = HighlightStyle.define([
+    { tag: t.keyword, color: "#d19a66" },
+    {
+        tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
+        color: "var(--property-name, #e5c07b)"
+    },
+    { tag: [t.function(t.variableName), t.labelName], color: malibu },
+    { tag: [t.definition(t.name), t.separator], color: "var(--cursor, #abb2bf)" },
+    {
+        tag: [
+            t.typeName,
+            t.className,
+            t.number,
+            t.changed,
+            t.annotation,
+            t.modifier,
+            t.self,
+            t.namespace
+        ],
+        color: "var(--number-color, #e06c75)"
+    },
+    { tag: [t.meta, t.comment], color: "var(--line-number, #888)" },
+    {
+        tag: [t.atom],
+        color: "var(--boolean-value, #e5c07b)"
+    },
+    {
+        tag: [t.processingInstruction, t.string, t.inserted, t.regexp],
+        color: "var(--string-value, #98c379)"
+    }
+]);
+
 export const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];
+
+export const themeExtensionsXML: Extension = [theme, syntaxHighlighting(themeHighlightStyleXML)];
 
 export const themeExtensionsYaml: Extension = [
     [
