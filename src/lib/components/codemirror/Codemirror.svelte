@@ -208,16 +208,9 @@
                     ? 1
                     : cursorPosition.col}
             </span>
-            <button
-                on:click={() => {}}
-                title="settings"
-                aria-label="settings"
-                aria-labelledby="settings"
-                name="settings-btn"
-                class="cursor-position"
-            >
+            <span class="cursor-position">
                 {useTabs ? "Tab Size" : "Spaces"}: {indentationLevel}
-            </button>
+            </span>
         </div>
         <div class="icon-btn-wrap">
             <button
