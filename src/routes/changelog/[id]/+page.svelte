@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
-    import Head from "~/lib/shared/Head.svelte";
+    import Head from "~/lib/components/shared/Head.svelte";
     import { formattedDate } from "~/utils/helpers.js";
 
     export let data;
@@ -40,6 +40,7 @@
     }
     .article_style {
         max-width: 680px;
+        margin: 0 auto;
     }
 
     .header {

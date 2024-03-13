@@ -4,7 +4,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 const mdsvexOptions = {
     extensions: [".md"],
-    layout: { _: "./src/routes/changelog/+layout.svelte" }
+    layout: { _: "./src/lib/components/mdsvexComponents/layout.svelte" }
 };
 
 const config = {

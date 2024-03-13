@@ -14,16 +14,24 @@
     import JSONFormatter from "~/utils/JSONFormatter";
     import { updateCodemirror } from "./codemirror";
     import { isSettingsOpen } from "~/lib/storages";
+    import { getTypedStorageItem } from "~/utils/helpers";
 
     export let value: string = "";
     export let view: EditorView;
     export let format: "json" | "yaml";
 
+    let storage = getTypedStorageItem(format);
+
     const formatFunction = async () => {
         if (format === "yaml") {
-            YamlFormatter.formatYAML(value, view);
+            YamlFormatter.formatYAML(value, view, {
+                indent: storage ? storage.spaces : 2
+            });
         } else if (format === "json") {
-            await JSONFormatter.prettierFormatJSON(value, view);
+            await JSONFormatter.prettierFormatJSON(value, view, {
+                tabWidth: storage ? storage.spaces : 4,
+                useTabs: storage && "tab" in storage ? storage.tab : false
+            });
         }
     };
 

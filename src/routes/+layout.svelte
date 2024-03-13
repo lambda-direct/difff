@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Footer from "~/lib/shared/Footer.svelte";
+    import Footer from "~/lib/components/shared/Footer.svelte";
 </script>
 
 <div class="page">

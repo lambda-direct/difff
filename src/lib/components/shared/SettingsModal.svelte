@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import { onMount } from "svelte";
-    import { isSettingsOpen } from "../storages";
+    import { isSettingsOpen } from "~/lib/storages";
     import { browser } from "$app/environment";
     import { setTypedStorageItem } from "~/utils/helpers";
 

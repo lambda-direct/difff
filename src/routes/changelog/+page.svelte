@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Head from "~/lib/shared/Head.svelte";
+    import Head from "~/lib/components/shared/Head.svelte";
     import "~/styles/index.css";
 
     export let data;

@@ -1,6 +1,6 @@
 import { EditorView } from "codemirror";
 import { errorMessage, showError } from "~/lib/storages";
-import { addHighlight, removeHighlightedLines } from "~/lib/shared/codemirror/codemirror";
+import { addHighlight, removeHighlightedLines } from "~/lib/components/codemirror/codemirror";
 
 export const addHighlightedLineYaml = (
     view: EditorView,

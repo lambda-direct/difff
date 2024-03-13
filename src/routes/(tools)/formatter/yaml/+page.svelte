@@ -3,8 +3,8 @@
     import hljs from "highlight.js";
     import yaml from "highlight.js/lib/languages/yaml";
     import { onMount } from "svelte";
-    import Head from "~/lib/shared/Head.svelte";
-    import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
+    import Head from "~/lib/components/shared/Head.svelte";
+    import CodeMirror from "~/lib/components/codemirror/Codemirror.svelte";
     import "./style.css";
 
     export let data;
@@ -41,6 +41,10 @@
 </main>
 
 <style>
+    article {
+        width: 100%;
+    }
+
     .main {
         margin: 0 auto;
         display: flex;

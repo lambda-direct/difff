@@ -1,6 +1,6 @@
 <script lang="ts">
     import AlertIcon from "~/lib/icons/AlertIcon.svelte";
-    import { errorMessage } from "../storages";
+    import { errorMessage } from "~/lib/storages";
     import { onMount } from "svelte";
 
     let showErrorMessage = true;

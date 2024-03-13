@@ -1,7 +1,7 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import Head from "~/lib/shared/Head.svelte";
-    import CodeMirror from "~/lib/shared/codemirror/Codemirror.svelte";
+    import Head from "~/lib/components/shared/Head.svelte";
+    import CodeMirror from "~/lib/components/codemirror/Codemirror.svelte";
 </script>
 
 <Head

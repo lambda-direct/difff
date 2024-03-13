@@ -6,24 +6,24 @@
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import DownLoadIcon from "~/lib/icons/DownloadIcon.svelte";
-    import ErrorModal from "~/lib/shared/ErrorModal.svelte";
-    import Header from "~/lib/shared/codemirror/CodemirrorHeader.svelte";
+    import ErrorModal from "~/lib/components/shared/ErrorModal.svelte";
+    import Header from "~/lib/components/codemirror/CodemirrorHeader.svelte";
     import {
         createEditorState,
         stateExtensions,
         updateCodemirror
-    } from "~/lib/shared/codemirror/codemirror";
+    } from "~/lib/components/codemirror/codemirror";
     import YamlFormatter from "~/utils/YamlFormatter";
     import JSONFormatter from "~/utils/JSONFormatter";
     import type { SelectionRange } from "@codemirror/state";
     import { json } from "@codemirror/lang-json";
     import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
     import { StreamLanguage } from "@codemirror/language";
-    import SettingsModal from "../SettingsModal.svelte";
     import { getTypedStorageItem } from "~/utils/helpers";
     export let format: "json" | "yaml";
     export let placeholder: string;
     import { themeExtensionsJson, themeExtensionsYaml } from "./themes/theme";
+    import SettingsModal from "~/lib/components/shared/SettingsModal.svelte";
 
     let fieldFormat = format === "json" ? json() : StreamLanguage.define(yamlMode.yaml);
     let themeExtension = format === "json" ? themeExtensionsJson : themeExtensionsYaml;
