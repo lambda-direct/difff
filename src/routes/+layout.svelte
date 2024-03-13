@@ -1,4 +1,5 @@
 <script lang="ts">
+    import "~/styles/global.css";
     import Footer from "~/lib/components/shared/Footer.svelte";
 </script>
 
