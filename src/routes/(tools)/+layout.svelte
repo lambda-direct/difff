@@ -1,3 +1,7 @@
+<script lang="ts">
+    import "~/styles/index.css";
+</script>
+
 <a href="/changelog">
     <header class="header">
         <div class="container">
