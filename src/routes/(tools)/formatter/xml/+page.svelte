@@ -3,8 +3,8 @@
     import hljs from "highlight.js";
     import xml from "highlight.js/lib/languages/xml";
     import { onMount } from "svelte";
-    import Head from "~/lib/components/shared/Head.svelte";
     import CodeMirror from "~/lib/components/codemirror/Codemirror.svelte";
+    import Head from "~/lib/components/shared/Head.svelte";
     import "../style.css";
 
     export let data;
@@ -29,11 +29,7 @@
         <h2 class="main_subtitle">Validate, Format & Prettify your XML</h2>
     </header>
     <section class="formatter_field-wrapper">
-        {#if browser}
-            <CodeMirror format="xml" placeholder="Put your XML or Drag & Drop a file" />
-        {:else}
-            <div class="back-field" />
-        {/if}
+        <CodeMirror format="xml" placeholder="Put your XML or Drag & Drop a file" />
     </section>
     <article>
         <svelte:component this={data.content} />

@@ -3,25 +3,24 @@
     import { closeSearchPanel, openSearchPanel } from "@codemirror/search";
     import { EditorView } from "@codemirror/view";
     import { onDestroy, onMount } from "svelte";
-    import SearchIcon from "~/lib/icons/SearchIcon.svelte";
-    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
-    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
-    import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
-    import { dropDownOptions } from "~/utils/services";
-    import { updateCodemirror } from "./codemirror";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
+    import SearchIcon from "~/lib/icons/SearchIcon.svelte";
+    import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
+    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import { isSettingsOpen } from "~/lib/storages";
-    import { getTypedStorageItem } from "~/utils/helpers";
-    import YamlFormatter from "~/utils/YamlFormatter";
     import JSONFormatter from "~/utils/JSONFormatter";
     import XMLFormatter from "~/utils/XMLFormatter";
+    import YamlFormatter from "~/utils/YamlFormatter";
+    import { dropDownOptions } from "~/utils/services";
+    import { updateCodemirror } from "../codemirror";
 
     export let value: string = "";
     export let view: EditorView;
     export let format: "json" | "yaml" | "xml";
 
-    let storage = getTypedStorageItem(format);
+    let storage: Storage | null;
 
     const formatFunction = async () => {
         if (format === "yaml") {
@@ -113,7 +112,10 @@
     };
 
     onMount(() => {
-        if (browser) document.addEventListener("keydown", handleKeyDown);
+        if (browser) {
+            // storage = getTypedStorageItem(format);
+            document.addEventListener("keydown", handleKeyDown);
+        }
     });
 
     onDestroy(() => {
@@ -121,7 +123,7 @@
     });
 </script>
 
-<header class="header">
+<div class="header">
     <nav class="drop-down-wrapper">
         <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown}>
             {#each dropDownOptions as options}
@@ -213,7 +215,7 @@
             <SettingsIcon />
         </button>
     </div>
-</header>
+</div>
 
 <style lang="scss">
     .dropdown_options {
