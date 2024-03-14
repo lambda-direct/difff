@@ -1,5 +1,6 @@
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
+
 export const prettierSettings = {
     semi: true,
     singleQuote: false,

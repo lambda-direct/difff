@@ -1,12 +1,12 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { page } from "$app/stores";
     import { onMount } from "svelte";
     import { isSettingsOpen } from "~/lib/storages";
     import LocalStorage from "~/storage/LocalStorage";
 
     export let useTabs: boolean;
     export let indentationLevel: number;
+    export let format: "json" | "yaml" | "xml";
 
     const handleMenuClose = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
@@ -24,26 +24,27 @@
     };
 
     $: {
-        if ($page.url.pathname.includes("yaml")) {
+        if (format === "yaml") {
             LocalStorage.set("yaml", { spaces: indentationLevel });
         }
-        if ($page.url.pathname.includes("xml")) {
+        if (format === "xml") {
             LocalStorage.set("xml", { spaces: indentationLevel });
         }
-        if (!$page.url.pathname.includes("yaml") && !$page.url.pathname.includes("xml")) {
+        if (format === "json") {
             LocalStorage.set("json", {
                 tab: useTabs,
                 spaces: indentationLevel
             });
         }
     }
+
     onMount(() => {
         document.addEventListener("click", handleMenuClose);
     });
 </script>
 
 <div class="settings">
-    {#if !$page.url.pathname.includes("yaml") && !$page.url.pathname.includes("xml")}
+    {#if format === "json"}
         <div class="setting_option">
             <p class="option_label">Tabs:</p>
             <div class="switch">

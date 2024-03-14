@@ -1,4 +1,4 @@
-export type FormatError = {
+export type FormatJSONError = {
     loc: {
         start: Coordinates;
         end?: Coordinates;

@@ -29,11 +29,7 @@
         <h2 class="main_subtitle">Validate, Format & Prettify your YAML</h2>
     </header>
     <section class="formatter_field-wrapper">
-        {#if browser}
-            <CodeMirror format="yaml" placeholder="Put your YAML or Drag & Drop a file" />
-        {:else}
-            <div class="back-field" />
-        {/if}
+        <CodeMirror format="yaml" placeholder="Put your YAML or Drag & Drop a file" />
     </section>
     <article>
         <svelte:component this={data.content} />

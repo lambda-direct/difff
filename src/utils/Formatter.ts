@@ -1,62 +1,52 @@
-import { EditorView } from "@codemirror/view";
 import { XMLValidator } from "fast-xml-parser";
 import * as yaml from "js-yaml";
 import * as prettier from "prettier/standalone";
+import Converter from "~/utils/Converter";
+import { prettierSettings } from "~/utils/settings";
+import LocalStorage from "~/storage/LocalStorage";
 import xmlFormat from "xml-formatter";
-import { removeHighlightedLines, updateCodemirror } from "~/lib/components/codemirror/codemirror";
-import { addHighlightedLineJSON } from "~/lib/components/codemirror/codemirrorJSON";
-import { highlightErrorLineXML } from "~/lib/components/codemirror/codemirrorXML";
-import { addHighlightedLineYaml } from "~/lib/components/codemirror/codemirrorYAML";
-import type { FormatError } from "~/types";
-import { Converter } from "./Converter";
-import Validator from "./Validator";
-import { prettierSettings } from "./settings";
 
 class Formatter {
-    private isFormatError = (error: unknown): error is FormatError => {
-        return <FormatError>error !== undefined && (<FormatError>error).loc !== undefined;
-    };
-
-    formatJson = async (
-        userInput: string,
-        view: EditorView,
-        options: { tabWidth: number; useTabs: boolean }
-    ) => {
+    private format: "json" | "yaml" | "xml";
+    constructor(format: "json" | "yaml" | "xml") {
+        this.format = format;
+    }
+    private formatJson = async (userInput: string) => {
         try {
+            const storage = LocalStorage.get("json");
+            const options = {
+                tabWidth: storage ? storage.spaces : 4,
+                useTabs: storage && "tab" in storage ? storage.tab : false
+            };
             const originalCode = await Converter.urlToJson(userInput);
             const formattedResult = await prettier.format(originalCode, {
                 ...prettierSettings,
                 ...options
             });
 
-            removeHighlightedLines(view);
+            if (originalCode === formattedResult) return originalCode;
 
-            if (originalCode === formattedResult) return;
-            updateCodemirror(view, formattedResult);
+            return formattedResult;
         } catch (err) {
-            if (this.isFormatError(err)) {
-                addHighlightedLineJSON(view, err.loc.start.column, err.loc.start.line);
-            }
+            return err;
         }
     };
 
-    public formatYaml = (userInput: string, view: EditorView, options: { indent: number }) => {
+    private formatYaml = (userInput: string) => {
+        const storage = LocalStorage.get("yaml");
+        const options = { indent: storage ? storage.spaces : 2 };
         try {
             const yamlObject = yaml.load(userInput);
             const formattedYaml = yaml.dump(yamlObject, options);
-            removeHighlightedLines(view);
-
-            updateCodemirror(view, formattedYaml);
-
-            return;
+            return formattedYaml;
         } catch (err) {
-            if (Validator.isYamlError(err))
-                addHighlightedLineYaml(view, err.mark.position, err.mark.line, err.reason);
-            return;
+            return err;
         }
     };
 
-    public formatXml = (userInput: string, view: EditorView, spaceNum: number) => {
+    private formatXml = (userInput: string) => {
+        const storage = LocalStorage.get("xml");
+        const spaceNum: number = storage ? storage.spaces : 2;
         if (userInput) {
             const validationResult = XMLValidator.validate(userInput, {
                 allowBooleanAttributes: true
@@ -65,14 +55,26 @@ class Formatter {
             if (validationResult === true) {
                 const options = { indentation: " ".repeat(spaceNum) };
                 const formattedXML = xmlFormat(userInput, options);
-                removeHighlightedLines(view);
-                updateCodemirror(view, formattedXML);
+                return formattedXML;
             } else {
-                highlightErrorLineXML(view, validationResult.err.line, validationResult.err.msg);
+                return validationResult;
             }
         } else {
-            updateCodemirror(view, userInput);
+            return userInput;
+        }
+    };
+
+    public formatInput = async (userInput: string) => {
+        if (this.format === "yaml") {
+            return this.formatYaml(userInput);
+        }
+        if (this.format === "json") {
+            return await this.formatJson(userInput);
+        }
+        if (this.format === "xml") {
+            return this.formatXml(userInput);
         }
     };
 }
-export default new Formatter();
+
+export default Formatter;

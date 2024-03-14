@@ -2,43 +2,18 @@
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
     import DownloadIcon from "~/lib/icons/DownloadScon.svelte";
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
-    import { getColumn, getLine } from "./utils";
+    import { getColumn, getLine } from "~/lib/components/codemirror/components/utils";
 
     export let cursorPosition: { line: number; col: number };
     export let useTabs: boolean;
     export let indentationLevel: number;
     export let isDownloadClicked: boolean;
     export let isCopyClicked: boolean;
-    export let value: string;
-    export let format: "json" | "yaml" | "xml";
+    export let handleCopyClick: () => void;
+    export let handleDownloadClick: () => void;
 
     $: line = getLine(cursorPosition.line);
     $: column = getColumn(cursorPosition.col);
-
-    const downloadClick = () => {
-        isDownloadClicked = true;
-        setTimeout(() => {
-            isDownloadClicked = false;
-        }, 1000);
-        const blob = new Blob([value], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-
-        const aTag = document.createElement("a");
-        aTag.href = url;
-        aTag.download = `data.${format}`;
-        document.body.appendChild(aTag);
-        aTag.click();
-        document.body.removeChild(aTag);
-        URL.revokeObjectURL(url);
-    };
-
-    const copyClick = async () => {
-        isCopyClicked = true;
-        setTimeout(() => {
-            isCopyClicked = false;
-        }, 1000);
-        await navigator.clipboard.writeText(value);
-    };
 </script>
 
 <div class="footer">
@@ -52,7 +27,7 @@
     </div>
     <div class="icon-btn-wrap">
         <button
-            on:click={downloadClick}
+            on:click={handleDownloadClick}
             title="download"
             aria-label="download"
             aria-labelledby="download"
@@ -67,7 +42,7 @@
             <span class="btn_title">Download</span>
         </button>
         <button
-            on:click={copyClick}
+            on:click={handleCopyClick}
             title="copy"
             aria-label="copy"
             aria-labelledby="copy"
@@ -89,6 +64,7 @@
         display: flex;
         gap: 8px;
     }
+
     .icon-button {
         display: flex;
         align-items: center;
@@ -104,6 +80,7 @@
             color: #e1e1e1;
         }
     }
+
     .cursor-position {
         font-family: "NotoSans-Regular", sans-serif;
         font-size: 12px;
@@ -111,11 +88,13 @@
         background: transparent;
         border: none;
     }
+
     .btn_title {
         @media (max-width: 420px) {
             display: none;
         }
     }
+
     .footer {
         display: flex;
         align-items: center;

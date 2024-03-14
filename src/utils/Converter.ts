@@ -1,9 +1,17 @@
 import axios from "axios";
-import Validator from "./Validator";
 
 export class Converter {
-    static urlToJson = async (userInput: string) => {
-        if (!Validator.isURL(userInput)) return userInput;
+    private isURL = (url: string) => {
+        try {
+            new URL(url);
+            return true;
+        } catch (err) {
+            return false;
+        }
+    };
+
+    public urlToJson = async (userInput: string) => {
+        if (!this.isURL(userInput)) return userInput;
         try {
             const response = await axios.get(userInput);
             return JSON.stringify(response.data);
@@ -12,3 +20,5 @@ export class Converter {
         }
     };
 }
+
+export default new Converter();

@@ -1,159 +1,93 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { json } from "@codemirror/lang-json";
-    import { LanguageSupport, StreamLanguage } from "@codemirror/language";
-    import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
-    import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
-    import type { SelectionRange } from "@codemirror/state";
-    import { EditorView, placeholder as placeholderSet } from "@codemirror/view";
+    import { EditorView } from "@codemirror/view";
     import { onDestroy, onMount } from "svelte";
-    import {
-        createEditorState,
-        stateExtensions,
-        updateCodemirror
-    } from "~/lib/components/codemirror/codemirror";
+    import { createEditorState, trackCursorPosition } from "~/lib/components/codemirror/codemirror";
     import Header from "~/lib/components/codemirror/components/Header.svelte";
     import ErrorModal from "~/lib/components/shared/ErrorModal.svelte";
     import SettingsModal from "~/lib/components/shared/SettingsModal.svelte";
     import { isSettingsOpen, showError } from "~/lib/storages";
-    import Formatter from "~/utils/Formatter";
-    import Validator from "~/utils/Validator";
-
-    import Footer from "./components/Footer.svelte";
-    import { themeExtensionsJson, themeExtensionsXML, themeExtensionsYaml } from "./themes/theme";
+    import CodemirrorActions, {
+        getExtentions
+    } from "~/lib/components/codemirror/codemirrorActions";
+    import Footer from "~/lib/components/codemirror/components/Footer.svelte";
 
     export let format: "json" | "yaml" | "xml";
     export let placeholder: string;
 
-    const fieldFormat: LanguageSupport | StreamLanguage<unknown> =
-        format === "json"
-            ? json()
-            : format === "yaml"
-              ? StreamLanguage.define(yamlMode.yaml)
-              : StreamLanguage.define(xmlMode.xml);
-
-    let themeExtension =
-        format === "json"
-            ? themeExtensionsJson
-            : format === "yaml"
-              ? themeExtensionsYaml
-              : themeExtensionsXML;
     let value: string = "";
     let view: EditorView;
-    const extensions = [
-        ...stateExtensions,
-        themeExtension,
-        placeholderSet(placeholder),
-        fieldFormat
-    ];
-
+    let codemirrorActions: CodemirrorActions;
     let element: HTMLDivElement;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
 
     let storage: Storage | null = null;
-    $: useTabs = storage?.tab || false;
-    $: indentationLevel = storage?.spaces || format === "json" ? 4 : 2;
     let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
-    $: onChange = handleChange;
+    $: useTabs = storage?.tab || false;
+    $: indentationLevel = storage?.spaces || format === "json" ? 4 : 2;
+    $: onChange = handleValueChange;
 
     const createEditorView = () => {
         view = new EditorView({
             parent: element,
-            state: createEditorState(value, extensions),
+            state: createEditorState(value, getExtentions(format, placeholder)),
             dispatch(transaction) {
                 view.update([transaction]);
                 if (transaction.selection || transaction.docChanged) {
-                    trackCursorPosition(view);
+                    cursorPosition = trackCursorPosition(view);
                     onChange();
                 }
             },
-            extensions: [extensions]
+            extensions: [getExtentions(format, placeholder)]
         });
     };
 
-    const handleChange = async (): Promise<void> => {
-        const new_value = view.state.doc.toString();
-        if (new_value === value) return;
-        if (format === "json") {
-            Validator.validateJSON(new_value, view);
-        }
-        if (format === "yaml") {
-            Validator.validateYAML(new_value, view);
-        }
-        if (format === "xml") {
-            Validator.validateXML(new_value, view);
-        }
-        value = new_value;
+    const handleFormatClick = async () => {
+        await codemirrorActions.updateFormattedValue(value);
     };
 
-    const trackCursorPosition = (editorView: EditorView) => {
-        const { doc, selection } = editorView.state;
-        const mainRange: SelectionRange = selection.main;
-
-        const lineInfo = doc.lineAt(mainRange.head);
-        const line = lineInfo.number;
-        const col = mainRange.head - lineInfo.from;
-
-        cursorPosition = { line, col };
+    const handleValueChange = async () => {
+        value = await codemirrorActions.valueChange(value);
     };
 
-    const onPaste = async () => {
-        if (format === "json") {
-            await Formatter.formatJson(value, view, {
-                tabWidth: storage?.spaces || 4,
-                useTabs: storage?.tab || false
-            });
-        }
-        if (format === "yaml") {
-            Formatter.formatYaml(value, view, { indent: storage?.spaces || 2 });
-        }
-        if (format === "xml") {
-            Formatter.formatXml(value, view, storage?.spaces || 2);
-        }
+    const handlePaste = async () => {
+        await codemirrorActions.updateFormattedValue(value);
     };
 
-    const onDrop = (event: DragEvent) => {
+    const handleDrop = (event: DragEvent) => {
         event.preventDefault();
-        if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-            const oldValue = value;
-            const file = event.dataTransfer.files[0];
-            const reader = new FileReader();
-            reader.onload = async (e: ProgressEvent<FileReader>) => {
-                const droppedData = e.target?.result as string;
-                updateCodemirror(view, droppedData);
-                if (format === "json") {
-                    await Formatter.formatJson(droppedData, view, {
-                        tabWidth: storage?.spaces || 4,
-                        useTabs: storage?.tab || false
-                    });
-                }
-                if (format === "yaml") {
-                    Formatter.formatYaml(droppedData, view, {
-                        indent: storage?.spaces || 2
-                    });
-                }
-                if (format === "xml") {
-                    Formatter.formatXml(value, view, storage?.spaces || 2);
-                }
-            };
-            if (value !== oldValue) {
-                view.dispatch({
-                    effects: [EditorView.scrollIntoView(1, { y: "nearest" })]
-                });
-            }
-            reader.readAsText(file);
-        }
+        codemirrorActions.dragAndDrop(event, value);
+    };
+
+    const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+        event.preventDefault();
+        codemirrorActions.handleFileUpload(event);
+    };
+
+    const handleCopyClick = async () => {
+        isCopyClicked = true;
+        setTimeout(() => {
+            isCopyClicked = false;
+        }, 1000);
+        await navigator.clipboard.writeText(value);
+    };
+
+    const handleDownloadClick = () => {
+        isDownloadClicked = true;
+        setTimeout(() => {
+            isDownloadClicked = false;
+        }, 1000);
+        codemirrorActions.downloadFile(value);
     };
 
     onMount(() => {
         createEditorView();
+        codemirrorActions = new CodemirrorActions(view, format);
         if (browser) {
-            // storage = getTypedStorageItem(format);
-
-            document.addEventListener("paste", onPaste);
-            document.addEventListener("drop", onDrop);
+            document.addEventListener("paste", handlePaste);
+            document.addEventListener("drop", handleDrop);
             const cmDiv = document.getElementsByClassName("cm-content");
             if (cmDiv.length > 0) {
                 cmDiv[0].setAttribute("aria-label", "JSON input");
@@ -165,26 +99,25 @@
     onDestroy(() => {
         view?.destroy();
         if (browser) {
-            document.removeEventListener("paste", onPaste);
-            document.removeEventListener("drop", onDrop);
+            document.removeEventListener("paste", handlePaste);
+            document.removeEventListener("drop", handleDrop);
         }
     });
 </script>
 
-<Header bind:value bind:view {format} />
+<Header bind:view {format} {handleFileChange} {handleFormatClick} />
 <div class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
-
     {#if $isSettingsOpen}
-        <SettingsModal bind:useTabs bind:indentationLevel />
+        <SettingsModal bind:useTabs bind:indentationLevel {format} />
     {/if}
     {#if $showError}
         <ErrorModal />
     {/if}
 </div>
 <Footer
-    {value}
-    {format}
+    {handleCopyClick}
+    {handleDownloadClick}
     {useTabs}
     {isCopyClicked}
     {cursorPosition}

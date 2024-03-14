@@ -10,32 +10,14 @@
     import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
     import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import { isSettingsOpen } from "~/lib/storages";
-    import Formatter from "~/utils/Formatter";
-    import { updateCodemirror } from "../codemirror";
-    import { dropDownOptions } from "./utils";
+    import { dropDownOptions } from "~/lib/components/codemirror/components/utils";
 
-    export let value: string = "";
     export let view: EditorView;
     export let format: "json" | "yaml" | "xml";
-
-    let storage: Storage | null;
-
-    const formatFunction = async () => {
-        if (format === "yaml") {
-            Formatter.formatYaml(value, view, {
-                indent: storage ? storage.spaces : 2
-            });
-        }
-        if (format === "json") {
-            await Formatter.formatJson(value, view, {
-                tabWidth: storage ? storage.spaces : 4,
-                useTabs: storage && "tab" in storage ? storage.tab : false
-            });
-        }
-        if (format === "xml") {
-            Formatter.formatXml(value, view, storage ? storage.spaces : 2);
-        }
-    };
+    export let handleFileChange: (
+        event: Event & { currentTarget: EventTarget & HTMLInputElement }
+    ) => void;
+    export let handleFormatClick: () => void;
 
     let showDropDown: boolean = false;
     let searchMenuOpened: boolean = false;
@@ -88,32 +70,14 @@
 
     const openSettings = () => {
         $isSettingsOpen = !$isSettingsOpen;
-    };
-
-    const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
-        if (
-            event.currentTarget &&
-            event.currentTarget.files &&
-            event.currentTarget.files.length > 0
-        ) {
-            const file = event.currentTarget.files[0];
-            const reader = new FileReader();
-            reader.onload = async (e: ProgressEvent<FileReader>) => {
-                const droppedData = e.target?.result as string;
-                updateCodemirror(view, droppedData);
-                setTimeout(() => {
-                    formatFunction();
-                }, 10); // REDO
-            };
-            reader.readAsText(file);
+        if ($isSettingsOpen) {
+            searchMenuOpened = false;
+            closeSearchPanel(view);
         }
     };
 
     onMount(() => {
-        if (browser) {
-            // storage = getTypedStorageItem(format);
-            document.addEventListener("keydown", handleKeyDown);
-        }
+        if (browser) document.addEventListener("keydown", handleKeyDown);
     });
 
     onDestroy(() => {
@@ -164,7 +128,7 @@
         </button>
     </nav>
     <button
-        on:click={formatFunction}
+        on:click={handleFormatClick}
         class="button text format-button"
         aria-label="format"
         aria-labelledby="format"

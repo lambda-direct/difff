@@ -1,63 +1,54 @@
-import { EditorView } from "@codemirror/view";
-import { XMLValidator } from "fast-xml-parser";
+import { XMLValidator, type ValidationError } from "fast-xml-parser";
 import * as yaml from "js-yaml";
 import * as prettier from "prettier/standalone";
-import { removeHighlightedLines } from "~/lib/components/codemirror/codemirror";
-import { highlightErrorLineJSON } from "~/lib/components/codemirror/codemirrorJSON";
-import { highlightErrorLineXML } from "~/lib/components/codemirror/codemirrorXML";
-import { addHighlightedLineYaml } from "~/lib/components/codemirror/codemirrorYAML";
-import type { FormatError, FormatYamlError } from "~/types";
 import { prettierSettings } from "./settings";
 
 class Validator {
-    private isFormatError = (error: unknown): error is FormatError => {
-        return <FormatError>error !== undefined && (<FormatError>error).loc !== undefined;
-    };
+    format: "json" | "yaml" | "xml";
+    constructor(format: "json" | "yaml" | "xml") {
+        this.format = format;
+    }
 
-    isYamlError = (error: unknown): error is FormatYamlError => {
-        return (
-            <FormatYamlError>error !== undefined && (<FormatYamlError>error).mark.line !== undefined
-        );
-    };
-
-    validateYAML = (input: string, view: EditorView) => {
+    private validateYAML = (input: string): true | unknown => {
         try {
             yaml.load(input);
-            removeHighlightedLines(view);
-        } catch (err) {
-            if (this.isYamlError(err))
-                addHighlightedLineYaml(view, err.mark.position, err.mark.line, err.reason);
-        }
-    };
-
-    isURL = (url: string) => {
-        try {
-            new URL(url);
             return true;
         } catch (err) {
-            return false;
+            return err;
         }
     };
 
-    validateXML = (input: string, view: EditorView) => {
+    private validateXML = (input: string): true | ValidationError => {
         const validationResult = XMLValidator.validate(input);
         if (validationResult === true) {
-            removeHighlightedLines(view);
+            return validationResult;
         } else {
-            highlightErrorLineXML(view, validationResult.err.line, validationResult.err.msg);
+            return validationResult;
         }
     };
 
-    validateJSON = (input: string, view: EditorView) => {
-        prettier
+    private validateJSON = (input: string): true | unknown => {
+        return prettier
             .format(input, prettierSettings)
             .then(() => {
-                removeHighlightedLines(view);
+                return true;
             })
             .catch((err) => {
-                if (this.isFormatError(err)) highlightErrorLineJSON(view, err.loc.start.line);
+                return err;
             });
+    };
+
+    public validateInput = (userInput: string) => {
+        if (this.format === "yaml") {
+            return this.validateYAML(userInput);
+        }
+        if (this.format === "json") {
+            return this.validateJSON(userInput);
+        }
+        if (this.format === "xml") {
+            return this.validateXML(userInput);
+        }
     };
 }
 
-export default new Validator();
+export default Validator;

@@ -1,17 +1,25 @@
-import { EditorState, StateEffect, StateField, type Extension } from "@codemirror/state";
+import {
+    EditorState,
+    SelectionRange,
+    StateEffect,
+    StateField,
+    type Extension
+} from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 import { errorMessage, showError } from "~/lib/storages";
-
+import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
+import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
 import { search } from "@codemirror/search";
 import { basicSetup } from "codemirror";
-
-export const removeHighlightedLines = (view: EditorView) => {
-    view.dispatch({
-        effects: [removeHighlights.of(null)]
-    });
-    errorMessage.set("");
-    showError.set(false);
-};
+import { LanguageSupport, StreamLanguage } from "@codemirror/language";
+import { json } from "@codemirror/lang-json";
+import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
+import {
+    addHighlightedLineJSON,
+    highlightErrorLineJSON
+} from "~/lib/components/codemirror/highlightJSON";
+import { addHighlightedLineYaml } from "~/lib/components/codemirror/highlightYAML";
+import { highlightErrorLineXML } from "~/lib/components/codemirror/highlightXML";
 
 export const createEditorState = (
     value: string | undefined,
@@ -46,6 +54,23 @@ export const lineHighlightField = StateField.define<DecorationSet>({
     provide: (f) => EditorView.decorations.from(f)
 });
 
+export const stateExtensions = [
+    EditorView.lineWrapping,
+    basicSetup,
+    lineHighlightField,
+    search({ top: true })
+];
+
+const removeHighlights = StateEffect.define();
+export const removeHighlightedLines = (view: EditorView) => {
+    view.dispatch({
+        effects: [removeHighlights.of(null)]
+    });
+    errorMessage.set("");
+    showError.set(false);
+};
+
+const lineHighlight = Decoration.mark({ class: "error" });
 export const addHighlight = StateEffect.define<{ from: number; to: number }>({
     map: ({ from, to }, change) => ({
         from: change.mapPos(from),
@@ -53,22 +78,67 @@ export const addHighlight = StateEffect.define<{ from: number; to: number }>({
     })
 });
 
-export const updateCodemirror = (view: EditorView, newValue: string) => {
-    console.log(newValue);
-    const transition = view.state.update({
-        changes: { from: 0, to: view.state.doc.length, insert: newValue }
-    });
+export const getFileFormat = (
+    format: "json" | "yaml" | "xml"
+): LanguageSupport | StreamLanguage<unknown> => {
+    if (format === "json") return json();
+    if (format === "yaml") return StreamLanguage.define(yamlMode.yaml);
+    return StreamLanguage.define(xmlMode.xml);
+};
 
+export const trackCursorPosition = (editorView: EditorView): { line: number; col: number } => {
+    const { doc, selection } = editorView.state;
+    const mainRange: SelectionRange = selection.main;
+
+    const lineInfo = doc.lineAt(mainRange.head);
+    const line = lineInfo.number;
+    const col = mainRange.head - lineInfo.from;
+
+    return { line, col };
+};
+
+export const updateCodemirrorValue = (view: EditorView, input: string) => {
+    const transition = view.state.update({
+        changes: { from: 0, to: view.state.doc.length, insert: input }
+    });
     view.dispatch(transition);
 };
 
-const removeHighlights = StateEffect.define();
+export const updateFormattedValue = (view: EditorView, value: unknown) => {
+    if (typeof value === "string") {
+        removeHighlightedLines(view);
+        updateCodemirrorValue(view, value);
+    } else {
+        if (isJSONError(value)) {
+            addHighlightedLineJSON(view, value.loc.start.column, value.loc.start.line);
+            return;
+        }
+        if (isYamlError(value)) {
+            addHighlightedLineYaml(view, value.mark.position, value.mark.line, value.reason);
+            return;
+        }
+        if (isXMLError(value)) {
+            highlightErrorLineXML(view, value.err.line, value.err.msg);
+            return;
+        }
+    }
+};
 
-const lineHighlight = Decoration.mark({ class: "error" });
-
-export const stateExtensions = [
-    EditorView.lineWrapping,
-    basicSetup,
-    lineHighlightField,
-    search({ top: true })
-];
+export const updateCodemirrorValidatedValue = (view: EditorView, value: unknown) => {
+    if (typeof value === "boolean") {
+        removeHighlightedLines(view);
+    } else {
+        if (isJSONError(value)) {
+            highlightErrorLineJSON(view, value.loc.start.line);
+            return;
+        }
+        if (isYamlError(value)) {
+            addHighlightedLineYaml(view, value.mark.position, value.mark.line, value.reason);
+            return;
+        }
+        if (isXMLError(value)) {
+            highlightErrorLineXML(view, value.err.line, value.err.msg);
+            return;
+        }
+    }
+};

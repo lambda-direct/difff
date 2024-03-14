@@ -12,7 +12,7 @@ const darkBackground = "#21252b";
 const tooltipBackground = "#FBFBFA";
 const tooltipColor = "#373530";
 
-export const theme = [
+const theme = [
     baseTheme,
     EditorView.theme(
         {
@@ -97,7 +97,7 @@ export const theme = [
     )
 ];
 
-export const themeHighlightStyle = HighlightStyle.define([
+const themeHighlightStyle = HighlightStyle.define([
     { tag: t.keyword, color: violet },
     {
         tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
@@ -159,7 +159,7 @@ export const themeHighlightStyle = HighlightStyle.define([
     { tag: t.invalid, color: invalid }
 ]);
 
-export const themeHighlightStyleYaml = HighlightStyle.define([
+const themeHighlightStyleYaml = HighlightStyle.define([
     { tag: t.keyword, color: "#d19a66" },
     {
         tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
@@ -223,11 +223,11 @@ export const themeHighlightStyleXML = HighlightStyle.define([
     }
 ]);
 
-export const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];
+const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];
 
-export const themeExtensionsXML: Extension = [theme, syntaxHighlighting(themeHighlightStyleXML)];
+const themeExtensionsXML: Extension = [theme, syntaxHighlighting(themeHighlightStyleXML)];
 
-export const themeExtensionsYaml: Extension = [
+const themeExtensionsYaml: Extension = [
     [
         ...theme,
         EditorView.theme({
@@ -238,3 +238,9 @@ export const themeExtensionsYaml: Extension = [
     ],
     syntaxHighlighting(themeHighlightStyleYaml)
 ];
+
+export const getThemeExtention = (format: "json" | "yaml" | "xml"): Extension => {
+    if (format === "json") return themeExtensionsJson;
+    if (format === "yaml") return themeExtensionsYaml;
+    return themeExtensionsXML;
+};

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
     import Head from "~/lib/components/shared/Head.svelte";
     import CodeMirror from "~/lib/components/codemirror/Codemirror.svelte";
 </script>
@@ -16,11 +15,7 @@
         <h2 class="main_subtitle">Validate, Format & Prettify your JSON</h2>
     </header>
     <section class="formatter_field-wrapper">
-        {#if browser}
-            <CodeMirror format="json" placeholder="Provide a JSON, link, or Drag & Drop a file" />
-        {:else}
-            <div class="back-field" />
-        {/if}
+        <CodeMirror format="json" placeholder="Provide a JSON, link, or Drag & Drop a file" />
     </section>
     <article class="footer_article">
         <h2 class="footer_article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>

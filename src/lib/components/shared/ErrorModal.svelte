@@ -54,7 +54,7 @@
         padding: 12px;
         background: #8f2626;
         border-radius: 4px;
-        bottom: 60px;
+        bottom: 0px;
         position: absolute;
         right: 24px;
         z-index: 5;
@@ -68,7 +68,7 @@
 
     @keyframes floatIn {
         to {
-            bottom: 66px;
+            bottom: 12px;
         }
     }
 </style>
