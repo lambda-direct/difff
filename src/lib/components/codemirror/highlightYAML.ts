@@ -10,7 +10,7 @@ export const addHighlightedLineYaml = (
 ) => {
     removeHighlightedLines(view);
     const line = view.state.doc.line(lineNumber === 0 ? 1 : lineNumber);
-    errorMessage.set(reason);
+    errorMessage.set(`Invalid, ${reason}`);
     if (line.text === "") {
         view.dispatch({
             effects: [

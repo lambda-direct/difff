@@ -8,6 +8,7 @@ export const isJSONError = (error: unknown): error is FormatJSONError => {
 export const isYamlError = (error: unknown): error is FormatYamlError => {
     return (
         <FormatYamlError>error !== undefined &&
+        (<FormatYamlError>error).mark !== undefined &&
         (<FormatYamlError>error).mark.line !== undefined &&
         (<FormatYamlError>error).mark.position !== undefined &&
         (<FormatYamlError>error).reason !== undefined

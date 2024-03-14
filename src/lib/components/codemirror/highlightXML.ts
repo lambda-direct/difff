@@ -5,17 +5,18 @@ import { errorMessage, showError } from "~/lib/storages";
 export const highlightErrorLineXML = (view: EditorView, lineNumber: number, message: string) => {
     removeHighlightedLines(view);
     const line = view.state.doc.line(lineNumber);
-    errorMessage.set(message);
-
-    view.dispatch({
-        effects: [
-            addHighlight.of({
-                from: line.from,
-                to: line.to
-            }),
-            EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
-        ]
-    });
+    errorMessage.set(`Invalid, ${message}`);
+    if (line.text !== "") {
+        view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: line.from,
+                    to: line.to
+                }),
+                EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
+            ]
+        });
+    }
 
     showError.set(true);
 };

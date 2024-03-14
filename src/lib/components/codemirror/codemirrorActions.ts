@@ -23,7 +23,9 @@ class CodemirrorActions {
     }
 
     public updateFormattedValue = async (userInput: string) => {
-        updateFormattedValue(this.view, await this.formatter.formatInput(userInput));
+        if (userInput) {
+            updateFormattedValue(this.view, await this.formatter.formatInput(userInput));
+        }
     };
 
     public valueChange = async (value: string) => {

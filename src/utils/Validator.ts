@@ -39,14 +39,14 @@ class Validator {
     };
 
     public validateInput = (userInput: string) => {
-        if (this.format === "yaml") {
-            return this.validateYAML(userInput);
-        }
         if (this.format === "json") {
             return this.validateJSON(userInput);
         }
         if (this.format === "xml") {
             return this.validateXML(userInput);
+        }
+        if (this.format === "yaml") {
+            return this.validateYAML(userInput);
         }
     };
 }

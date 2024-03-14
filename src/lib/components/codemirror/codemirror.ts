@@ -142,12 +142,12 @@ export const updateCodemirrorValidatedValue = (view: EditorView, value: unknown)
             );
             return;
         }
-        if (isYamlError(value)) {
-            addHighlightedLineYaml(view, value.mark.position, value.mark.line, value.reason);
-            return;
-        }
         if (isXMLError(value)) {
             highlightErrorLineXML(view, value.err.line, value.err.msg);
+            return;
+        }
+        if (isYamlError(value)) {
+            addHighlightedLineYaml(view, value.mark.position, value.mark.line, value.reason);
             return;
         }
     }
