@@ -35,7 +35,7 @@
 >
     <p class="title">
         {#if showErrorMessage}
-            Invalid {$errorMessage === "" ? "format" : $errorMessage}
+            {$errorMessage === "" ? "Invalid format" : $errorMessage}
         {/if}
     </p>
     <AlertIcon color={"#eaeaea"} />

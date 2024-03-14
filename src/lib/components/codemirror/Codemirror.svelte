@@ -11,6 +11,8 @@
         getExtentions
     } from "~/lib/components/codemirror/codemirrorActions";
     import Footer from "~/lib/components/codemirror/components/Footer.svelte";
+    import LocalStorage from "~/storage/LocalStorage";
+    import type { LocaleStorageResponce } from "~/storage/types";
 
     export let format: "json" | "yaml" | "xml";
     export let placeholder: string;
@@ -22,10 +24,10 @@
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
 
-    let storage: Storage | null = null;
+    let storage: LocaleStorageResponce;
     let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
 
-    $: useTabs = storage?.tab || false;
+    $: useTabs = storage && "tab" in storage ? storage.tab : false;
     $: indentationLevel = storage?.spaces || format === "json" ? 4 : 2;
     $: onChange = handleValueChange;
 
@@ -49,7 +51,8 @@
     };
 
     const handleValueChange = async () => {
-        value = await codemirrorActions.valueChange(value);
+        const changedValue = await codemirrorActions.valueChange(value);
+        if (changedValue) value = changedValue;
     };
 
     const handlePaste = async () => {
@@ -84,6 +87,7 @@
 
     onMount(() => {
         createEditorView();
+        storage = LocalStorage.get(format);
         codemirrorActions = new CodemirrorActions(view, format);
         if (browser) {
             document.addEventListener("paste", handlePaste);

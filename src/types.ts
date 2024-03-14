@@ -1,4 +1,5 @@
 export type FormatJSONError = {
+    message: string;
     loc: {
         start: Coordinates;
         end?: Coordinates;
@@ -48,4 +49,3 @@ export type OGCard = {
     locale: string;
     type: string;
 };
-

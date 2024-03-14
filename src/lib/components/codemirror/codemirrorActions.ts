@@ -26,9 +26,9 @@ class CodemirrorActions {
         updateFormattedValue(this.view, await this.formatter.formatInput(userInput));
     };
 
-    public valueChange = async (value: string): Promise<string> => {
+    public valueChange = async (value: string) => {
         const new_value = this.view.state.doc.toString();
-        if (new_value === value) return value;
+        if (new_value === value) return;
         updateCodemirrorValidatedValue(this.view, await this.validator.validateInput(new_value));
         return new_value;
     };

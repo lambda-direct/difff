@@ -14,10 +14,7 @@ import { basicSetup } from "codemirror";
 import { LanguageSupport, StreamLanguage } from "@codemirror/language";
 import { json } from "@codemirror/lang-json";
 import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
-import {
-    addHighlightedLineJSON,
-    highlightErrorLineJSON
-} from "~/lib/components/codemirror/highlightJSON";
+import { addHighlightedLineJSON } from "~/lib/components/codemirror/highlightJSON";
 import { addHighlightedLineYaml } from "~/lib/components/codemirror/highlightYAML";
 import { highlightErrorLineXML } from "~/lib/components/codemirror/highlightXML";
 
@@ -110,7 +107,12 @@ export const updateFormattedValue = (view: EditorView, value: unknown) => {
         updateCodemirrorValue(view, value);
     } else {
         if (isJSONError(value)) {
-            addHighlightedLineJSON(view, value.loc.start.column, value.loc.start.line);
+            addHighlightedLineJSON(
+                view,
+                value.loc.start.column,
+                value.loc.start.line,
+                value.message
+            );
             return;
         }
         if (isYamlError(value)) {
@@ -125,11 +127,19 @@ export const updateFormattedValue = (view: EditorView, value: unknown) => {
 };
 
 export const updateCodemirrorValidatedValue = (view: EditorView, value: unknown) => {
-    if (typeof value === "boolean") {
+    let isError: boolean = false;
+    showError.subscribe((el) => (isError = el));
+    if (typeof value === "boolean" && isError) {
         removeHighlightedLines(view);
-    } else {
+    }
+    if (typeof value !== "boolean") {
         if (isJSONError(value)) {
-            highlightErrorLineJSON(view, value.loc.start.line);
+            addHighlightedLineJSON(
+                view,
+                value.loc.start.column,
+                value.loc.start.line,
+                value.message
+            );
             return;
         }
         if (isYamlError(value)) {
