@@ -18,7 +18,7 @@ code.hljs {
     color: #e1e1e1;
 }
 .hljs-comment {
-    color: #677195;
+    color: #bdbdbd;
 }
 .hljs-tag {
     color: #999;
@@ -32,7 +32,7 @@ code.hljs {
     opacity: 0.8;
 }
 .hljs-bullet {
-    color: #db8fbd;
+    color: #cf404e;
 }
 .hljs-deletion,
 .hljs-name,
@@ -46,7 +46,7 @@ code.hljs {
     color: #b8a2ff;
 }
 .hljs-number {
-    color: #56bbb3;
+    color: #59d9cf;
 }
 
 .hljs-attr,
@@ -88,7 +88,7 @@ code.hljs {
 .hljs-keyword,
 .hljs-template-tag,
 .hljs-type {
-    color: #bd424e;
+    color: #6ec976;
 }
 .hljs-emphasis {
     color: #999;
