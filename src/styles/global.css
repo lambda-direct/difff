@@ -2,6 +2,8 @@
 * {
     line-height: 120%;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html {
@@ -20,8 +22,6 @@ h3,
 h4,
 h5,
 h6 {
-    margin: 0;
-    padding: 0;
     font-family: "NotoSans-Regular", sans-serif;
     text-transform: capitalize;
 }
@@ -52,8 +52,6 @@ h3 {
 
 p {
     font-family: "NotoSans-Regular", sans-serif;
-    margin: 0;
-    padding: 0;
     font-size: 14px;
     color: #eaeaea;
     @media (min-width: 420px) {
@@ -66,18 +64,10 @@ a {
     color: inherit;
 }
 
-ol,
-ul {
-    margin: 0;
-    padding: 0;
-}
-
 ul {
     list-style: none;
 }
-pre {
-    margin: 0;
-}
+
 button {
     user-select: none;
     cursor: pointer;
