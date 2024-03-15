@@ -95,7 +95,7 @@ article {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         margin: 0;
         padding: 0;
-        color: #dfdada;
+        color: #eaeaea;
     }
 
     & ul {
@@ -105,11 +105,16 @@ article {
         }
     }
 
+    & strong {
+        color: #eaeaea;
+    }
+
     & li {
         margin: 22px 0 0 30px;
         font-family: "source serif", Georgia, Cambria, "Times New Roman", Times, serif;
         font-size: 20px;
-        color: #e1e1e1;
+        letter-spacing: 0.2px;
+        color: #d1d1d1;
         &:first-child {
             margin: 32 px 0 0 30px;
         }
@@ -124,7 +129,6 @@ article {
         margin: 50px 0 32px 0;
         font-size: 42px;
         line-height: 52px;
-        color: #dfdada;
         @media (max-width: 768px) {
             margin: 32px 0 24px 0;
             line-height: 48px;
@@ -134,12 +138,10 @@ article {
 
     & h2 {
         margin: 34px 0 0;
-        color: #dfdada;
     }
 
     & h3 {
         margin: 32px 0 0;
-        color: #dfdada;
     }
 
     & h5 {
@@ -199,12 +201,12 @@ article {
     & p {
         margin: 42px 0 0;
         padding: 0;
-        letter-spacing: -0.048px;
+        letter-spacing: 0.05px;
         clear: left;
         line-height: 32px;
         font-family: "source serif", Georgia, Cambria, "Times New Roman", Times, serif;
         font-size: 20px;
-        color: #e1e1e1;
+        color: #d1d1d1;
         @media (max-width: 768px) {
             margin: 24px 0 0;
             line-height: 28px;

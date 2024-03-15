@@ -2,19 +2,22 @@
 
 **XML (eXtensible Markup Language)** - file format(.xml) for any data. Stores data in plain text format with the standardized XML syntax. This helps to use a independent storing, transporting, and sharing data. Provide accessibility across various platforms and devices, including humans, computers, voice assistants, news feeds, and more.
 
-### XML Components:
+### Structure rules:
 
--   Declaration
--   Elements
-    -   attributes
-    -   content
+-   Declaration at the beginning of the document
+-   Files must have root element
+-   All elements are required to have closing and opening tags
+-   Opening and closing are case-sensitive
+-   Attributes values must be quoted
+-   XML retains spaces
+-   Elements must be nested properly
+-   Comments can be defined using <!-- -->
 
 <pre>
 
-<code class="language-xml hljs">{`
-<?xml version="1.0" encoding="UTF-8"?> <!--Information about XML, declaration-->
 
-    <!--All the other tags in XML document are called elements-->
+<code class="language-xml hljs">{`<?xml version="1.0" encoding="UTF-8"?> <!--Information about XML, declaration-->
+
     <Catalog>
         <Car>
             <Brand>Audi</Brand>
@@ -33,17 +36,26 @@
             <BodyNumber>02356599</BodyNumber>
         </Car>
     </Catalog>`}
-
 </code>
 </pre>
 
-XML is platform independent and language independent. Tags are not predefined, you must define your own tags. They structure the document and specify
-how it should be stored and transported over the internet. Tags can contain other tags.
-First is called the "root", all other tags in "root" are "child" tag. XML code formatted with indentation to make easier human readability. Additionally, comments can be included using <!-- -->,
-some rules about comments, cannot appear before XML declaration, can be anywhere in a document, can't have attributes &
-Comments can't be nested within other comments.
+## How does XML work?
+
+XML relies on components such as tags, elements, attributes, and comments, which are organized in a nested structure. Tags are not predefined,you must define your own tags. Tags can contain other tags, with first is called the "root," and all subsequent tags in the "root" are known as "child". Comments, which cannot appear before the XML declaration, can be placed anywhere within a document. Comments cannot have attributes, and they cannot be nested within other comments. These components structure the document and dictate how it should be stored and transmitted over the internet. XML is platform and language-independent, designed for both human readability and machine parsing.
 
 ## What is XML file used for?
 
-Due to its structured nature, XML is used for transferring data, formatting documents, creating layouts, web searching & storing configuration data.
-The main benefit is that you can use it to take data from a program like Microsoft SQL, convert it into XML then share it with other programs and platforms. You can communicate between two platforms. The main thing which makes XML truly powerful is its international acceptance. Many corporation use XML interfaces for databases, programming, office application mobile phones and more. It is due to its platform independent feature.
+Due to its structure nature, XML is used for transferring data, formatting documents, creating layouts, web searching & storing configuration data.
+You can communicate between two platforms. As example take data from a program like Microsoft SQL, convert it into XML then share it with other programs and platforms.
+
+### Applications for which XML is useful:
+
+-   Web publishing: simplifies the creation of interactive and customizable web pages, enhancing the development of e-commerce applications.
+    Through data storage and XSL/XSLT processing, content can be dynamically rendered for various users and devices.
+-   Web searching and automating Web tasks: capability to define data types within documents enhances web search precision by ensuring contextual relevance, enabling more efficient
+    and accurate results for web agents and robots
+-   General applications: offers a standardized approach for accessing, storing, transmitting, and displaying data across various applications and devices.
+-   E-business applications: implementations facilitate electronic data interchange (EDI) for seamless business-to-business and business-to-consumer transactions.
+-   Metadata applications: makes it easier to express metadata in a portable, reusable format
+-   Pervasive computing: offers structured information types for display on various pervasive computing devices like PDAs and cell phones, with standards like WML and VoiceXML  
+    defining interfaces for wireless devices.

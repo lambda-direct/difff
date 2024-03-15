@@ -75,7 +75,7 @@ stringExample: !!str "James"
 
 Put JSON, JavaScript object or an undecorated YAML. We'll validate input and format it.
 
-##### Input:
+### Input:
 
 <pre><code class="language-yaml hljs">#JSON
 
@@ -109,7 +109,7 @@ obj : {`{val1: "value",   val2: "value"}`}
 val3: true
 </code></pre>
 
-##### Output:
+### Output:
 
 <pre><code class="language-yaml hljs">someData: trees
 randomNumber: 322
