@@ -95,10 +95,16 @@ export const trackCursorPosition = (editorView: EditorView): { line: number; col
 };
 
 export const updateCodemirrorValue = (view: EditorView, input: string) => {
-    const transition = view.state.update({
+    const { state } = view;
+    const selection = state.selection.main;
+
+    const transition = state.update({
         changes: { from: 0, to: view.state.doc.length, insert: input }
     });
-    view.dispatch(transition);
+    view.dispatch({
+        ...transition,
+        selection: { anchor: selection.anchor, head: selection.anchor }
+    });
 };
 
 export const updateFormattedValue = (view: EditorView, value: unknown) => {
