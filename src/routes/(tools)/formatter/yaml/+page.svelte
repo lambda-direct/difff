@@ -11,8 +11,8 @@
 
     onMount(() => {
         if (browser) {
-            hljs.highlightAll();
             hljs.registerLanguage("yaml", yaml);
+            hljs.highlightAll();
         }
     });
 </script>

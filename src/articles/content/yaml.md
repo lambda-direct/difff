@@ -69,7 +69,6 @@ bool: !!str false
 binaryNumber: !!int 0b101010
 hexadecimalNumber: !!int 0x1C7A
 stringExample: !!str "James"
-...
 </code></pre>
 
 ## How to use YAML formatter

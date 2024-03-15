@@ -11,8 +11,8 @@
 
     onMount(() => {
         if (browser) {
-            hljs.highlightAll();
             hljs.registerLanguage("xml", xml);
+            hljs.highlightAll();
         }
     });
 </script>

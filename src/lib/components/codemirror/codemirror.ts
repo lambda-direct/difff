@@ -5,18 +5,18 @@ import {
     StateField,
     type Extension
 } from "@codemirror/state";
+import { basicSetup } from "codemirror";
+import { search } from "@codemirror/search";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 import { errorMessage, showError } from "~/lib/storages";
+import { json } from "@codemirror/lang-json";
 import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
 import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
-import { search } from "@codemirror/search";
-import { basicSetup } from "codemirror";
 import { LanguageSupport, StreamLanguage } from "@codemirror/language";
-import { json } from "@codemirror/lang-json";
 import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
+import { highlightErrorLineXML } from "~/lib/components/codemirror/highlightXML";
 import { addHighlightedLineJSON } from "~/lib/components/codemirror/highlightJSON";
 import { addHighlightedLineYaml } from "~/lib/components/codemirror/highlightYAML";
-import { highlightErrorLineXML } from "~/lib/components/codemirror/highlightXML";
 
 export const createEditorState = (
     value: string | undefined,
