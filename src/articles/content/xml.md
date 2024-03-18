@@ -1,17 +1,20 @@
 ## What is XML file format?
 
-**XML (eXtensible Markup Language)** - file format(.xml) for any data. Stores data in plain text format with the standardized XML syntax. This helps to use a independent storing, transporting, and sharing data. Provide accessibility across various platforms and devices, including humans, computers, voice assistants, news feeds, and more.
+**XML (eXtensible Markup Language)** - file(.xml) format for any type of data. Stores data in plain text with the standardized XML syntax. This helps to use a independent storing, transporting, and sharing data. Provide accessibility across various platforms and devices, computers, voice assistants, news feeds, and more.
 
 ### Structure rules:
 
 -   Declaration at the beginning of the document
--   Files must have root element
--   All elements are required to have closing and opening tags
--   Opening and closing are case-sensitive
+-   Files must contain a root element
+-   All elements must have both opening and closing tags
+-   Opening and closing tags are case-sensitive
 -   Attributes values must be quoted
 -   XML retains spaces
 -   Elements must be nested properly
--   Comments can be defined using <!-- -->
+-   Comments are denoted by <!-- -->
+-   Comments can be inserted anywhere after the declaration
+-   Comments can`t have attribute
+-   Comments can`t be nested within other comments
 
 <pre>
 
@@ -41,7 +44,7 @@
 
 ## How does XML work?
 
-XML relies on components such as tags, elements, attributes, and comments, which are organized in a nested structure. Tags are not predefined,you must define your own tags. Tags can contain other tags, with first is called the "root," and all subsequent tags in the "root" are known as "child". Comments, which cannot appear before the XML declaration, can be placed anywhere within a document. Comments cannot have attributes, and they cannot be nested within other comments. These components structure the document and dictate how it should be stored and transmitted over the internet. XML is platform and language-independent, designed for both human readability and machine parsing.
+XML relies on components such as tags, elements, and attributes, which are organized in a nested structure. Tags are not predefined, you must define your own tags. Tags can contain other tags, with first is called the "root", and all subsequent tags inside "root" are known as "child". These components structure the document and dictate how it should be stored and transmitted over the internet. XML is platform and language-independent, designed for both human readability and machine parsing.
 
 ## What is XML file used for?
 

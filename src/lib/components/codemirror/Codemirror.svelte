@@ -2,71 +2,54 @@
     import { browser } from "$app/environment";
     import { EditorView } from "@codemirror/view";
     import { onDestroy, onMount } from "svelte";
-    import { createEditorState, trackCursorPosition } from "~/lib/components/codemirror/codemirror";
     import Header from "~/lib/components/codemirror/components/Header.svelte";
     import ErrorModal from "~/lib/components/shared/ErrorModal.svelte";
     import SettingsModal from "~/lib/components/shared/SettingsModal.svelte";
-    import { isSettingsOpen, showError } from "~/lib/storages";
-    import CodemirrorActions, {
-        getExtentions
-    } from "~/lib/components/codemirror/codemirrorActions";
+    import { errorMessage, isSettingsOpen, showError } from "~/lib/storages";
     import Footer from "~/lib/components/codemirror/components/Footer.svelte";
     import LocalStorage from "~/storage/LocalStorage";
     import type { LocaleStorageResponce } from "~/storage/types";
+    import Redactor from "~/lib/components/codemirror/Redactor";
+    import type { CursorPosition, UploadEvent } from "~/types";
 
     export let format: "json" | "yaml" | "xml";
     export let placeholder: string;
+    $: console.log(value);
 
+    let codemirror: Redactor;
     let value: string = "";
     let view: EditorView;
-    let codemirrorActions: CodemirrorActions;
     let element: HTMLDivElement;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
-
     let storage: LocaleStorageResponce;
-    let cursorPosition: { line: number; col: number } = { line: 0, col: 0 };
+    let cursorPosition: CursorPosition = { line: 0, col: 0 };
 
     $: useTabs = storage && "tab" in storage ? storage.tab : false;
     $: indentationLevel = storage?.spaces || format === "json" ? 4 : 2;
-    $: onChange = handleValueChange;
-
-    const createEditorView = () => {
-        view = new EditorView({
-            parent: element,
-            state: createEditorState(value, getExtentions(format, placeholder)),
-            dispatch(transaction) {
-                view.update([transaction]);
-                if (transaction.selection || transaction.docChanged) {
-                    cursorPosition = trackCursorPosition(view);
-                    onChange();
-                }
-            },
-            extensions: [getExtentions(format, placeholder)]
-        });
-    };
+    $: {
+        if (value === "") {
+            $showError = false;
+            $errorMessage = "";
+        }
+    }
 
     const handleFormatClick = async () => {
-        await codemirrorActions.updateFormattedValue(value);
-    };
-
-    const handleValueChange = async () => {
-        const changedValue = await codemirrorActions.valueChange(value);
-        if (changedValue) value = changedValue;
+        await codemirror.formatInput(value);
     };
 
     const handlePaste = async () => {
-        await codemirrorActions.updateFormattedValue(value);
+        await codemirror.formatInput(value);
     };
 
     const handleDrop = (event: DragEvent) => {
         event.preventDefault();
-        codemirrorActions.dragAndDrop(event, value);
+        codemirror.dragAndDropFile(event, value);
     };
 
-    const handleFileChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+    const handleFileChange = (event: UploadEvent) => {
         event.preventDefault();
-        codemirrorActions.handleFileUpload(event);
+        codemirror.uploadFile(event);
     };
 
     const handleCopyClick = async () => {
@@ -82,13 +65,20 @@
         setTimeout(() => {
             isDownloadClicked = false;
         }, 1000);
-        codemirrorActions.downloadFile(value);
+        codemirror.downloadFile(value);
     };
 
     onMount(() => {
-        createEditorView();
+        codemirror = new Redactor(
+            element,
+            (newValue: string, newCursorPos) => {
+                value = newValue;
+                cursorPosition = newCursorPos;
+            },
+            placeholder,
+            format
+        );
         storage = LocalStorage.get(format);
-        codemirrorActions = new CodemirrorActions(view, format);
         if (browser) {
             document.addEventListener("paste", handlePaste);
             document.addEventListener("drop", handleDrop);
@@ -101,7 +91,7 @@
     });
 
     onDestroy(() => {
-        view?.destroy();
+        codemirror?.destroy();
         if (browser) {
             document.removeEventListener("paste", handlePaste);
             document.removeEventListener("drop", handleDrop);
@@ -109,7 +99,15 @@
     });
 </script>
 
-<Header bind:view {format} {handleFileChange} {handleFormatClick} />
+{#if codemirror}
+    <Header
+        bind:open={codemirror.open}
+        bind:close={codemirror.close}
+        {format}
+        {handleFileChange}
+        {handleFormatClick}
+    />
+{/if}
 <div class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     {#if $isSettingsOpen}

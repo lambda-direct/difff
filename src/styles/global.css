@@ -75,9 +75,11 @@ ul {
 ul {
     list-style: none;
 }
+
 pre {
     margin: 0;
 }
+
 button {
     user-select: none;
     cursor: pointer;

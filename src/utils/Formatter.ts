@@ -64,16 +64,17 @@ class Formatter {
         }
     };
 
-    public formatInput = async (userInput: string) => {
-        if (this.format === "yaml") {
-            return this.formatYaml(userInput);
-        }
-        if (this.format === "json") {
-            return await this.formatJson(userInput);
-        }
-        if (this.format === "xml") {
+    public formatInput = async (userInput: string): Promise<unknown> => {
+        if (userInput) {
+            if (this.format === "yaml") {
+                return this.formatYaml(userInput);
+            }
+            if (this.format === "json") {
+                return await this.formatJson(userInput);
+            }
             return this.formatXml(userInput);
         }
+        return userInput;
     };
 }
 

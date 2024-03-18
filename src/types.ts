@@ -5,7 +5,8 @@ export type FormatJSONError = {
         end?: Coordinates;
     };
 };
-
+export type CursorPosition = { line: number; col: number };
+export type UploadEvent = Event & { currentTarget: EventTarget & HTMLInputElement };
 export type FormatYamlError = {
     mark: { name: null; buffer: string; position: number; line: number; column: number };
     message: string;

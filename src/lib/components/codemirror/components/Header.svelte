@@ -11,13 +11,13 @@
     import UploadIcon from "~/lib/icons/UploadIcon.svelte";
     import { isSettingsOpen } from "~/lib/storages";
     import { dropDownOptions } from "~/lib/components/codemirror/components/utils";
+    import type { UploadEvent } from "~/types";
 
-    export let view: EditorView;
     export let format: "json" | "yaml" | "xml";
-    export let handleFileChange: (
-        event: Event & { currentTarget: EventTarget & HTMLInputElement }
-    ) => void;
+    export let handleFileChange: (event: UploadEvent) => void;
     export let handleFormatClick: () => void;
+    export let open: () => void;
+    export let close: () => void;
 
     let showDropDown: boolean = false;
     let searchMenuOpened: boolean = false;
@@ -37,9 +37,9 @@
         const newValue = !searchMenuOpened;
         searchMenuOpened = newValue;
         if (newValue) {
-            openSearchPanel(view);
+            open();
         } else {
-            closeSearchPanel(view);
+            close();
         }
         const closeBtn = document.querySelector("[name=close]");
         if (!closeBtn) return;
@@ -72,7 +72,7 @@
         $isSettingsOpen = !$isSettingsOpen;
         if ($isSettingsOpen) {
             searchMenuOpened = false;
-            closeSearchPanel(view);
+            close();
         }
     };
 
