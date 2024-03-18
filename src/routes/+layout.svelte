@@ -1,6 +1,6 @@
 <script lang="ts">
     import "~/styles/index.css";
-    import Footer from "~/lib/components/shared/Footer.svelte";
+    import Footer from "~/lib/shared/Footer.svelte";
 </script>
 
 <div class="page">

@@ -32,6 +32,12 @@ export async function GET() {
             <changefreq>yearly</changefreq>
             <priority>1.0</priority>
         </url>
+        <url>
+            <loc>https://difff.app/formatter/xml</loc>
+            <lastmod>2024-03-12</lastmod>
+            <changefreq>yearly</changefreq>
+            <priority>1.0</priority>
+        </url>
         </urlset> `.trim(),
         {
             headers: {

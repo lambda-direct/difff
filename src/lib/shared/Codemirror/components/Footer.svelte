@@ -2,7 +2,7 @@
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
     import DownloadIcon from "~/lib/icons/DownloadScon.svelte";
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
-    import { getColumn, getLine } from "~/lib/components/codemirror/components/utils";
+    import { getColumn, getLine } from "~/lib/shared/Codemirror/components/utils";
 
     export let cursorPosition: { line: number; col: number };
     export let useTabs: boolean;
@@ -69,7 +69,7 @@
         display: flex;
         align-items: center;
         height: 36px;
-        padding: 0 7px;
+        padding: 0 8px;
         background: #030711;
         border: 1px solid #313345;
         border-radius: 8px;

@@ -1,12 +1,12 @@
 <script lang="ts">
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
-    import { isSettingsOpen } from "~/lib/storages";
+    import { isSettingsOpen } from "~/storage/store";
     import LocalStorage from "~/storage/LocalStorage";
 
+    export let format: "json" | "yaml" | "xml";
     export let useTabs: boolean;
     export let indentationLevel: number;
-    export let format: "json" | "yaml" | "xml";
 
     const handleMenuClose = (event: MouseEvent) => {
         const target = event.target as HTMLElement;

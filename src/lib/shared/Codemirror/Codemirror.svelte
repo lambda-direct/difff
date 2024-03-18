@@ -1,32 +1,31 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { EditorView } from "@codemirror/view";
     import { onDestroy, onMount } from "svelte";
-    import Header from "~/lib/components/codemirror/components/Header.svelte";
-    import ErrorModal from "~/lib/components/shared/ErrorModal.svelte";
-    import SettingsModal from "~/lib/components/shared/SettingsModal.svelte";
-    import { errorMessage, isSettingsOpen, showError } from "~/lib/storages";
-    import Footer from "~/lib/components/codemirror/components/Footer.svelte";
+    import Header from "~/lib/shared/Codemirror/components/Header.svelte";
+    import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
+    import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
+    import { errorMessage, isSettingsOpen, showError } from "~/storage/store";
+    import Footer from "~/lib/shared/Codemirror/components/Footer.svelte";
     import LocalStorage from "~/storage/LocalStorage";
     import type { LocaleStorageResponce } from "~/storage/types";
-    import Redactor from "~/lib/components/codemirror/Redactor";
+    import Editor from "~/lib/shared/Codemirror/Editor";
     import type { CursorPosition, UploadEvent } from "~/types";
 
     export let format: "json" | "yaml" | "xml";
     export let placeholder: string;
-    $: console.log(value);
 
-    let codemirror: Redactor;
+    let codemirror: Editor;
     let value: string = "";
-    let view: EditorView;
     let element: HTMLDivElement;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
     let storage: LocaleStorageResponce;
     let cursorPosition: CursorPosition = { line: 0, col: 0 };
+    let openSettings: () => void;
+    let closeSettings: () => void;
+    let useTabs: boolean = false;
+    let indentationLevel: number = format === "json" ? 4 : 2;
 
-    $: useTabs = storage && "tab" in storage ? storage.tab : false;
-    $: indentationLevel = storage?.spaces || format === "json" ? 4 : 2;
     $: {
         if (value === "") {
             $showError = false;
@@ -69,7 +68,7 @@
     };
 
     onMount(() => {
-        codemirror = new Redactor(
+        codemirror = new Editor(
             element,
             (newValue: string, newCursorPos) => {
                 value = newValue;
@@ -78,7 +77,11 @@
             placeholder,
             format
         );
+        openSettings = codemirror.open;
+        closeSettings = codemirror.close;
         storage = LocalStorage.get(format);
+        useTabs = storage?.tab || useTabs;
+        indentationLevel = storage?.spaces || indentationLevel;
         if (browser) {
             document.addEventListener("paste", handlePaste);
             document.addEventListener("drop", handleDrop);
@@ -99,15 +102,13 @@
     });
 </script>
 
-{#if codemirror}
-    <Header
-        bind:open={codemirror.open}
-        bind:close={codemirror.close}
-        {format}
-        {handleFileChange}
-        {handleFormatClick}
-    />
-{/if}
+<Header
+    bind:open={openSettings}
+    bind:close={closeSettings}
+    {format}
+    {handleFileChange}
+    {handleFormatClick}
+/>
 <div class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     {#if $isSettingsOpen}
@@ -118,18 +119,18 @@
     {/if}
 </div>
 <Footer
+    bind:useTabs
+    bind:indentationLevel
     {handleCopyClick}
     {handleDownloadClick}
-    {useTabs}
     {isCopyClicked}
     {cursorPosition}
-    {indentationLevel}
     {isDownloadClicked}
 />
 
 <style lang="scss">
     .codemirror-wrapper {
-        height: 60vh;
+        height: calc(60vh + 54px);
         background: var(--editor-background, #030711);
     }
 

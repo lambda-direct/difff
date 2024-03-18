@@ -11,9 +11,9 @@ import type { CursorPosition, UploadEvent } from "~/types";
 import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
 import Validator from "~/utils/Validator";
 import Formatter from "~/utils/Formatter";
-import Highlight from "~/lib/components/codemirror/Highlight";
-import { showError } from "~/lib/storages";
-import { lineHighlightField } from "./highlightField";
+import Highlight from "~/lib/shared/Codemirror/Highlight";
+import { showError } from "~/storage/store";
+import { lineHighlightField, removeHighlightedLines } from "./highlightField";
 
 class Codemirror {
     view: EditorView;
@@ -75,6 +75,7 @@ class Codemirror {
     public init = (element: HTMLDivElement) => {
         return new EditorView({
             parent: element,
+
             state: this.createEditorState("", this.getExtentions()),
             dispatch: (transaction) => {
                 this.view.update([transaction]);
@@ -86,6 +87,7 @@ class Codemirror {
                     );
                 }
             },
+
             extensions: [this.getExtentions()]
         });
     };
@@ -106,7 +108,6 @@ class Codemirror {
     public trackCursorPosition = (): { line: number; col: number } => {
         const { doc, selection } = this.view.state;
         const mainRange: SelectionRange = selection.main;
-
         const lineInfo = doc.lineAt(mainRange.head);
         const line = lineInfo.number;
         const col = mainRange.head - lineInfo.from;
@@ -116,7 +117,7 @@ class Codemirror {
 
     public setFormattingResult = (value: unknown) => {
         if (typeof value === "string") {
-            this.highlighter.removeHighlightedLines(this.view);
+            removeHighlightedLines(this.view);
             this.updateCodemirrorValue(value);
         } else {
             if (isJSONError(value)) {
@@ -148,13 +149,21 @@ class Codemirror {
         }
     };
 
+    public validateInput = async (userInput: string) => {
+        if (userInput) {
+            this.setFormattingResult(await this.validator.validateInput(userInput));
+        }
+    };
+
     public valueValidation = (value: unknown) => {
         let isError: boolean = false;
+
         showError.subscribe((el) => (isError = el));
         if (typeof value === "boolean" && isError) {
-            this.highlighter.removeHighlightedLines(this.view);
+            removeHighlightedLines(this.view);
         }
         if (typeof value !== "boolean") {
+            console.log("isError:", value);
             if (isJSONError(value)) {
                 this.highlighter.highlightErrorJSON(
                     value.loc.start.column,

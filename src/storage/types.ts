@@ -4,7 +4,7 @@ export type LocaleStorageSchema = {
     xml: OptionsWithSpace;
 };
 
-export type LocaleStorageResponce = (OptionsWithSpace & OptionsWithTab) | OptionsWithSpace | null;
+export type LocaleStorageResponce = { spaces: number; tab?: boolean } | null;
 
 type OptionsWithSpace = {
     spaces: number;

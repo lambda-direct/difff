@@ -4,7 +4,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 const mdsvexOptions = {
     extensions: [".md"],
-    layout: { _: "./src/lib/components/mdsvexComponents/layout.svelte" }
+    layout: { _: "./src/lib/shared/Marckdown/layout.svelte" }
 };
 
 const config = {

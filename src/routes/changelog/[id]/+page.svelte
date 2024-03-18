@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import Head from "~/lib/components/shared/Head.svelte";
+    import Head from "~/lib/shared/Head.svelte";
     import RightArrowIcon from "~/lib/icons/RightArrowIcon.svelte";
 
     export let data;

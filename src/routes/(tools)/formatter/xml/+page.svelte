@@ -3,8 +3,8 @@
     import hljs from "highlight.js";
     import xml from "highlight.js/lib/languages/xml";
     import { onMount } from "svelte";
-    import CodeMirror from "~/lib/components/codemirror/Codemirror.svelte";
-    import Head from "~/lib/components/shared/Head.svelte";
+    import CodeMirror from "~/lib/shared/Codemirror/Codemirror.svelte";
+    import Head from "~/lib/shared/Head.svelte";
     import "../style.css";
 
     export let data;

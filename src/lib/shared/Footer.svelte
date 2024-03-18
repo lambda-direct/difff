@@ -2,7 +2,7 @@
     import { page } from "$app/stores";
     import type { ToolsRoute } from "~/types";
     import { toolsRoutes } from "~/routes/routes";
-    import NavLink from "$lib/components/shared/LinkCard.svelte";
+    import NavLink from "~/lib/shared/LinkCard.svelte";
 
     let routesToShow: ToolsRoute[];
     $: routesToShow = toolsRoutes.filter((route) => route.path !== $page.url.pathname);

@@ -1,5 +1,9 @@
 import { StateEffect, StateField } from "@codemirror/state";
 import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
+import { errorMessage, showError } from "~/storage/store";
+
+const lineHighlight = Decoration.mark({ class: "error" });
+const removeHighlights = StateEffect.define();
 
 export const lineHighlightField = StateField.define<DecorationSet>({
     create() {
@@ -24,11 +28,17 @@ export const lineHighlightField = StateField.define<DecorationSet>({
     provide: (f) => EditorView.decorations.from(f)
 });
 
-const removeHighlights = StateEffect.define();
-const lineHighlight = Decoration.mark({ class: "error" });
-const addHighlight = StateEffect.define<{ from: number; to: number }>({
+export const addHighlight = StateEffect.define<{ from: number; to: number }>({
     map: ({ from, to }, change) => ({
         from: change.mapPos(from),
         to: change.mapPos(to)
     })
 });
+
+export const removeHighlightedLines = (view: EditorView) => {
+    view.dispatch({
+        effects: [StateEffect.define().of(null)]
+    });
+    errorMessage.set("");
+    showError.set(false);
+};

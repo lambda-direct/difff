@@ -1,16 +1,14 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { closeSearchPanel, openSearchPanel } from "@codemirror/search";
-    import { EditorView } from "@codemirror/view";
     import { onDestroy, onMount } from "svelte";
+    import SearchIcon from "~/lib/icons/SearchIcon.svelte";
+    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
+    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
+    import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
-    import MagicWand from "~/lib/icons/MagicWandIcon.svelte";
-    import SearchIcon from "~/lib/icons/SearchIcon.svelte";
-    import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
-    import UploadIcon from "~/lib/icons/UploadIcon.svelte";
-    import { isSettingsOpen } from "~/lib/storages";
-    import { dropDownOptions } from "~/lib/components/codemirror/components/utils";
+    import { isSettingsOpen } from "~/storage/store";
+    import { dropDownOptions } from "~/lib/shared/Codemirror/components/utils";
     import type { UploadEvent } from "~/types";
 
     export let format: "json" | "yaml" | "xml";
@@ -260,7 +258,6 @@
         align-items: center;
         justify-content: center;
         height: 36px;
-        padding: 0 4px;
         border-radius: 8px;
         color: #7d8799;
         font-size: 16px;
@@ -278,6 +275,7 @@
         display: flex;
         align-items: center;
         height: 36px;
+        padding: 6px;
         background: #040b1a;
         border: 1px solid #313345;
         border-radius: 8px;
@@ -295,9 +293,6 @@
 
     .format-button {
         margin: auto;
-        @media (max-width: 420px) {
-            margin: 0;
-        }
     }
 
     .btn_title {
