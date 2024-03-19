@@ -1,6 +1,6 @@
 ## What is XML file format?
 
-**XML (eXtensible Markup Language)** - .xml extention, which are plain text files with the standard XML syntax to store and transporting data. Provide accessibility across various platforms and devices.
+**XML (eXtensible Markup Language)** - .xml extention, which are plain text files with the standard XML syntax used for storing and transporting data. Provide accessibility across various platforms and devices.
 
 ### Structure rules:
 
