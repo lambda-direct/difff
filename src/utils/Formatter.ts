@@ -3,7 +3,6 @@ import * as yaml from "js-yaml";
 import * as prettier from "prettier/standalone";
 import Converter from "~/utils/Converter";
 import { prettierSettings } from "~/utils/settings";
-import LocalStorage from "~/storage/LocalStorage";
 import xmlFormat from "xml-formatter";
 
 class Formatter {
@@ -11,13 +10,19 @@ class Formatter {
     constructor(format: "json" | "yaml" | "xml") {
         this.format = format;
     }
-    private formatJson = async (userInput: string) => {
+    private formatJson = async (
+        userInput: string,
+        options?: { tabWidth?: number; useTabs?: boolean }
+    ) => {
+        if (!options || (!options.tabWidth && !options.useTabs))
+            options = { tabWidth: 4, useTabs: false };
+
+        if (!options.tabWidth) options = { tabWidth: 4, useTabs: options.useTabs };
+
+        if (!options.useTabs) {
+            options = { tabWidth: options.tabWidth, useTabs: false };
+        }
         try {
-            const storage = LocalStorage.get("json");
-            const options = {
-                tabWidth: storage ? storage.spaces : 4,
-                useTabs: storage && "tab" in storage ? storage.tab : false
-            };
             const originalCode = await Converter.urlToJson(userInput);
             const formattedResult = await prettier.format(originalCode, {
                 ...prettierSettings,
@@ -32,9 +37,8 @@ class Formatter {
         }
     };
 
-    private formatYaml = (userInput: string) => {
-        const storage = LocalStorage.get("yaml");
-        const options = { indent: storage ? storage.spaces : 2 };
+    private formatYaml = (userInput: string, options?: { indent: number }) => {
+        if (!options) options = { indent: 2 };
         try {
             const yamlObject = yaml.load(userInput);
             const formattedYaml = yaml.dump(yamlObject, options);
@@ -44,9 +48,8 @@ class Formatter {
         }
     };
 
-    private formatXml = (userInput: string) => {
-        const storage = LocalStorage.get("xml");
-        const spaceNum: number = storage ? storage.spaces : 2;
+    private formatXml = (userInput: string, spaceNum?: number) => {
+        if (!spaceNum) spaceNum = 2;
         if (userInput) {
             const validationResult = XMLValidator.validate(userInput, {
                 allowBooleanAttributes: true
@@ -64,15 +67,21 @@ class Formatter {
         }
     };
 
-    public formatInput = async (userInput: string): Promise<unknown> => {
+    public formatInput = async (
+        userInput: string,
+        tab?: boolean,
+        spaces?: number
+    ): Promise<unknown> => {
         if (userInput) {
             if (this.format === "yaml") {
-                return this.formatYaml(userInput);
+                const options = spaces ? { indent: spaces } : undefined;
+                return this.formatYaml(userInput, options);
             }
             if (this.format === "json") {
-                return await this.formatJson(userInput);
+                const options = { tabWidth: spaces, useTabs: tab };
+                return await this.formatJson(userInput, options);
             }
-            return this.formatXml(userInput);
+            return this.formatXml(userInput, spaces);
         }
         return userInput;
     };

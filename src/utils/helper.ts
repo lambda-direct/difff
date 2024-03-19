@@ -23,3 +23,12 @@ export const isXMLError = (error: unknown): error is ValidationError => {
         (<ValidationError>error).err.msg !== undefined
     );
 };
+
+export const isURL = (url: string) => {
+    try {
+        new URL(url);
+        return true;
+    } catch (err) {
+        return false;
+    }
+};

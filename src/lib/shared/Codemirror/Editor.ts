@@ -7,13 +7,14 @@ import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
 import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
 import { basicSetup } from "codemirror";
 import { closeSearchPanel, openSearchPanel, search } from "@codemirror/search";
-import type { CursorPosition, UploadEvent } from "~/types";
+import type { CursorPosition } from "~/types";
 import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
+import Highlight, {
+    lineHighlightField,
+    removeHighlightedLines
+} from "~/lib/shared/Codemirror/Highlight";
+import { errorMessage, showError } from "~/storage/store";
 import Validator from "~/utils/Validator";
-import Formatter from "~/utils/Formatter";
-import Highlight from "~/lib/shared/Codemirror/Highlight";
-import { showError } from "~/storage/store";
-import { lineHighlightField, removeHighlightedLines } from "./highlightField";
 
 class Codemirror {
     view: EditorView;
@@ -21,9 +22,8 @@ class Codemirror {
     outerValueChange: (newValue: string, cursorPos: CursorPosition) => void;
     placeholder: string;
     format: "json" | "xml" | "yaml";
-    formatter: Formatter;
-    validator: Validator;
     highlighter: Highlight;
+    validator: Validator;
     constructor(
         element: HTMLDivElement,
         outerValueChange: (newValue: string, cursorPos: CursorPosition) => void,
@@ -35,7 +35,6 @@ class Codemirror {
         this.placeholder = placeholder;
         this.format = format;
         this.view = this.init(element);
-        this.formatter = new Formatter(format);
         this.validator = new Validator(format);
         this.highlighter = new Highlight(this.view);
     }
@@ -51,6 +50,7 @@ class Codemirror {
     private getExtentions = () => {
         const fieldFormat = this.getFileFormat(this.format);
         const themeExtension = getThemeExtention(this.format);
+
         return [
             EditorView.lineWrapping,
             basicSetup,
@@ -73,22 +73,20 @@ class Codemirror {
     };
 
     public init = (element: HTMLDivElement) => {
+        const extentions = this.getExtentions();
         return new EditorView({
             parent: element,
 
-            state: this.createEditorState("", this.getExtentions()),
-            dispatch: (transaction) => {
+            state: this.createEditorState("", extentions),
+            dispatch: async (transaction) => {
                 this.view.update([transaction]);
                 if (transaction.selection || transaction.docChanged) {
-                    this.valueValidation(this.view.state.doc.toString()); // REPLACE VALIDATION ????
-                    this.outerValueChange(
-                        this.view.state.doc.toString(),
-                        this.trackCursorPosition()
-                    );
+                    const docValue = this.view.state.doc.toString();
+                    this.validateInput(await this.validator.validate(docValue));
+                    this.outerValueChange(docValue, this.trackCursorPosition());
                 }
             },
-
-            extensions: [this.getExtentions()]
+            extensions: [extentions]
         });
     };
 
@@ -99,10 +97,14 @@ class Codemirror {
         const transition = state.update({
             changes: { from: 0, to: state.doc.length, insert: input }
         });
-        this.view.dispatch({
-            ...transition,
-            selection: { anchor: selection.anchor, head: selection.anchor }
-        });
+
+        this.view.dispatch(transition);
+        if (state.doc.length >= selection.anchor) {
+            this.view.dispatch({
+                selection: { anchor: selection.anchor, head: selection.anchor },
+                scrollIntoView: true
+            });
+        }
     };
 
     public trackCursorPosition = (): { line: number; col: number } => {
@@ -117,59 +119,38 @@ class Codemirror {
 
     public setFormattingResult = (value: unknown) => {
         if (typeof value === "string") {
-            removeHighlightedLines(this.view);
+            errorMessage.set("");
+            showError.set(false);
             this.updateCodemirrorValue(value);
         } else {
-            if (isJSONError(value)) {
-                this.highlighter.highlightErrorJSON(
-                    value.loc.start.column,
-                    value.loc.start.line,
-                    value.message
-                );
-                return;
-            }
-            if (isYamlError(value)) {
-                this.highlighter.highlightErrorYAML(
-                    value.mark.position,
-                    value.mark.line,
-                    value.reason
-                );
-                return;
-            }
-            if (isXMLError(value)) {
-                this.highlighter.highlightErrorXML(value.err.line, value.err.msg);
-                return;
-            }
+            showError.set(true);
         }
     };
 
     public formatInput = async (userInput: string) => {
         if (userInput) {
-            this.setFormattingResult(await this.formatter.formatInput(userInput));
+            this.setFormattingResult(userInput);
         }
     };
 
-    public validateInput = async (userInput: string) => {
-        if (userInput) {
-            this.setFormattingResult(await this.validator.validateInput(userInput));
+    public validateInput = async (validationResult: unknown) => {
+        if (validationResult) {
+            this.setValidationResult(validationResult);
         }
     };
 
-    public valueValidation = (value: unknown) => {
+    private setValidationResult = (value: unknown) => {
         let isError: boolean = false;
 
         showError.subscribe((el) => (isError = el));
         if (typeof value === "boolean" && isError) {
             removeHighlightedLines(this.view);
+            errorMessage.set("");
+            showError.set(false);
         }
         if (typeof value !== "boolean") {
-            console.log("isError:", value);
             if (isJSONError(value)) {
-                this.highlighter.highlightErrorJSON(
-                    value.loc.start.column,
-                    value.loc.start.line,
-                    value.message
-                );
+                this.highlighter.highlightErrorJSON(value.loc.start.line, value.message);
                 return;
             }
             if (isXMLError(value)) {
@@ -187,23 +168,10 @@ class Codemirror {
         }
     };
 
-    public dragAndDropFile = (event: DragEvent, value: string) => {
-        if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-            const oldValue = value;
-            const file = event.dataTransfer.files[0];
-            const reader = new FileReader();
-            reader.onload = async (e: ProgressEvent<FileReader>) => {
-                const droppedData = e.target?.result as string;
-                this.updateCodemirrorValue(droppedData);
-                this.setFormattingResult(await this.formatter.formatInput(droppedData));
-            };
-            if (value !== oldValue) {
-                this.view.dispatch({
-                    effects: [EditorView.scrollIntoView(1, { y: "nearest" })]
-                });
-            }
-            reader.readAsText(file);
-        }
+    public scrollToTop = () => {
+        this.view.dispatch({
+            effects: [EditorView.scrollIntoView(1, { y: "nearest" })]
+        });
     };
 
     public downloadFile = (value: string) => {
@@ -217,25 +185,6 @@ class Codemirror {
         aTag.click();
         document.body.removeChild(aTag);
         URL.revokeObjectURL(url);
-    };
-
-    public uploadFile = (event: UploadEvent) => {
-        if (
-            event.currentTarget &&
-            event.currentTarget.files &&
-            event.currentTarget.files.length > 0
-        ) {
-            const file = event.currentTarget.files[0];
-            const reader = new FileReader();
-            reader.onload = async (e: ProgressEvent<FileReader>) => {
-                const droppedData = e.target?.result as string;
-                this.updateCodemirrorValue(droppedData);
-                setTimeout(async () => {
-                    this.setFormattingResult(await this.formatter.formatInput(droppedData));
-                }, 10); // REDO
-            };
-            reader.readAsText(file);
-        }
     };
 
     public open = () => {

@@ -1,5 +1,5 @@
 import { EditorView, Decoration, type DecorationSet } from "@codemirror/view";
-import { errorMessage, showError } from "~/storage/store";
+import { errorMessage } from "~/storage/store";
 import { StateEffect, StateField } from "@codemirror/state";
 
 class Highlight {
@@ -19,21 +19,11 @@ class Highlight {
         return "Invalid JSON";
     };
 
-    public highlightErrorJSON = (columnNumber: number, lineNumber: number, message: string) => {
+    public highlightErrorJSON = (lineNumber: number, message: string) => {
         removeHighlightedLines(this.view);
         const errMessage = this.parsePrettierErrorMessage(message);
         const line = this.view.state.doc.line(lineNumber);
-        if (line.from === 0) {
-            errorMessage.set(errMessage);
-            this.view.dispatch({
-                effects: [
-                    addHighlight.of({
-                        from: columnNumber,
-                        to: line.to
-                    })
-                ]
-            });
-        } else if (line.text === "") {
+        if (line.text === "") {
             errorMessage.set("Seems like a missing closing parenthesis '}'");
             this.view.dispatch({
                 effects: [
@@ -55,7 +45,6 @@ class Highlight {
                 ]
             });
         }
-        showError.set(true);
     };
 
     public highlightErrorXML = (lineNumber: number, message: string) => {
@@ -73,7 +62,6 @@ class Highlight {
                 ]
             });
         }
-        showError.set(true);
     };
 
     public highlightErrorYAML = (position: number, lineNumber: number, reason: string) => {
@@ -112,13 +100,19 @@ class Highlight {
                 });
             }
         }
-        showError.set(true);
     };
 }
 
 export default Highlight;
+
 const lineHighlight = Decoration.mark({ class: "error" });
 const removeHighlights = StateEffect.define();
+const addHighlight = StateEffect.define<{ from: number; to: number }>({
+    map: ({ from, to }, change) => ({
+        from: change.mapPos(from),
+        to: change.mapPos(to)
+    })
+});
 
 export const lineHighlightField = StateField.define<DecorationSet>({
     create() {
@@ -127,11 +121,7 @@ export const lineHighlightField = StateField.define<DecorationSet>({
     update(highlights, tr) {
         for (const e of tr.effects) {
             if (e.is(removeHighlights)) {
-                highlights = highlights.update({
-                    filter: () => {
-                        return false;
-                    }
-                });
+                highlights = Decoration.none;
             } else if (e.is(addHighlight)) {
                 highlights = highlights.update({
                     add: [lineHighlight.range(e.value.from, e.value.to)]
@@ -143,17 +133,8 @@ export const lineHighlightField = StateField.define<DecorationSet>({
     provide: (f) => EditorView.decorations.from(f)
 });
 
-const addHighlight = StateEffect.define<{ from: number; to: number }>({
-    map: ({ from, to }, change) => ({
-        from: change.mapPos(from),
-        to: change.mapPos(to)
-    })
-});
-
-const removeHighlightedLines = (view: EditorView) => {
+export const removeHighlightedLines = (view: EditorView) => {
     view.dispatch({
-        effects: [StateEffect.define().of(null)]
+        effects: [removeHighlights.of(null)]
     });
-    errorMessage.set("");
-    showError.set(false);
 };

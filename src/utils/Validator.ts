@@ -38,7 +38,7 @@ class Validator {
             });
     };
 
-    public validateInput = (userInput: string) => {
+    public validate = (userInput: string) => {
         if (this.format === "json") {
             return this.validateJSON(userInput);
         }

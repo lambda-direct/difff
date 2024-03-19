@@ -10,7 +10,8 @@
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
     import type { CursorPosition, UploadEvent } from "~/types";
-
+    import Formatter from "~/utils/Formatter";
+    import Converter from "~/utils/Converter";
     export let format: "json" | "yaml" | "xml";
     export let placeholder: string;
 
@@ -26,6 +27,8 @@
     let useTabs: boolean = false;
     let indentationLevel: number = format === "json" ? 4 : 2;
 
+    const formatter = new Formatter(format);
+
     $: {
         if (value === "") {
             $showError = false;
@@ -34,21 +37,64 @@
     }
 
     const handleFormatClick = async () => {
-        await codemirror.formatInput(value);
+        const formattedData = await formatter.formatInput(value, useTabs, indentationLevel);
+        codemirror.setFormattingResult(formattedData);
     };
 
     const handlePaste = async () => {
-        await codemirror.formatInput(value);
+        const input = await Converter.urlToJson(value);
+        const formattedData = await formatter.formatInput(input, useTabs, indentationLevel);
+        codemirror.setFormattingResult(formattedData);
     };
 
     const handleDrop = (event: DragEvent) => {
         event.preventDefault();
-        codemirror.dragAndDropFile(event, value);
+        if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+            const oldValue = value;
+            const file = event.dataTransfer.files[0];
+            const reader = new FileReader();
+            reader.onload = async (e: ProgressEvent<FileReader>) => {
+                let droppedData = e.target?.result as string;
+                droppedData = await Converter.urlToJson(droppedData);
+                codemirror.updateCodemirrorValue(droppedData);
+                const formattedData = await formatter.formatInput(
+                    droppedData,
+                    useTabs,
+                    indentationLevel
+                );
+                codemirror.setFormattingResult(formattedData);
+            };
+            if (value !== oldValue) {
+                codemirror.scrollToTop();
+            }
+            reader.readAsText(file);
+        }
     };
 
     const handleFileChange = (event: UploadEvent) => {
         event.preventDefault();
-        codemirror.uploadFile(event);
+        if (
+            event.currentTarget &&
+            event.currentTarget.files &&
+            event.currentTarget.files.length > 0
+        ) {
+            const file = event.currentTarget.files[0];
+            const reader = new FileReader();
+            reader.onload = async (e: ProgressEvent<FileReader>) => {
+                let droppedData = e.target?.result as string;
+                droppedData = await Converter.urlToJson(droppedData);
+                codemirror.updateCodemirrorValue(droppedData);
+                setTimeout(async () => {
+                    const formattedData = await formatter.formatInput(
+                        droppedData,
+                        useTabs,
+                        indentationLevel
+                    );
+                    codemirror.setFormattingResult(formattedData);
+                }, 10); // REDO
+            };
+            reader.readAsText(file);
+        }
     };
 
     const handleCopyClick = async () => {
@@ -130,7 +176,7 @@
 
 <style lang="scss">
     .codemirror-wrapper {
-        height: calc(60vh + 54px);
+        height: 60vh;
         background: var(--editor-background, #030711);
     }
 
