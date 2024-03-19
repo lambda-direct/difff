@@ -1,26 +1,26 @@
 ## What is YAML file format?
 
-**YAML (Ain't Markup Language)** - data serialization language used as a format
+**YAML (Ain't Markup Language)** — data serialization language used as a format
 for configuration files, with (.yaml) or (.yml) extensions. Structured with key-value pairs,
 where key is always a string.
 
 ### YAML Basic principles:
 
--   Each key is unique
--   Comments are identified by (#)
--   Multi-lane comments unsupported
--   Case and space sensitive
--   Uses spaces instead of tabs
--   Each level of indentation multiplies spaces num
--   Support multiple documents in one file
+-   Each key is unique.
+-   Comments are identified by (#).
+-   Multi-lane comments unsupported.
+-   Case and space sensitive.
+-   Uses spaces instead of tabs.
+-   Each level of indentation multiplies spaces num.
+-   Support multiple documents in one file.
 
 ## YAML naming for data structures
 
-**Mappings** - store key-value pairs. Represent complex structures like
+**Mappings** — store key-value pairs. Represent complex structures like
 hashes or dictionaries.<br/>
-**Sequences** - simple structures, each item
+**Sequences** — simple structures, each item
 placed on its own line & that start with an opening dash serve for arrays or tuples.<br/>
-**Scalar** - equivalent basic types boolean, date, integers, and floating.<br/> <br/>
+**Scalar** — equivalent basic types boolean, date, integers, and floating.<br/> <br/>
 
 <pre><code class="language-yaml hljs">#Each documents starts with three dashes, ends with three dots.
 
