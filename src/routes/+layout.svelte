@@ -3,36 +3,18 @@
     import Footer from "~/lib/shared/Footer.svelte";
 </script>
 
-{@html `<link rel="preload" href="/fonts/JetBrainsMono-Regular.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link
-    rel="preload"
-    href="/fonts/JetBrainsMono-SemiBold.tff"
-    as="font"
-    type="font/tff"
-    crossorigin
-/>`}
-{@html `<link rel="preload" href="/fonts/NotoSans-Regular.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link rel="preload" href="/fonts/NotoSans-Bold.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link
-    rel="preload"
-    href="/fonts/SourceSerif4-BoldItalic.tff"
-    as="font"
-    type="font/tff"
-    crossorigin
-/>`}
-{@html `<link rel="preload" href="/fonts/Georgia.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link rel="preload" href="/fonts/Cambria.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link rel="preload" href="/fonts/TimesRegular.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link rel="preload" href="/fonts/timesnewroman.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link rel="preload" href="/fonts/ArialMT.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link rel="preload" href="/fonts/Helvetica.tff" as="font" type="font/tff" crossorigin />`}
-{@html `<link
-    rel="preload"
-    href="/fonts/HelveticaNeueBlackCondensed.tff"
-    as="font"
-    type="font/tff"
-    crossorigin
-/>`}
+{@html `<link rel="preload" href="/fonts/JetBrainsMono-Regular.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/JetBrainsMono-SemiBold.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/NotoSans-Regular.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/NotoSans-Bold.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/SourceSerif4-BoldItalic.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/Georgia.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/Cambria.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/TimesRegular.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/timesnewroman.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/ArialMT.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/Helvetica.ttf" as="font" type="font/ttf" crossorigin />`}
+{@html `<link rel="preload" href="/fonts/HelveticaNeueBlackCondensed.ttf" as="font" type="font/ttf" crossorigin />`}
 
 <div class="page">
     <slot />
