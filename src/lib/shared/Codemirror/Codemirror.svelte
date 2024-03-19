@@ -12,6 +12,7 @@
     import type { CursorPosition, UploadEvent } from "~/types";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
+
     export let format: "json" | "yaml" | "xml";
     export let placeholder: string;
 

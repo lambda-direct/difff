@@ -1,6 +1,6 @@
 import { EditorState, SelectionRange, StateField, type Extension } from "@codemirror/state";
 import { EditorView, placeholder as placeholderSet, type DecorationSet } from "@codemirror/view";
-import { getThemeExtention } from "./themes/theme";
+import { getThemeExtention } from "~/lib/shared/Codemirror/themes/theme";
 import { StreamLanguage, type LanguageSupport } from "@codemirror/language";
 import { json } from "@codemirror/lang-json";
 import * as xmlMode from "@codemirror/legacy-modes/mode/xml";

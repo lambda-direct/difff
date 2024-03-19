@@ -97,7 +97,7 @@ const theme = [
     )
 ];
 
-const themeHighlightStyle = HighlightStyle.define([
+const themeHighlightStyleJSON = HighlightStyle.define([
     { tag: t.keyword, color: violet },
     {
         tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
@@ -223,7 +223,7 @@ export const themeHighlightStyleXML = HighlightStyle.define([
     }
 ]);
 
-const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyle)];
+const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyleJSON)];
 
 const themeExtensionsXML: Extension = [theme, syntaxHighlighting(themeHighlightStyleXML)];
 
