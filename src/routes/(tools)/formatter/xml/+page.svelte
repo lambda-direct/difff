@@ -37,10 +37,6 @@
 </main>
 
 <style>
-    article {
-        width: 100%;
-    }
-
     .main {
         margin: 0 auto;
         display: flex;

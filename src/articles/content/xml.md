@@ -1,6 +1,6 @@
 ## What is XML file format?
 
-**XML — eXtensible Markup Language** for storing and transporting data with .xml file extention.Provide accessibility across various platforms and devices.
+**<a id="xmlAnchor"></a>XML — eXtensible Markup Language** for storing and transporting data with .xml file extention. Provide accessibility across various platforms and devices.
 
 ### Structure rules:
 

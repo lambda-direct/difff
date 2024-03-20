@@ -1,7 +1,7 @@
 ## What is YAML file format?
 
-**YAML (Ain't Markup Language)** — data serialization language used as a format
-for configuration files, with (.yaml) or (.yml) extensions. Structured with key-value pairs,
+**<a id="yamlAnchor"></a>YAML (Ain't Markup Language)** — data serialization language used as a format
+for configuration files, with .yaml or .yml extensions. Structured with key-value pairs,
 where key is always a string.
 
 ### YAML Basic principles:
@@ -73,7 +73,7 @@ stringExample: !!str "James"
 
 ## How to use YAML formatter
 
-Put JSON, JavaScript object or an undecorated YAML. We'll validate input and format it.
+Put [JSON](/#jsonAnchor), JavaScript object or an undecorated YAML. We'll validate input and format it.
 
 ### Input:
 

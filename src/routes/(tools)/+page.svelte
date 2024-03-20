@@ -1,6 +1,8 @@
 <script lang="ts">
     import Head from "~/lib/shared/Head.svelte";
     import CodeMirror from "~/lib/shared/Codemirror/Codemirror.svelte";
+
+    export let data;
 </script>
 
 <Head
@@ -17,23 +19,8 @@
     <section class="formatter_field-wrapper">
         <CodeMirror format="json" placeholder="Provide a JSON, link, or Drag & Drop a file" />
     </section>
-    <article class="footer_article">
-        <h2 class="footer_article_title">How to Format JSON Using an Online Tool (Easy Method)</h2>
-        <p class="footer_article_text">
-            JSON formatter & validator helps to beautify your JSON text and pretty print it.
-            Optimize your JSON formatting effortlessly with our online tool. Simply put your JSON
-            text, provide a link to your JSON, or upload a file containing your JSON. Whether your
-            JSON is valid or not, our service will identify and display errors if any are present.
-            For valid JSON, it will be formatted using
-            <a
-                href="https://prettier.io/"
-                target="_blank"
-                rel="noreferrer nofollow noopener"
-                class="prettier-href"
-            >
-                Prettier
-            </a>
-        </p>
+    <article>
+        <svelte:component this={data.content} />
     </article>
 </main>
 
@@ -50,9 +37,5 @@
         flex-direction: column;
         margin: 32px 0 0;
         width: 100%;
-    }
-
-    .prettier-href {
-        text-decoration: underline;
     }
 </style>

@@ -14,7 +14,7 @@
     import DropDownIconOpen from "~/lib/icons/searchFieldIcons/OpenDropDOwnIcon.svelte";
     import RegularExpreIcon from "~/lib/icons/searchFieldIcons/RegularExpreIcon.svelte";
 
-    export let view: EditorView;
+    let performSearch: () => void;
 
     let searchValue: string = "";
     let replaceValue: string = "";
@@ -22,32 +22,12 @@
     let matchCaseChecked = false;
     let wholeWordChecked = false;
     let regexChecked = false;
-    let newQuery;
 
     let showDropDown: boolean = false;
 
     const dropDownClick = () => {
         showDropDown = !showDropDown;
     };
-
-    $: {
-        newQuery = new SearchQuery({
-            search: searchValue,
-            caseSensitive: matchCaseChecked,
-            regexp: regexChecked,
-            wholeWord: wholeWordChecked,
-            replace: replaceValue
-        });
-        if (view) view.dispatch({ effects: setSearchQuery.of(newQuery) });
-    }
-
-    onMount(() => {
-        if (!view) return;
-    });
-
-    onDestroy(() => {
-        view?.destroy();
-    });
 </script>
 
 <form class="form">
@@ -64,6 +44,7 @@
                 <div class="input_wrapper">
                     <input
                         bind:value={searchValue}
+                        on:input={performSearch}
                         autocomplete="off"
                         id="searchInput"
                         placeholder="Find"
