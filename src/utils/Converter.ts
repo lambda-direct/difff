@@ -13,22 +13,19 @@ export class Converter {
         }
     };
 
-    private clearTags = (inputString: string) => {
-        return inputString
-            .replace(/<([^<>]+)>/g, (_, group) => {
-                let trimmed = group.replace(/\s+/g, "");
-                trimmed = trimmed.replace(/^[^a-zA-Z]/, "_");
-                trimmed = trimmed.replace(/[^a-zA-Z0-9-:\\._]/g, "_");
-
-                return "<" + trimmed + ">";
-            })
-            .replaceAll("<_", "</");
+    private clearTags = (xmlString: string) => {
+        // todo
+        return xmlString;
     };
 
     public jsonToXml = (json: string) => {
         try {
             const xml = js2xml(JSON.parse(json), { compact: true });
+
+            console.log("this.clearTags(xml):", this.clearTags(xml));
+
             const returnedXML = `<?xml version="1.0" encoding="UTF-8"?><root>${this.clearTags(xml)}</root>`;
+
             return returnedXML;
         } catch (err) {
             return "";
