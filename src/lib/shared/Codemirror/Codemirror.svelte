@@ -115,15 +115,16 @@
     };
 
     onMount(() => {
-        codemirror = new Editor(
+        codemirror = new Editor({
             element,
-            (newValue: string, newCursorPos) => {
+            outerValueChange: (newValue: string, newCursorPos) => {
                 value = newValue;
                 cursorPosition = newCursorPos;
             },
             placeholder,
-            format
-        );
+            format,
+            readOnly: false
+        });
         openSettings = codemirror.open;
         closeSettings = codemirror.close;
         storage = LocalStorage.get(format);
@@ -152,9 +153,10 @@
 <Header
     bind:open={openSettings}
     bind:close={closeSettings}
-    {format}
+    formats={[format]}
     {handleFileChange}
-    {handleFormatClick}
+    tool="formatter"
+    handleClick={handleFormatClick}
 />
 <div class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />

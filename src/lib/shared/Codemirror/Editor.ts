@@ -24,16 +24,25 @@ class Codemirror {
     format: "json" | "xml" | "yaml";
     highlighter: Highlight;
     validator: Validator;
-    constructor(
-        element: HTMLDivElement,
-        outerValueChange: (newValue: string, cursorPos: CursorPosition) => void,
-        placeholder: string,
-        format: "json" | "xml" | "yaml"
-    ) {
+    readOnly: boolean;
+    constructor({
+        element,
+        outerValueChange,
+        placeholder,
+        format,
+        readOnly
+    }: {
+        element: HTMLDivElement;
+        outerValueChange: (newValue: string, cursorPos: CursorPosition) => void;
+        placeholder: string;
+        format: "json" | "xml" | "yaml";
+        readOnly: boolean;
+    }) {
         this.element = element;
         this.outerValueChange = outerValueChange;
         this.placeholder = placeholder;
         this.format = format;
+        this.readOnly = readOnly;
         this.view = this.init(element);
         this.validator = new Validator(format);
         this.highlighter = new Highlight(this.view);
@@ -50,9 +59,9 @@ class Codemirror {
     private getExtentions = () => {
         const fieldFormat = this.getFileFormat(this.format);
         const themeExtension = getThemeExtention(this.format);
-
         return [
             EditorView.lineWrapping,
+            EditorState.readOnly.of(this.readOnly),
             basicSetup,
             lineHighlightField,
             search({ top: true }),
@@ -99,7 +108,7 @@ class Codemirror {
         });
 
         this.view.dispatch(transition);
-        if (state.doc.length >= selection.anchor) {
+        if (input.length > 0 && state.doc.length >= selection.anchor) {
             this.view.dispatch({
                 selection: { anchor: selection.anchor, head: selection.anchor },
                 scrollIntoView: true
@@ -141,10 +150,9 @@ class Codemirror {
 
     private setValidationResult = (value: unknown) => {
         let isError: boolean = false;
-
+        removeHighlightedLines(this.view);
         showError.subscribe((el) => (isError = el));
         if (typeof value === "boolean" && isError) {
-            removeHighlightedLines(this.view);
             errorMessage.set("");
             showError.set(false);
         }

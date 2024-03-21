@@ -7,13 +7,15 @@
     import SettingsIcon from "~/lib/icons/SettingsIcon.svelte";
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
+    import ConvertIcon from "~/lib/icons/ConvertIcon.svelte";
     import { isSettingsOpen } from "~/storage/store";
     import { dropDownOptions } from "~/lib/shared/Codemirror/components/utils";
     import type { UploadEvent } from "~/types";
 
-    export let format: "json" | "yaml" | "xml";
+    export let tool: "formatter" | "converter";
+    export let formats: ("json" | "yaml" | "xml")[];
     export let handleFileChange: (event: UploadEvent) => void;
-    export let handleFormatClick: () => void;
+    export let handleClick: () => void;
     export let open: () => void;
     export let close: () => void;
 
@@ -86,30 +88,32 @@
 <div class="header">
     <nav class="drop-down-wrapper">
         <div class="dropdown" class:active={showDropDown} class:hidden={!showDropDown}>
-            {#each dropDownOptions as options}
-                <div
-                    role="button"
-                    tabindex="0"
-                    aria-labelledby="Dropdown"
-                    aria-label="Dropdown"
-                    on:click|stopPropagation
-                    on:keydown={handleEnterClick}
-                    class="dropdown_content"
-                >
-                    <p class="content_label">
-                        {options.title}
-                    </p>
-                    <ul>
-                        {#each options.values as option}
-                            <li class="dropdown_options">
-                                <a href={option.path} class="option_link">
-                                    {option.name}
-                                </a>
-                            </li>
-                        {/each}
-                    </ul>
-                </div>
-            {/each}
+            <div
+                role="button"
+                tabindex="0"
+                aria-labelledby="Dropdown"
+                aria-label="Dropdown"
+                on:click|stopPropagation
+                on:keydown={handleEnterClick}
+                class="dropdown_content"
+            >
+                {#each dropDownOptions as options}
+                    <div>
+                        <p class="content_label">
+                            {options.title}
+                        </p>
+                        <ul>
+                            {#each options.values as option}
+                                <li class="dropdown_options">
+                                    <a href={option.path} class="option_link">
+                                        {option.name}
+                                    </a>
+                                </li>
+                            {/each}
+                        </ul>
+                    </div>
+                {/each}
+            </div>
         </div>
         <button
             on:click|stopPropagation={handleDropDownClick}
@@ -117,7 +121,13 @@
             aria-label="Formats dropdown"
             class="button text"
         >
-            <span class="btn_title">{`${format.toUpperCase()} Formatter`}</span>
+            {#if tool === "formatter"}
+                <span class="btn_title">{`${formats[0].toUpperCase()} Formatter`}</span>
+            {:else if tool === "converter"}
+                <span class="btn_title">
+                    {`${formats[0].toUpperCase()}-${formats[1].toUpperCase()} Converter`}
+                </span>
+            {/if}
             {#if showDropDown}
                 <DropDownOpenIcon />
             {:else}
@@ -126,16 +136,23 @@
         </button>
     </nav>
     <button
-        on:click={handleFormatClick}
+        on:click={handleClick}
         class="button text format-button"
         aria-label="format"
         aria-labelledby="format"
         name="format"
     >
-        <span class="header_btn">
-            <MagicWand />
-            Format
-        </span>
+        {#if tool === "formatter"}
+            <span class="header_btn">
+                <MagicWand />
+                Format
+            </span>
+        {:else if tool === "converter"}
+            <span class="header_btn">
+                <ConvertIcon />
+                Convert
+            </span>
+        {/if}
     </button>
     <div class="button-wrapper">
         <button
@@ -251,6 +268,7 @@
     .drop-down-wrapper {
         display: flex;
         flex-direction: column;
+        justify-content: center;
     }
 
     .content_label {

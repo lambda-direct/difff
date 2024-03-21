@@ -16,4 +16,11 @@ export const dropDownOptions = [
             { name: "XML", path: "/formatter/xml" }
         ]
     }
+    // {
+    //     title: "Converters",
+    //     values: [
+    //         { name: "JSON to XML", path: "/converter/json-to-xml" },
+    //         { name: "XML to JSON", path: "/formatter/xml-to-json" }
+    //     ]
+    // }
 ];
