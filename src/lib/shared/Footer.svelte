@@ -24,7 +24,19 @@
                     {/each}
                 </ul>
             </div>
-            <div>
+            <div class="list_column">
+                <h3>Converter</h3>
+                <ul class="list_column_link-group">
+                    {#each routesToShow.filter((element) => element.group === "Converter") as route}
+                        <li>
+                            <a href={route.path}>
+                                <NavLink name={route.name} />
+                            </a>
+                        </li>
+                    {/each}
+                </ul>
+            </div>
+            <div class="list_column">
                 <h3>Blog</h3>
                 <ul class="list_column_link-group">
                     {#each routesToShow.filter((element) => element.group === "Blog") as route}

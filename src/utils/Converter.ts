@@ -1,18 +1,9 @@
 import axios from "axios";
+import * as yamlConvert from "js-yaml";
 import { isURL } from "~/utils/helper";
 import { js2xml, xml2json } from "xml-js";
 
 export class Converter {
-    public urlToJson = async (userInput: string) => {
-        if (!isURL(userInput)) return userInput;
-        try {
-            const response = await axios.get(userInput);
-            return JSON.stringify(response.data);
-        } catch (err) {
-            return userInput;
-        }
-    };
-
     private clearTags = (xmlString: string) => {
         const tagPattern = /<[^<>]+>/g;
 
@@ -53,8 +44,35 @@ export class Converter {
     public XmlToJson = (xml: string) => {
         try {
             const json = xml2json(xml, { compact: true, trim: true, ignoreComment: true });
-            console.log("json:", json);
+            return json;
+        } catch (err) {
+            return "";
+        }
+    };
 
+    public urlToJson = async (userInput: string) => {
+        if (!isURL(userInput)) return userInput;
+        try {
+            const response = await axios.get(userInput);
+            return JSON.stringify(response.data);
+        } catch (err) {
+            return userInput;
+        }
+    };
+
+    public jsonToYaml = (json: string) => {
+        try {
+            const yaml = yamlConvert.load(json);
+            return JSON.stringify(yaml);
+        } catch (err) {
+            return "";
+        }
+    };
+
+    public yamlToJson = (yaml: string) => {
+        try {
+            const loadedYaml = yamlConvert.load(yaml);
+            const json = JSON.stringify(loadedYaml, null);
             return json;
         } catch (err) {
             return "";

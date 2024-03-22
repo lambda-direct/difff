@@ -171,11 +171,7 @@ class Codemirror {
                 return;
             }
             if (isYamlError(value)) {
-                this.highlighter.highlightErrorYAML(
-                    value.mark.position,
-                    value.mark.line,
-                    value.reason
-                );
+                this.highlighter.highlightErrorYAML(value.mark.line, value.reason);
                 return;
             }
         }

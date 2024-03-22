@@ -64,7 +64,7 @@ class Highlight {
         }
     };
 
-    public highlightErrorYAML = (position: number, lineNumber: number, reason: string) => {
+    public highlightErrorYAML = (lineNumber: number, reason: string) => {
         removeHighlightedLines(this.view);
         const line = this.view.state.doc.line(lineNumber === 0 ? 1 : lineNumber);
         errorMessage.set(`Invalid, ${reason}`);
@@ -78,27 +78,15 @@ class Highlight {
                 ]
             });
         } else {
-            try {
-                this.view.dispatch({
-                    effects: [
-                        addHighlight.of({
-                            from: position,
-                            to: line.to
-                        }),
-                        EditorView.scrollIntoView(line.from, { y: "nearest", x: "nearest" })
-                    ]
-                });
-            } catch (err) {
-                this.view.dispatch({
-                    effects: [
-                        addHighlight.of({
-                            from: line.from,
-                            to: line.to
-                        }),
-                        EditorView.scrollIntoView(line.from, { y: "nearest", x: "nearest" })
-                    ]
-                });
-            }
+            this.view.dispatch({
+                effects: [
+                    addHighlight.of({
+                        from: line.from,
+                        to: line.to
+                    }),
+                    EditorView.scrollIntoView(line.from, { y: "nearest", x: "nearest" })
+                ]
+            });
         }
     };
 }
