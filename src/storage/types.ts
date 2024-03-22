@@ -1,15 +1,14 @@
 export type LocaleStorageSchema = {
-    json: OptionsWithSpace & OptionsWithTab;
-    yaml: OptionsWithSpace;
-    xml: OptionsWithSpace;
+    json: Options;
+    yaml: Options;
+    xml: Options;
 };
 
 export type LocaleStorageResponce = { spaces: number; tab?: boolean } | null;
 
-type OptionsWithSpace = {
+type Options = {
     spaces: number;
+    tab?: boolean;
 };
 
-type OptionsWithTab = {
-    tab: boolean;
-};
+export type Formats = "json" | "yaml" | "xml";

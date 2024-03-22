@@ -4,38 +4,45 @@
     import Header from "~/lib/shared/Codemirror/components/Header.svelte";
     import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
     import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
-    import { errorMessage, isSettingsOpen, showError } from "~/storage/store";
+    import { errorMessage, isSettingsOpen, showError, storageSettings } from "~/storage/store";
     import DoubleFooter from "~/lib/shared/Codemirror/components/DoubleFooter.svelte";
     import LocalStorage from "~/storage/LocalStorage";
+    import ChangeConvertors from "~/lib/icons/ChangeConvertors.svelte";
+    import type { CursorPosition, UploadEvent } from "~/types";
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
-    import type { CursorPosition, UploadEvent } from "~/types";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
+    import { goto } from "$app/navigation";
 
     export let formatLeft: "json" | "yaml" | "xml";
     export let formatRight: "json" | "yaml" | "xml";
     export let placeholderLeft: string;
     export let placeholderRight: string;
+    export let convertFunction: (input: string) => string;
+    export let labelLeft: string;
+    export let labelRight: string;
 
     let elementLeft: HTMLDivElement;
     let valueLeft: string = "";
     let codemirrorLeft: Editor;
     let cursorPositionLeft: CursorPosition = { line: 0, col: 0 };
-    let useTabsLeft: boolean = false;
-    let indentationLevelLeft: number = formatLeft === "json" ? 4 : 2;
+    let useTabsLeft: boolean;
+    let indentationLevelLeft: number;
     let storageLeft: LocaleStorageResponce;
+
     const formatterLeft = new Formatter(formatLeft);
 
     let elementRight: HTMLDivElement;
     let valueRight: string = "";
     let codemirrorRight: Editor;
     let cursorPositionRight: CursorPosition = { line: 0, col: 0 };
-    let useTabsRight: boolean = false;
-    let indentationLevelRight: number = formatRight === "json" ? 4 : 2;
+    let useTabsRight: boolean;
+    let indentationLevelRight: number;
     let storageRight: LocaleStorageResponce;
     const formatterRight = new Formatter(formatRight);
 
+    let dividerPos = 50;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
     let isFormatClicked: boolean = false;
@@ -43,6 +50,10 @@
     let openSettings: () => void;
     let closeSettings: () => void;
 
+    $: useTabsLeft = $storageSettings[formatLeft].tab || false;
+    $: indentationLevelLeft = $storageSettings[formatLeft].spaces;
+    $: useTabsRight = $storageSettings[formatRight].tab || false;
+    $: indentationLevelRight = $storageSettings[formatRight].spaces;
     $: {
         if (valueLeft === "") {
             $showError = false;
@@ -51,13 +62,13 @@
     }
 
     const handleMainClick = async () => {
-        const xml = Converter.jsonToXml(valueLeft);
-        const formattedXML = await formatterRight.formatInput(
-            xml,
+        const converted = convertFunction(valueLeft);
+        const formattedResult = await formatterRight.formatInput(
+            converted,
             useTabsRight,
             indentationLevelRight
         );
-        codemirrorRight.setFormattingResult(formattedXML);
+        codemirrorRight.setFormattingResult(formattedResult);
     };
 
     const handleFormatClick = async () => {
@@ -158,6 +169,28 @@
         codemirrorRight.downloadFile(valueRight);
     };
 
+    const handleDividerMove = (event: MouseEvent) => {
+        const wrapperRect = document
+            .querySelector(".double_field_wrapper")
+            ?.getBoundingClientRect();
+        if (wrapperRect) {
+            const newX = ((event.clientX - wrapperRect.left) / wrapperRect.width) * 100;
+            dividerPos = Math.max(20, Math.min(newX, 82));
+        }
+    };
+
+    const handleMouseUp = () => {
+        window.removeEventListener("mousemove", handleDividerMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+        if (browser) document.body.style.cursor = "";
+    };
+
+    const handleMouseDown = () => {
+        window.addEventListener("mousemove", handleDividerMove);
+        window.addEventListener("mouseup", handleMouseUp);
+        if (browser) document.body.style.cursor = "ew-resize";
+    };
+
     onMount(() => {
         codemirrorLeft = new Editor({
             element: elementLeft,
@@ -166,6 +199,7 @@
                 cursorPositionLeft = newCursorPos;
             },
             placeholder: placeholderLeft,
+            label: labelLeft,
             format: formatLeft,
             readOnly: false
         });
@@ -182,6 +216,7 @@
                 cursorPositionRight = newCursorPos;
             },
             placeholder: placeholderRight,
+            label: labelRight,
             format: formatRight,
             readOnly: true
         });
@@ -217,27 +252,38 @@
     tool="converter"
     handleClick={handleMainClick}
 />
-<div class="double_field_wrapper">
+<div class="double_field_wrapper" style={`--pos: ${dividerPos}%;`}>
     <div class="field_wrapper">
         <div class="codemirror-wrapper" bind:this={elementLeft} />
         {#if $showError}
             <ErrorModal />
         {/if}
     </div>
+    <div class="divider" role="button" tabindex="0" on:mousedown={handleMouseDown}>
+        <button
+            aria-labelledby="SwitchLanguages"
+            aria-label="SwitchLanguages"
+            class="icon-button"
+            on:click|stopPropagation={() => {
+                goto(`/converter/${formatRight}-to-${formatLeft}`);
+            }}
+        >
+            <ChangeConvertors />
+        </button>
+    </div>
     <div class="field_wrapper">
-        <!-- {#if $isSettingsOpen}
-        <SettingsModal bind:useTabs bind:indentationLevel format={formatLeft} />
-    {/if} -->
+        {#if $isSettingsOpen}
+            <SettingsModal formats={[formatLeft, formatRight]} />
+        {/if}
         <div class="codemirror-wrapper" bind:this={elementRight} />
     </div>
 </div>
 
 <DoubleFooter
-    bind:useTabsLeft
-    bind:indentationLevelLeft
+    {dividerPos}
+    {formatLeft}
     {cursorPositionLeft}
-    bind:useTabsRight
-    bind:indentationLevelRight
+    {formatRight}
     {cursorPositionRight}
     {handleFormatClick}
     {handleCopyClick}
@@ -256,11 +302,45 @@
     }
 
     .field_wrapper {
-        position: relative;
         width: 100%;
+        height: 100%;
+        overflow: auto;
+        position: relative;
+    }
+
+    .divider {
+        position: absolute;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: var(--pos);
+        width: 1px;
+        height: 100%;
+        background: #313345;
+        cursor: ew-resize;
+    }
+
+    .icon-button {
+        display: flex;
+        align-items: center;
+        height: 36px;
+        gap: 4px;
+        padding: 0 8px;
+        background: #030711;
+        border: 1px solid #313345;
+        border-radius: 8px;
+        color: #7d8799;
+        transition: all 0.2s;
+        &:hover {
+            background: #040f1e;
+            color: #e1e1e1;
+        }
     }
 
     .double_field_wrapper {
-        display: flex;
+        position: relative;
+        display: grid;
+        grid-template-columns: var(--pos) 1fr;
     }
 </style>

@@ -21,6 +21,7 @@ class Codemirror {
     element: HTMLDivElement;
     outerValueChange: (newValue: string, cursorPos: CursorPosition) => void;
     placeholder: string;
+    label: string;
     format: "json" | "xml" | "yaml";
     highlighter: Highlight;
     validator: Validator;
@@ -30,17 +31,20 @@ class Codemirror {
         outerValueChange,
         placeholder,
         format,
+        label,
         readOnly
     }: {
         element: HTMLDivElement;
         outerValueChange: (newValue: string, cursorPos: CursorPosition) => void;
         placeholder: string;
+        label: string;
         format: "json" | "xml" | "yaml";
         readOnly: boolean;
     }) {
         this.element = element;
         this.outerValueChange = outerValueChange;
         this.placeholder = placeholder;
+        this.label = label;
         this.format = format;
         this.readOnly = readOnly;
         this.view = this.init(element);
@@ -60,6 +64,7 @@ class Codemirror {
         const fieldFormat = this.getFileFormat(this.format);
         const themeExtension = getThemeExtention(this.format);
         return [
+            EditorView.contentAttributes.of({ "aria-label": `${this.label}` }),
             EditorView.lineWrapping,
             EditorState.readOnly.of(this.readOnly),
             basicSetup,

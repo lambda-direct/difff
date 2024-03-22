@@ -17,7 +17,11 @@
         <h2 class="main_subtitle">Validate, Format & Prettify your JSON</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirror format="json" placeholder="Provide a JSON, link, or Drag & Drop a file" />
+        <CodeMirror
+            format="json"
+            placeholder="Provide a JSON, link, or Drag & Drop a file"
+            label="JSON format field"
+        />
     </section>
     <article>
         <svelte:component this={data.content} />

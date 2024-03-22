@@ -1,12 +1,10 @@
 <script lang="ts">
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
-    import { isSettingsOpen } from "~/storage/store";
-    import LocalStorage from "~/storage/LocalStorage";
+    import { isSettingsOpen, storageSettings } from "~/storage/store";
+    import type { Formats } from "~/storage/types";
 
-    export let format: "json" | "yaml" | "xml";
-    export let useTabs: boolean;
-    export let indentationLevel: number;
+    export let formats: ("json" | "yaml" | "xml")[];
 
     const handleMenuClose = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
@@ -23,60 +21,73 @@
         }
     };
 
-    $: {
-        if (format === "yaml") {
-            LocalStorage.set("yaml", { spaces: indentationLevel });
-        }
-        if (format === "xml") {
-            LocalStorage.set("xml", { spaces: indentationLevel });
-        }
-        if (format === "json") {
-            LocalStorage.set("json", {
-                tab: useTabs,
-                spaces: indentationLevel
-            });
-        }
-    }
+    const handleSettingChange = (format: Formats, setting: unknown, value: boolean | number) => {
+        storageSettings.update((settings) => {
+            const newSettings = { ...settings };
 
+            if (newSettings[format]) newSettings[format][setting] = value;
+
+            return newSettings;
+        });
+    };
+
+    const handleCheckboxChange = (format: Formats, setting: string, event: Event) => {
+        const checkbox = event.target as HTMLInputElement;
+        handleSettingChange(format, setting, checkbox.checked);
+    };
+
+    const handleSelectChange = (format: Formats, setting: string, event: Event) => {
+        const select = event.target as HTMLSelectElement;
+        handleSettingChange(format, setting, parseInt(select.value));
+    };
     onMount(() => {
         document.addEventListener("click", handleMenuClose);
     });
 </script>
 
 <div class="settings">
-    {#if format === "json"}
-        <div class="setting_option">
-            <p class="option_label">Tabs:</p>
-            <div class="switch">
-                <input
-                    bind:checked={useTabs}
-                    class="switch-checkbox"
-                    id="toggler"
-                    type="checkbox"
-                />
-                <label
-                    class="toggler-inner"
-                    for="toggler"
-                    style="background: {useTabs ? '#e1e1e1' : '#F5F5f014'}"
-                >
-                    <span class="toggler-switcher" />
-                </label>
+    {#each formats as format}
+        <span>{format.toUpperCase()}</span>
+        {#if format === "json"}
+            <div class="setting_option">
+                <p class="option_label">Tabs:</p>
+                <div class="switch">
+                    <input
+                        class="switch-checkbox"
+                        id="toggler"
+                        type="checkbox"
+                        on:change={(event) => handleCheckboxChange(format, "tab", event)}
+                    />
+                    <label
+                        class="toggler-inner"
+                        for="toggler"
+                        style="background: {$storageSettings[format].tab ? '#e1e1e1' : '#F5F5f014'}"
+                    >
+                        <span class="toggler-switcher" />
+                    </label>
+                </div>
             </div>
+        {/if}
+
+        <div class="setting_option">
+            <p class="option_label">Indentation-level:</p>
+            <select
+                value={$storageSettings[format].spaces}
+                on:change={(event) => handleSelectChange(format, "spaces", event)}
+                name="indentationLevel"
+                class="indentation_select"
+            >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
+                <option value={6}>6</option>
+                <option value={7}>7</option>
+                <option value={8}>8</option>
+            </select>
         </div>
-    {/if}
-    <div class="setting_option">
-        <p class="option_label">Indentation-level:</p>
-        <select bind:value={indentationLevel} name="indentationLevel" class="indentation_select">
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-            <option value={5}>5</option>
-            <option value={6}>6</option>
-            <option value={7}>7</option>
-            <option value={8}>8</option>
-        </select>
-    </div>
+    {/each}
 </div>
 
 <style>

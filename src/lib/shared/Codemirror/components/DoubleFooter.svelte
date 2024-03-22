@@ -5,22 +5,34 @@
     import MagicWandIcon from "~/lib/icons/MagicWandIcon.svelte";
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import { getColumn, getLine } from "~/lib/shared/Codemirror/components/utils";
+    import { storageSettings } from "~/storage/store";
+    import type { Formats } from "~/storage/types";
 
+    export let dividerPos: number;
+
+    export let formatLeft: Formats;
     export let cursorPositionLeft: { line: number; col: number };
-    export let useTabsLeft: boolean;
-    export let indentationLevelLeft: number;
     export let isFormatClicked: boolean;
     export let isClearClicked: boolean;
     export let handleFormatClick: () => void;
     export let handleClearClick: () => void;
 
+    export let formatRight: Formats;
     export let cursorPositionRight: { line: number; col: number };
-    export let useTabsRight: boolean;
-    export let indentationLevelRight: number;
     export let isDownloadClicked: boolean;
     export let isCopyClicked: boolean;
     export let handleCopyClick: () => void;
     export let handleDownloadClick: () => void;
+
+    let useTabsLeft: boolean;
+    let indentationLevelLeft: number;
+    let useTabsRight: boolean;
+    let indentationLevelRight: number;
+
+    $: useTabsLeft = $storageSettings[formatLeft].tab || false;
+    $: indentationLevelLeft = $storageSettings[formatLeft].spaces;
+    $: useTabsRight = $storageSettings[formatRight].tab || false;
+    $: indentationLevelRight = $storageSettings[formatRight].spaces;
 
     $: lineLeft = getLine(cursorPositionLeft.line);
     $: columnLeft = getColumn(cursorPositionLeft.col);
@@ -28,7 +40,7 @@
     $: columnRight = getColumn(cursorPositionRight.col);
 </script>
 
-<div class="footer_wrapper">
+<div class="footer_wrapper" style={`--pos: ${dividerPos}%;`}>
     <div class="footer">
         <div>
             <span class="cursor-position">
@@ -52,7 +64,6 @@
                 {:else}
                     <MagicWandIcon />
                 {/if}
-                <span class="btn_title">Format</span>
             </button>
             <button
                 on:click={handleClearClick}
@@ -67,10 +78,10 @@
                 {:else}
                     <ClearIcon />
                 {/if}
-                <span class="btn_title">Clear</span>
             </button>
         </div>
     </div>
+    <div class="divider" />
     <div class="footer">
         <div>
             <span class="cursor-position">
@@ -94,7 +105,6 @@
                 {:else}
                     <DownloadIcon />
                 {/if}
-                <span class="btn_title">Download</span>
             </button>
             <button
                 on:click={handleCopyClick}
@@ -109,7 +119,6 @@
                 {:else}
                     <CopyIcon />
                 {/if}
-                <span class="btn_title">Copy</span>
             </button>
         </div>
     </div>
@@ -117,9 +126,9 @@
 
 <style lang="scss">
     .footer_wrapper {
-        display: flex;
-        gap: 12px;
-        padding: 0 12px;
+        position: relative;
+        display: grid;
+        grid-template-columns: var(--pos) 1fr;
         height: 54px;
         background: #030711;
         border-top: 1px solid #313345;
@@ -157,15 +166,19 @@
         border: none;
     }
 
-    .btn_title {
-        @media (max-width: 420px) {
-            display: none;
-        }
+    .divider {
+        position: absolute;
+        left: var(--pos);
+        width: 1px;
+        height: 100%;
+        background-color: #313345;
+        z-index: 5;
     }
 
     .footer {
         display: flex;
         align-items: center;
+        padding: 0 12px;
         justify-content: space-between;
         width: 100%;
     }

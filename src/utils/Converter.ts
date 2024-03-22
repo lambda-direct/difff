@@ -1,6 +1,6 @@
 import axios from "axios";
 import { isURL } from "~/utils/helper";
-import { js2xml } from "xml-js";
+import { js2xml, xml2json } from "xml-js";
 
 export class Converter {
     public urlToJson = async (userInput: string) => {
@@ -45,6 +45,17 @@ export class Converter {
             const xml = js2xml(JSON.parse(json), { compact: true });
 
             return `<?xml version="1.0" encoding="UTF-8"?><root>${this.clearTags(xml)}</root>`;
+        } catch (err) {
+            return "";
+        }
+    };
+
+    public XmlToJson = (xml: string) => {
+        try {
+            const json = xml2json(xml, { compact: true, trim: true, ignoreComment: true });
+            console.log("json:", json);
+
+            return json;
         } catch (err) {
             return "";
         }

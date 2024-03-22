@@ -1,6 +1,7 @@
 <script lang="ts">
     import Head from "~/lib/shared/Head.svelte";
     import DoubleCodeMirror from "~/lib/shared/Codemirror/DoublecCodemirrorField.svelte";
+    import Converter from "~/utils/Converter";
 </script>
 
 <Head
@@ -18,8 +19,11 @@
         <DoubleCodeMirror
             formatLeft="json"
             placeholderLeft="Provide a JSON, link, or Drag & Drop a file"
+            labelLeft="JSON to convert field"
             formatRight="xml"
             placeholderRight="Converted XML output"
+            labelRight="XML converted field"
+            convertFunction={Converter.jsonToXml}
         />
     </section>
 </main>

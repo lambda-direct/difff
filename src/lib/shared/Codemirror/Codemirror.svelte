@@ -4,7 +4,7 @@
     import Header from "~/lib/shared/Codemirror/components/Header.svelte";
     import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
     import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
-    import { errorMessage, isSettingsOpen, showError } from "~/storage/store";
+    import { errorMessage, isSettingsOpen, showError, storageSettings } from "~/storage/store";
     import Footer from "~/lib/shared/Codemirror/components/Footer.svelte";
     import LocalStorage from "~/storage/LocalStorage";
     import type { LocaleStorageResponce } from "~/storage/types";
@@ -15,6 +15,7 @@
 
     export let format: "json" | "yaml" | "xml";
     export let placeholder: string;
+    export let label: string;
 
     let codemirror: Editor;
     let value: string = "";
@@ -25,11 +26,13 @@
     let cursorPosition: CursorPosition = { line: 0, col: 0 };
     let openSettings: () => void;
     let closeSettings: () => void;
-    let useTabs: boolean = false;
-    let indentationLevel: number = format === "json" ? 4 : 2;
+    let useTabs: boolean;
+    let indentationLevel: number;
 
     const formatter = new Formatter(format);
 
+    $: useTabs = $storageSettings[format].tab || false;
+    $: indentationLevel = $storageSettings[format].spaces;
     $: {
         if (value === "") {
             $showError = false;
@@ -65,9 +68,7 @@
                 );
                 codemirror.setFormattingResult(formattedData);
             };
-            if (value !== oldValue) {
-                codemirror.scrollToTop();
-            }
+            if (value !== oldValue) codemirror.scrollToTop();
             reader.readAsText(file);
         }
     };
@@ -122,6 +123,7 @@
                 cursorPosition = newCursorPos;
             },
             placeholder,
+            label,
             format,
             readOnly: false
         });
@@ -161,7 +163,7 @@
 <div class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
     {#if $isSettingsOpen}
-        <SettingsModal bind:useTabs bind:indentationLevel {format} />
+        <SettingsModal formats={[format]} />
     {/if}
     {#if $showError}
         <ErrorModal />

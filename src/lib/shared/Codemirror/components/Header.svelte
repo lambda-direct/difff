@@ -287,6 +287,7 @@
         display: flex;
         gap: 4px;
         font-size: 16px;
+        align-items: center;
     }
 
     .button {

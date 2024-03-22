@@ -29,7 +29,11 @@
         <h2 class="main_subtitle">Validate, Format & Prettify your XML</h2>
     </header>
     <section class="formatter_field-wrapper">
-        <CodeMirror format="xml" placeholder="Put your XML or Drag & Drop a file" />
+        <CodeMirror
+            format="xml"
+            placeholder="Put your XML or Drag & Drop a file"
+            label="XML format field"
+        />
     </section>
     <article>
         <svelte:component this={data.content} />
