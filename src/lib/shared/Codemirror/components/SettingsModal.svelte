@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
     import { onMount } from "svelte";
+    import { browser } from "$app/environment";
     import { isSettingsOpen, storageSettings } from "~/storage/store";
     import type { Formats } from "~/storage/types";
 
@@ -53,6 +53,7 @@
                 <p class="option_label">Tabs:</p>
                 <div class="switch">
                     <input
+                        checked={$storageSettings[format].tab}
                         class="switch-checkbox"
                         id="toggler"
                         type="checkbox"
