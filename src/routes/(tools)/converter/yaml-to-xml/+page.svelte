@@ -5,7 +5,7 @@
 </script>
 
 <Head
-    title="Difff | YAML to XML Converter Online Tool, Beautifier & Validator"
+    title="Difff | YAML to XML Converter Online Tool"
     description="Converter YAML to XML Online with difff.app. Our online tool provides YAML and XML  pretty print, beautifies, and converts it."
     openGraph={{ type: "website", locale: "en_US" }}
 />

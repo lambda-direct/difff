@@ -5,7 +5,7 @@
 </script>
 
 <Head
-    title="Difff | YAML to JSON Converter Online Tool, Beautifier & Validator"
+    title="Difff | YAML to JSON Converter Online Tool"
     description="Converter YAML to JSON Online with difff.app. Our online tool provides YAML and JSON  pretty print, beautifies, and converts it."
     openGraph={{ type: "website", locale: "en_US" }}
 />

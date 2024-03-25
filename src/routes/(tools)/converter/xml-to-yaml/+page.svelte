@@ -2,10 +2,26 @@
     import Head from "~/lib/shared/Head.svelte";
     import DoubleCodeMirror from "~/lib/shared/Codemirror/DoublecCodemirrorField.svelte";
     import Converter from "~/utils/Converter";
+    import xml from "highlight.js/lib/languages/xml";
+    import yaml from "highlight.js/lib/languages/yaml";
+    import "../style.css";
+    import hljs from "highlight.js";
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
+
+    export let data;
+
+    onMount(() => {
+        if (browser) {
+            hljs.registerLanguage("xml", xml);
+            hljs.registerLanguage("yaml", yaml);
+            hljs.highlightAll();
+        }
+    });
 </script>
 
 <Head
-    title="Difff | XML to YAML Converter Online Tool, Beautifier & Validator"
+    title="Difff | XML to YAML Converter Online Tool"
     description="Converter XML to YAML Online with difff.app. Our online tool provides YAML and XML  pretty print, beautifies, and converts it."
     openGraph={{ type: "website", locale: "en_US" }}
 />
@@ -26,6 +42,9 @@
             convertFunction={Converter.xmlToYaml}
         />
     </section>
+    <article>
+        <svelte:component this={data.content} />
+    </article>
 </main>
 
 <style>

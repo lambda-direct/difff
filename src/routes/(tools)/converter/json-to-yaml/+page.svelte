@@ -2,10 +2,12 @@
     import Head from "~/lib/shared/Head.svelte";
     import DoubleCodeMirror from "~/lib/shared/Codemirror/DoublecCodemirrorField.svelte";
     import Converter from "~/utils/Converter";
+
+    export let data;
 </script>
 
 <Head
-    title="Difff | JSON to YAML Converter Online Tool, Beautifier & Validator"
+    title="Difff | JSON to YAML Converter Online Tool"
     description="Converter JSON to YAML Online with difff.app. Our online tool provides JSON and YAML pretty print, beautifies, and converts it."
     openGraph={{ type: "website", locale: "en_US" }}
 />
@@ -26,6 +28,9 @@
             convertFunction={Converter.yamlToJson}
         />
     </section>
+    <article>
+        <svelte:component this={data.content} />
+    </article>
 </main>
 
 <style>

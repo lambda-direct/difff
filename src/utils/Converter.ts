@@ -31,37 +31,44 @@ export class Converter {
         return spaceRemoved.replace(tagPattern, resignTagToValid);
     };
 
-    // private unnestJSON = () => {
-    //     function transformObject(obj) {
-    //         const transformedObj = {};
+    private unNestJSON = (json: string) => {
+        const parsedJson = JSON.parse(json);
+        const transformObject = (obj: object) => {
+            const transformedObj: { [key: string]: string | string[] | object } = {};
 
-    //         for (const key in obj) {
-    //             if (obj.hasOwnProperty(key)) {
-    //                 const value = obj[key];
-    //                 if (
-    //                     key === "_attributes" &&
-    //                     typeof value === "object" &&
-    //                     Object.keys(value).length === 1
-    //                 ) {
-    //                     const attributeKey = Object.keys(value)[0];
-    //                     transformedObj[attributeKey] = value[attributeKey];
-    //                 } else if (typeof value === "object" && value.hasOwnProperty("_text")) {
-    //                     if (Object.keys(value).length === 1) {
-    //                         transformedObj[key] = value["_text"];
-    //                     } else {
-    //                         transformedObj[key] = transformObject(value);
-    //                     }
-    //                 } else if (typeof value === "object" && !Array.isArray(value)) {
-    //                     transformedObj[key] = transformObject(value);
-    //                 } else {
-    //                     transformedObj[key] = value;
-    //                 }
-    //             }
-    //         }
+            for (const key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                    const value = obj[key];
+                    if (
+                        key === "_attributes" &&
+                        typeof value === "object" &&
+                        Object.keys(value).length === 1
+                    ) {
+                        const attributeKey = Object.keys(value)[0];
+                        transformedObj[attributeKey] = value[attributeKey];
+                    } else if (
+                        typeof value === "object" &&
+                        Object.prototype.hasOwnProperty.call(value, "_text")
+                    ) {
+                        if (Object.keys(value).length === 1) {
+                            transformedObj[key] = value["_text"];
+                        } else {
+                            transformedObj[key] = transformObject(value);
+                        }
+                    } else if (typeof value === "object" && !Array.isArray(value)) {
+                        transformedObj[key] = transformObject(value);
+                    } else {
+                        transformedObj[key] = value;
+                    }
+                }
+            }
 
-    //         return transformedObj;
-    //     }
-    // };
+            return transformedObj;
+        };
+
+        const transformedJSON = transformObject(parsedJson);
+        return JSON.stringify(transformedJSON);
+    };
 
     public jsonToXml = (json: string) => {
         try {
@@ -76,7 +83,8 @@ export class Converter {
     public xmlToJson = (xml: string) => {
         try {
             const json = xml2json(xml, { compact: true, trim: true, ignoreComment: true });
-            return json;
+
+            return this.unNestJSON(json);
         } catch (err) {
             return "";
         }
@@ -125,7 +133,8 @@ export class Converter {
     public xmlToYaml = (xml: string) => {
         try {
             const json = this.xmlToJson(xml);
-            const yaml = yamlConvert.load(json);
+            const unnestedJSON = this.unNestJSON(json);
+            const yaml = yamlConvert.load(unnestedJSON);
             return JSON.stringify(yaml);
         } catch (err) {
             return "";
