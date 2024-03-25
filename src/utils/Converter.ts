@@ -4,7 +4,7 @@ import { isURL } from "~/utils/helper";
 import { js2xml, xml2json } from "xml-js";
 
 export class Converter {
-    private clearTags = (xmlString: string) => {
+    private sanitizeTags = (xmlString: string) => {
         const tagPattern = /<[^<>]+>/g;
 
         const removeSpaces = (str: string) => str.replace(/\s/g, "");
@@ -31,17 +31,49 @@ export class Converter {
         return spaceRemoved.replace(tagPattern, resignTagToValid);
     };
 
+    // private unnestJSON = () => {
+    //     function transformObject(obj) {
+    //         const transformedObj = {};
+
+    //         for (const key in obj) {
+    //             if (obj.hasOwnProperty(key)) {
+    //                 const value = obj[key];
+    //                 if (
+    //                     key === "_attributes" &&
+    //                     typeof value === "object" &&
+    //                     Object.keys(value).length === 1
+    //                 ) {
+    //                     const attributeKey = Object.keys(value)[0];
+    //                     transformedObj[attributeKey] = value[attributeKey];
+    //                 } else if (typeof value === "object" && value.hasOwnProperty("_text")) {
+    //                     if (Object.keys(value).length === 1) {
+    //                         transformedObj[key] = value["_text"];
+    //                     } else {
+    //                         transformedObj[key] = transformObject(value);
+    //                     }
+    //                 } else if (typeof value === "object" && !Array.isArray(value)) {
+    //                     transformedObj[key] = transformObject(value);
+    //                 } else {
+    //                     transformedObj[key] = value;
+    //                 }
+    //             }
+    //         }
+
+    //         return transformedObj;
+    //     }
+    // };
+
     public jsonToXml = (json: string) => {
         try {
             const xml = js2xml(JSON.parse(json), { compact: true });
-
-            return `<?xml version="1.0" encoding="UTF-8"?><root>${this.clearTags(xml)}</root>`;
+            const sanitizedXML = this.sanitizeTags(xml);
+            return `<?xml version="1.0" encoding="UTF-8"?><root>${sanitizedXML}</root>`;
         } catch (err) {
             return "";
         }
     };
 
-    public XmlToJson = (xml: string) => {
+    public xmlToJson = (xml: string) => {
         try {
             const json = xml2json(xml, { compact: true, trim: true, ignoreComment: true });
             return json;
@@ -74,6 +106,27 @@ export class Converter {
             const loadedYaml = yamlConvert.load(yaml);
             const json = JSON.stringify(loadedYaml, null);
             return json;
+        } catch (err) {
+            return "";
+        }
+    };
+
+    public yamlToXml = (yaml: string) => {
+        try {
+            const loadedYaml = yamlConvert.load(yaml);
+            const json = JSON.stringify(loadedYaml, null);
+            const xml = this.jsonToXml(json);
+            return xml;
+        } catch (err) {
+            return "";
+        }
+    };
+
+    public xmlToYaml = (xml: string) => {
+        try {
+            const json = this.xmlToJson(xml);
+            const yaml = yamlConvert.load(json);
+            return JSON.stringify(yaml);
         } catch (err) {
             return "";
         }

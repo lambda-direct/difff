@@ -39,7 +39,7 @@
             formatRight="json"
             placeholderRight="Converted JSON output"
             labelRight="JSON converted field"
-            convertFunction={Converter.XmlToJson}
+            convertFunction={Converter.xmlToJson}
         />
     </section>
     <article>

@@ -42,8 +42,18 @@ export const toolsRoutes: ToolsRoute[] = [
         path: "/converter/xml-to-json"
     },
     {
+        name: "XML to YAML",
+        group: "Converter",
+        path: "/converter/xml-to-yaml"
+    },
+    {
         name: "YAML to JSON",
         group: "Converter",
         path: "/converter/yaml-to-json"
+    },
+    {
+        name: "YAML to XML",
+        group: "Converter",
+        path: "/converter/yaml-to-xml"
     }
 ];
