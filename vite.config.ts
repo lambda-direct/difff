@@ -8,11 +8,11 @@ export default defineConfig({
     optimizeDeps: {
         exclude: ["@biomejs/wasm-bundler", "@codemirror/*"]
     },
+    assetsInclude: ["**/*.md"],
     plugins: [sveltekit(), wasm(), topLevelAwait()],
     resolve: {
         alias: {
-            "~": path.resolve("./src"),
-            "$md/": path.resolve("./src/md")
+            "~": path.resolve("./src")
         }
     }
 });

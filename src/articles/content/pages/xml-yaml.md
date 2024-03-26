@@ -1,11 +1,10 @@
 ## How to use the converter?
 
-Declarations will be converted, but comments will not. Tag attributes will be shown inside the converted element. If there was more than one attribute, they will be the value of the '\_attributes' key. If there was only content inside, it will be converted to a key-value pair. Identical tags will be converted into an array under the same key. If there was both content and another tag inside a parent tag, after conversion, the content will be the value of the '\_text' key.
+Declarations will be converted, but comments will not. Tag attributes will be shown inside the converted element. If there was more than one attribute, they will be the value of the '\_attributes' key. If there was only content inside, it will be converted to a key-value pair. Identical tags will be converted into an array under the same key. If there was both content and another tag inside a parent tag, after conversion, the content will be the value of the '\_text' key. The converted [YAML](/formatter/yaml#yamlAnchor) will automatically be formatted with the indentation specified in the settings and displayed in a read-only field.
 
 XML:
 
 <pre>
-
 
 <code class="language-xml hljs">{`<?xml version="1.0" encoding="UTF-8"?>
   <root root="true">
@@ -34,7 +33,6 @@ XML:
 YAML:
 
 <pre>
-
 
 <code class="language-yaml hljs">{`_declaration:
   _attributes:

@@ -1,20 +1,8 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
-    import hljs from "highlight.js";
-    import xml from "highlight.js/lib/languages/xml";
-    import { onMount } from "svelte";
     import CodeMirror from "~/lib/shared/Codemirror/Codemirror.svelte";
     import Head from "~/lib/shared/Head.svelte";
-    import "../style.css";
 
     export let data;
-
-    onMount(() => {
-        if (browser) {
-            hljs.registerLanguage("xml", xml);
-            hljs.highlightAll();
-        }
-    });
 </script>
 
 <Head

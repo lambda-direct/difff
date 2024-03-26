@@ -13,7 +13,6 @@ JSON:
 
 <pre>
 
-
 <code class="language-json hljs">{`{
     "Aidan Gillen": {
         "array  s": [
@@ -46,7 +45,6 @@ JSON:
 XML:
 
 <pre>
-
 
 <code class="language-xml hljs">{`<?xml version="1.0" encoding="UTF-8"?>
 <root>

@@ -1,5 +1,21 @@
 <script lang="ts">
     import "~/styles/index.css";
+    import "./style.css";
+    import json from "highlight.js/lib/languages/json";
+    import yaml from "highlight.js/lib/languages/yaml";
+    import xml from "highlight.js/lib/languages/xml";
+    import hljs from "highlight.js";
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
+
+    onMount(() => {
+        if (browser) {
+            hljs.registerLanguage("xml", xml);
+            hljs.registerLanguage("yaml", yaml);
+            hljs.registerLanguage("json", json);
+            hljs.highlightAll();
+        }
+    });
 </script>
 
 <a href="/changelog">

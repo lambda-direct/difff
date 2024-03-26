@@ -1,20 +1,8 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
-    import hljs from "highlight.js";
-    import yaml from "highlight.js/lib/languages/yaml";
-    import { onMount } from "svelte";
     import Head from "~/lib/shared/Head.svelte";
     import CodeMirror from "~/lib/shared/Codemirror/Codemirror.svelte";
-    import "../style.css";
 
     export let data;
-
-    onMount(() => {
-        if (browser) {
-            hljs.registerLanguage("yaml", yaml);
-            hljs.highlightAll();
-        }
-    });
 </script>
 
 <Head

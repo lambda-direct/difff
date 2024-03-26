@@ -2,22 +2,8 @@
     import Head from "~/lib/shared/Head.svelte";
     import DoubleCodeMirror from "~/lib/shared/Codemirror/DoublecCodemirrorField.svelte";
     import Converter from "~/utils/Converter";
-    import xml from "highlight.js/lib/languages/xml";
-    import json from "highlight.js/lib/languages/json";
-    import "../style.css";
-    import hljs from "highlight.js";
-    import { onMount } from "svelte";
-    import { browser } from "$app/environment";
 
     export let data;
-
-    onMount(() => {
-        if (browser) {
-            hljs.registerLanguage("xml", xml);
-            hljs.registerLanguage("json", json);
-            hljs.highlightAll();
-        }
-    });
 </script>
 
 <Head

@@ -33,48 +33,42 @@ export class Converter {
 
     private unNestJSON = (json: string) => {
         const parsedJson = JSON.parse(json);
+
+        const isGotOnlyOneKey = (obj: object) => {
+            return typeof obj === "object" && Object.keys(obj).length === 1;
+        };
         const transformObject = (obj: object) => {
             const transformedObj: { [key: string]: string | string[] | object } = {};
             for (const key in obj) {
-                if (Object.hasOwn(obj, key)) {
-                    const value = obj[key];
-                    if (Array.isArray(value)) {
-                        const arrayValues = value.map((item) => {
-                            if (
-                                typeof item === "object" &&
-                                Object.keys(item).length === 1 &&
-                                Object.hasOwn(item, "_text")
-                            ) {
-                                return item["_text"];
-                            } else if (typeof item === "string") {
-                                return item;
-                            } else {
-                                return transformObject(item);
-                            }
-                        });
-
-                        transformedObj[key] = arrayValues;
-                    } else if (
-                        key === "_attributes" &&
-                        typeof value === "object" &&
-                        Object.keys(value).length === 1
-                    ) {
-                        const attributeKey = Object.keys(value)[0];
-                        transformedObj[attributeKey] = value[attributeKey];
-                    } else if (
-                        typeof value === "object" &&
-                        Object.prototype.hasOwnProperty.call(value, "_text")
-                    ) {
-                        if (Object.keys(value).length === 1) {
-                            transformedObj[key] = value["_text"];
+                const value = obj[key];
+                if (Array.isArray(value)) {
+                    const arrayValues = value.map((item) => {
+                        if (isGotOnlyOneKey(item) && Object.hasOwn(item, "_text")) {
+                            return item["_text"];
+                        } else if (typeof item === "string") {
+                            return item;
                         } else {
-                            transformedObj[key] = transformObject(value);
+                            return transformObject(item);
                         }
-                    } else if (typeof value === "object" && !Array.isArray(value)) {
-                        transformedObj[key] = transformObject(value);
+                    });
+
+                    transformedObj[key] = arrayValues;
+                } else if (key === "_attributes" && isGotOnlyOneKey(value)) {
+                    const attributeKey = Object.keys(value)[0];
+                    transformedObj[attributeKey] = value[attributeKey];
+                } else if (
+                    typeof value === "object" &&
+                    Object.prototype.hasOwnProperty.call(value, "_text")
+                ) {
+                    if (isGotOnlyOneKey(value)) {
+                        transformedObj[key] = value["_text"];
                     } else {
-                        transformedObj[key] = value;
+                        transformedObj[key] = transformObject(value);
                     }
+                } else if (typeof value === "object" && !Array.isArray(value)) {
+                    transformedObj[key] = transformObject(value);
+                } else {
+                    transformedObj[key] = value;
                 }
             }
 
