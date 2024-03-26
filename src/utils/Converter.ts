@@ -35,11 +35,26 @@ export class Converter {
         const parsedJson = JSON.parse(json);
         const transformObject = (obj: object) => {
             const transformedObj: { [key: string]: string | string[] | object } = {};
-
             for (const key in obj) {
-                if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                if (Object.hasOwn(obj, key)) {
                     const value = obj[key];
-                    if (
+                    if (Array.isArray(value)) {
+                        const arrayValues = value.map((item) => {
+                            if (
+                                typeof item === "object" &&
+                                Object.keys(item).length === 1 &&
+                                Object.hasOwn(item, "_text")
+                            ) {
+                                return item["_text"];
+                            } else if (typeof item === "string") {
+                                return item;
+                            } else {
+                                return transformObject(item);
+                            }
+                        });
+
+                        transformedObj[key] = arrayValues;
+                    } else if (
                         key === "_attributes" &&
                         typeof value === "object" &&
                         Object.keys(value).length === 1
@@ -133,8 +148,7 @@ export class Converter {
     public xmlToYaml = (xml: string) => {
         try {
             const json = this.xmlToJson(xml);
-            const unnestedJSON = this.unNestJSON(json);
-            const yaml = yamlConvert.load(unnestedJSON);
+            const yaml = yamlConvert.load(json);
             return JSON.stringify(yaml);
         } catch (err) {
             return "";

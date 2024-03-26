@@ -45,8 +45,8 @@ root:
   profile: {}
   Garage:
     cars:
-      - _text: BMW
-      - _text: Mercedes
+      - BMW
+      - Mercedes
     bike: Kawasaki H2R
   original_paint: 'true'
   color:
