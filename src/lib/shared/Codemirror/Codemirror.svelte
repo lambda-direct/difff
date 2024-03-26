@@ -22,6 +22,7 @@
     let element: HTMLDivElement;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
+    let isMinifyClicked: boolean = false;
     let storage: LocaleStorageResponce;
     let cursorPosition: CursorPosition = { line: 0, col: 0 };
     let openSettings: () => void;
@@ -40,6 +41,14 @@
         }
     }
 
+    const handleMinifyClick = () => {
+        isMinifyClicked = true;
+        setTimeout(() => {
+            isMinifyClicked = false;
+        }, 1000);
+        const minifiedData = Converter.minifyJSON(value);
+        codemirror.updateCodemirrorValue(minifiedData);
+    };
     const handleFormatClick = async () => {
         const formattedData = await formatter.formatInput(value, useTabs, indentationLevel);
         codemirror.setFormattingResult(formattedData);
@@ -174,9 +183,12 @@
     bind:indentationLevel
     {handleCopyClick}
     {handleDownloadClick}
+    {handleMinifyClick}
     {isCopyClicked}
     {cursorPosition}
     {isDownloadClicked}
+    {isMinifyClicked}
+    {format}
 />
 
 <style lang="scss">

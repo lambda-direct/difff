@@ -92,7 +92,6 @@ export class Converter {
     public xmlToJson = (xml: string) => {
         try {
             const json = xml2json(xml, { compact: true, trim: true, ignoreComment: true });
-
             return this.unNestJSON(json);
         } catch (err) {
             return "";
@@ -122,6 +121,7 @@ export class Converter {
         try {
             const loadedYaml = yamlConvert.load(yaml);
             const json = JSON.stringify(loadedYaml, null);
+
             return json;
         } catch (err) {
             return "";
@@ -147,6 +147,30 @@ export class Converter {
         } catch (err) {
             return "";
         }
+    };
+
+    public minifyJSON = (json: string): string => {
+        return json
+            .replace(/\s{0,}\{\s{1,}/g, "{")
+            .replace(/\s{0,}\[$/g, "[")
+            .replace(/\[\s{0,}/g, "[")
+            .replace(/:\s{0,}\[/g, ":[")
+            .replace(/\s{1,}\}\s{0,}/g, "}")
+            .replace(/\s{0,}\]\s{0,}/g, "]")
+            .replace(/\\"\s{0,}\\,/g, '",')
+            .replace(/\\,\s{0,}\\"/g, ',"')
+            .replace(/\s{0,}"\s{0,}/g, '"')
+            .replace(/\\"\s{0,}:/g, '":')
+            .replace(/:\s{0,}\\"/g, ':"')
+            .replace(/:\s{0,}\[/g, ":[")
+            .replace(/\\,\s{0,}\[/g, ",[")
+            .replace(/\\,\s{2,}/g, ", ")
+            .replace(/\]\s{0,},\s{0,}\[/g, "],[")
+            .replace(/\n/g, "")
+            .replace(/:\s{1,}(?=\{\s*})/g, ":") // rm if after col => []
+            .replace(/:\s{1,}(?=\[\s*])/g, ":") // rm if after col => {}
+            .replace(/:\s{1,}(?=null)/g, ":") // rm if after col => null
+            .replace(/:\s{1,}([0-9]+|true|false)/g, ":$1"); // rm if after col => bool or num
     };
 }
 

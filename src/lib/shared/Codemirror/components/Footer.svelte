@@ -1,16 +1,21 @@
 <script lang="ts">
     import CopyIcon from "~/lib/icons/CopyIcon.svelte";
+    import MinifyIcon from "~/lib/icons/MinifyIcon.svelte";
     import DownloadIcon from "~/lib/icons/DownloadScon.svelte";
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import { getColumn, getLine } from "~/lib/shared/Codemirror/components/utils";
+    import { showError } from "~/storage/store";
 
+    export let format: "json" | "xml" | "yaml";
     export let cursorPosition: { line: number; col: number };
     export let useTabs: boolean;
     export let indentationLevel: number;
     export let isDownloadClicked: boolean;
     export let isCopyClicked: boolean;
+    export let isMinifyClicked: boolean;
     export let handleCopyClick: () => void;
     export let handleDownloadClick: () => void;
+    export let handleMinifyClick: () => void;
 
     $: line = getLine(cursorPosition.line);
     $: column = getColumn(cursorPosition.col);
@@ -26,6 +31,24 @@
         </span>
     </div>
     <div class="icon-btn-wrap">
+        {#if format === "json"}
+            <button
+                disabled={$showError}
+                on:click={handleMinifyClick}
+                title="download"
+                aria-label="download"
+                aria-labelledby="download"
+                name="download"
+                class="icon-button"
+            >
+                {#if isMinifyClicked}
+                    <SuccessIcon />
+                {:else}
+                    <MinifyIcon />
+                {/if}
+                <span class="btn_title">Minify</span>
+            </button>
+        {/if}
         <button
             on:click={handleDownloadClick}
             title="download"
@@ -69,13 +92,14 @@
         display: flex;
         align-items: center;
         height: 36px;
+        gap: 4px;
         padding: 0 8px;
         background: #030711;
         border: 1px solid #313345;
         border-radius: 8px;
         color: #7d8799;
         transition: all 0.2s;
-        &:hover {
+        &:hover:enabled {
             background: #040f1e;
             color: #e1e1e1;
         }
