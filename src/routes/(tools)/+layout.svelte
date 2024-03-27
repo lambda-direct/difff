@@ -32,7 +32,7 @@
     <slot />
 </div>
 
-<style lang="scss">
+<style>
     .header {
         overflow: hidden;
         display: flex;

@@ -2,6 +2,7 @@ import axios from "axios";
 import * as yamlConvert from "js-yaml";
 import { isURL } from "~/utils/helper";
 import { js2xml, xml2json } from "xml-js";
+import type { Formats, PossibleJSON } from "~/types";
 
 export class Converter {
     private sanitizeTags = (xmlString: string) => {
@@ -34,11 +35,12 @@ export class Converter {
     private unNestJSON = (json: string) => {
         const parsedJson = JSON.parse(json);
 
-        const isGotOnlyOneKey = (obj: object) => {
-            return typeof obj === "object" && Object.keys(obj).length === 1;
+        const isGotOnlyOneKey = (obj: unknown) => {
+            return obj && typeof obj === "object" && Object.keys(obj).length === 1;
         };
-        const transformObject = (obj: object) => {
-            const transformedObj: { [key: string]: string | string[] | object } = {};
+
+        const transformObject = (obj: PossibleJSON) => {
+            const transformedObj: PossibleJSON = {};
             for (const key in obj) {
                 const value = obj[key];
                 if (Array.isArray(value)) {
@@ -55,18 +57,26 @@ export class Converter {
                     transformedObj[key] = arrayValues;
                 } else if (key === "_attributes" && isGotOnlyOneKey(value)) {
                     const attributeKey = Object.keys(value)[0];
-                    transformedObj[attributeKey] = value[attributeKey];
+                    transformedObj[attributeKey] = (
+                        value as { [key: string]: string | object | string[] }
+                    )[attributeKey];
                 } else if (
                     typeof value === "object" &&
                     Object.prototype.hasOwnProperty.call(value, "_text")
                 ) {
                     if (isGotOnlyOneKey(value)) {
-                        transformedObj[key] = value["_text"];
+                        transformedObj[key] = value as {
+                            [key: string]: string | object | string[];
+                        }["_text"];
                     } else {
-                        transformedObj[key] = transformObject(value);
+                        transformedObj[key] = transformObject(
+                            value as { [key: string]: string | object | string[] }
+                        );
                     }
                 } else if (typeof value === "object" && !Array.isArray(value)) {
-                    transformedObj[key] = transformObject(value);
+                    transformedObj[key] = transformObject(
+                        value as { [key: string]: string | object | string[] }
+                    );
                 } else {
                     transformedObj[key] = value;
                 }
@@ -149,7 +159,7 @@ export class Converter {
         }
     };
 
-    public minifyJSON = (json: string): string => {
+    private minifyJSON = (json: string): string => {
         return json
             .replace(/\s{0,}\{\s{1,}/g, "{")
             .replace(/\s{0,}\[$/g, "[")
@@ -171,6 +181,23 @@ export class Converter {
             .replace(/:\s{1,}(?=\[\s*])/g, ":") // rm if after col => {}
             .replace(/:\s{1,}(?=null)/g, ":") // rm if after col => null
             .replace(/:\s{1,}([0-9]+|true|false)/g, ":$1"); // rm if after col => bool or num
+    };
+
+    private minifyXML = (xml: string): string => {
+        return xml
+            .replace(/<!--[\s\S]*?-->/g, "") // rm comments
+            .replace(/>[\s\r\n]*(?=\S)/g, ">")
+            .replace(/\s*(?=<)/g, "");
+    };
+
+    public minify = (format: Formats) => {
+        if (format === "json") {
+            return this.minifyJSON;
+        }
+        if (format === "xml") {
+            return this.minifyXML;
+        }
+        return;
     };
 }
 

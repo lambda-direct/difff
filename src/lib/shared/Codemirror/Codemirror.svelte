@@ -9,11 +9,11 @@
     import LocalStorage from "~/storage/LocalStorage";
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
-    import type { CursorPosition, UploadEvent } from "~/types";
+    import type { CursorPosition, Formats, UploadEvent } from "~/types";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
 
-    export let format: "json" | "yaml" | "xml";
+    export let format: Formats;
     export let placeholder: string;
     export let label: string;
 
@@ -46,8 +46,11 @@
         setTimeout(() => {
             isMinifyClicked = false;
         }, 1000);
-        const minifiedData = Converter.minifyJSON(value);
-        codemirror.updateCodemirrorValue(minifiedData);
+        const minify = Converter.minify(format);
+        if (minify) {
+            const minifiedData = minify(value);
+            codemirror.updateCodemirrorValue(minifiedData);
+        }
     };
     const handleFormatClick = async () => {
         const formattedData = await formatter.formatInput(value, useTabs, indentationLevel);

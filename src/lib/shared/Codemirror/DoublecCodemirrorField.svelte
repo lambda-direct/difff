@@ -8,15 +8,15 @@
     import DoubleFooter from "~/lib/shared/Codemirror/components/DoubleFooter.svelte";
     import LocalStorage from "~/storage/LocalStorage";
     import ChangeConvertors from "~/lib/icons/ChangeConvertors.svelte";
-    import type { CursorPosition, UploadEvent } from "~/types";
+    import type { CursorPosition, Formats, UploadEvent } from "~/types";
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
     import { goto } from "$app/navigation";
 
-    export let formatLeft: "json" | "yaml" | "xml";
-    export let formatRight: "json" | "yaml" | "xml";
+    export let formatLeft: Formats;
+    export let formatRight: Formats;
     export let placeholderLeft: string;
     export let placeholderRight: string;
     export let convertFunction: (input: string) => string;

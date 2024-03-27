@@ -50,3 +50,8 @@ export type OGCard = {
     locale: string;
     type: string;
 };
+
+export type Formats = "json" | "yaml" | "xml";
+
+type JSONvalues = string | string[] | object;
+export type PossibleJSON = { [key: string]: JSONvalues };

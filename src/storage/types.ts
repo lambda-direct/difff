@@ -6,9 +6,7 @@ export type LocaleStorageSchema = {
 
 export type LocaleStorageResponce = { spaces: number; tab?: boolean } | null;
 
-type Options = {
+export type Options = {
     spaces: number;
     tab?: boolean;
 };
-
-export type Formats = "json" | "yaml" | "xml";

@@ -1,7 +1,7 @@
 import { browser } from "$app/environment";
 import { writable } from "svelte/store";
 import LocalStorage from "~/storage/LocalStorage";
-import type { Formats } from "./types";
+import type { Formats } from "~/types";
 
 export const showError = writable(false);
 

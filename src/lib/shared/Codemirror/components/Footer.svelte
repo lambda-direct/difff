@@ -5,8 +5,9 @@
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import { getColumn, getLine } from "~/lib/shared/Codemirror/components/utils";
     import { showError } from "~/storage/store";
+    import type { Formats } from "~/types";
 
-    export let format: "json" | "xml" | "yaml";
+    export let format: Formats;
     export let cursorPosition: { line: number; col: number };
     export let useTabs: boolean;
     export let indentationLevel: number;
@@ -31,7 +32,7 @@
         </span>
     </div>
     <div class="icon-btn-wrap">
-        {#if format === "json"}
+        {#if format === "json" || format === "xml"}
             <button
                 disabled={$showError}
                 on:click={handleMinifyClick}

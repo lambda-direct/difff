@@ -10,10 +10,10 @@
     import ConvertIcon from "~/lib/icons/ConvertIcon.svelte";
     import { isSettingsOpen } from "~/storage/store";
     import { dropDownOptions } from "~/lib/shared/Codemirror/components/utils";
-    import type { UploadEvent } from "~/types";
+    import type { Formats, UploadEvent } from "~/types";
 
     export let tool: "formatter" | "converter";
-    export let formats: ("json" | "yaml" | "xml")[];
+    export let formats: Formats[];
     export let handleFileChange: (event: UploadEvent) => void;
     export let handleClick: () => void;
     export let open: () => void;

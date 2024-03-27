@@ -2,9 +2,9 @@
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
     import { isSettingsOpen, storageSettings } from "~/storage/store";
-    import type { Formats } from "~/storage/types";
+    import type { Formats } from "~/types";
 
-    export let formats: ("json" | "yaml" | "xml")[];
+    export let formats: Formats[];
 
     const handleMenuClose = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
