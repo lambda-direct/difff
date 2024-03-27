@@ -3,7 +3,8 @@ import type { PageLoad } from "./$types";
 
 export const load: PageLoad = async () => {
     try {
-        const data = await import("../../../../articles/content/pages/xml.md");
+        const xml = "xml";
+        const data = await import(`../../../../articles/content/pages/${xml}.md`);
         return { content: data.default };
     } catch (e) {
         error(404, `Not found`);

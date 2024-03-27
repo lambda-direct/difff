@@ -1,7 +1,4 @@
 <script lang="ts">
-    import { onMount, onDestroy } from "svelte";
-    import { SearchQuery, setSearchQuery } from "@codemirror/search";
-    import type { EditorView } from "codemirror";
     import AllIcon from "~/lib/icons/searchFieldIcons/AllIcon.svelte";
     import NextIcon from "~/lib/icons/searchFieldIcons/NextIcon.svelte";
     import CloseIcon from "~/lib/icons/searchFieldIcons/CloseIcon.svelte";

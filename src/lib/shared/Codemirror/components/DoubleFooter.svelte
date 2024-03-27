@@ -6,7 +6,7 @@
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import { getColumn, getLine } from "~/lib/shared/Codemirror/components/utils";
     import { storageSettings } from "~/storage/store";
-    import type { Formats } from "~/storage/types";
+    import type { Formats } from "~/types";
 
     export let dividerPos: number;
 

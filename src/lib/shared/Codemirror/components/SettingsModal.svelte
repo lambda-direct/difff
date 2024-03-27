@@ -3,6 +3,7 @@
     import { browser } from "$app/environment";
     import { isSettingsOpen, storageSettings } from "~/storage/store";
     import type { Formats } from "~/types";
+    import type { ChosenSetting, LocaleStorageSchema } from "~/storage/types";
 
     export let formats: Formats[];
 
@@ -21,22 +22,30 @@
         }
     };
 
-    const handleSettingChange = (format: Formats, setting: unknown, value: boolean | number) => {
-        storageSettings.update((settings) => {
-            const newSettings = { ...settings };
+    const handleSettingChange = (
+        format: Formats,
+        chosenSetting: ChosenSetting,
+        value: number | boolean
+    ) => {
+        storageSettings.update((storageSettings) => {
+            const newSettings: LocaleStorageSchema = { ...storageSettings };
 
-            if (newSettings[format]) newSettings[format][setting] = value;
+            if (newSettings[format]) {
+                const settings = newSettings[format];
+                if ("tab" in settings && chosenSetting === "tab") settings.tab = value as boolean;
+                if (chosenSetting === "spaces") settings.spaces = value as number;
+            }
 
             return newSettings;
         });
     };
 
-    const handleCheckboxChange = (format: Formats, setting: string, event: Event) => {
+    const handleCheckboxChange = (format: Formats, setting: ChosenSetting, event: Event) => {
         const checkbox = event.target as HTMLInputElement;
         handleSettingChange(format, setting, checkbox.checked);
     };
 
-    const handleSelectChange = (format: Formats, setting: string, event: Event) => {
+    const handleSelectChange = (format: Formats, setting: ChosenSetting, event: Event) => {
         const select = event.target as HTMLSelectElement;
         handleSettingChange(format, setting, parseInt(select.value));
     };
