@@ -4,16 +4,23 @@
     import Header from "~/lib/shared/Codemirror/components/Header.svelte";
     import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
     import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
-    import { errorMessage, isSettingsOpen, showError, storageSettings } from "~/storage/store";
+    import {
+        errorMessage,
+        isSearchOpen,
+        isSettingsOpen,
+        showError,
+        storageSettings
+    } from "~/storage/store";
     import DoubleFooter from "~/lib/shared/Codemirror/components/DoubleFooter.svelte";
     import LocalStorage from "~/storage/LocalStorage";
     import ChangeConvertors from "~/lib/icons/ChangeConvertors.svelte";
-    import type { CursorPosition, Formats, UploadEvent } from "~/types";
+    import type { CursorPosition, Formats, SearchData, UploadEvent } from "~/types";
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
     import { goto } from "$app/navigation";
+    import SearchField from "~/lib/shared/Codemirror/components/SearchField.svelte";
 
     export let formatLeft: Formats;
     export let formatRight: Formats;
@@ -47,8 +54,13 @@
     let isCopyClicked: boolean = false;
     let isFormatClicked: boolean = false;
     let isClearClicked: boolean = false;
-    let openSettings: () => void;
-    let closeSettings: () => void;
+    let performSearch: (searchData: SearchData) => void;
+    let nextSearchValue: () => void;
+    let previousSearchValue: () => void;
+    let selectAllMatches: () => void;
+    let replaceNext: () => void;
+    let replaceAll: () => void;
+    let closeSearch: () => void;
 
     $: useTabsLeft = $storageSettings[formatLeft].tab || false;
     $: indentationLevelLeft = $storageSettings[formatLeft].spaces;
@@ -203,8 +215,6 @@
             format: formatLeft,
             readOnly: false
         });
-        openSettings = codemirrorLeft.open;
-        closeSettings = codemirrorLeft.close;
         storageLeft = LocalStorage.get(formatLeft);
         useTabsLeft = storageLeft?.tab || useTabsLeft;
         indentationLevelLeft = storageLeft?.spaces || indentationLevelLeft;
@@ -220,6 +230,15 @@
             format: formatRight,
             readOnly: true
         });
+
+        performSearch = codemirrorLeft.performSearch;
+        nextSearchValue = codemirrorLeft.nextSearchValue;
+        previousSearchValue = codemirrorLeft.previousSearchValue;
+        selectAllMatches = codemirrorLeft.selectAllMatches;
+        replaceNext = codemirrorLeft.replace;
+        replaceAll = codemirrorLeft.replaceAll;
+        closeSearch = codemirrorLeft.closeSearch;
+
         storageRight = LocalStorage.get(formatRight);
         useTabsRight = storageRight?.tab || useTabsRight;
         indentationLevelRight = storageRight?.spaces || indentationLevelRight;
@@ -245,14 +264,24 @@
 </script>
 
 <Header
-    bind:open={openSettings}
-    bind:close={closeSettings}
     formats={[formatLeft, formatRight]}
     {handleFileChange}
     tool="converter"
     handleClick={handleMainClick}
+    {closeSearch}
 />
 <div class="double_field_wrapper" style={`--pos: ${dividerPos}%;`}>
+    {#if $isSearchOpen}
+        <SearchField
+            {performSearch}
+            {nextSearchValue}
+            {previousSearchValue}
+            {selectAllMatches}
+            {replaceNext}
+            {replaceAll}
+            {closeSearch}
+        />
+    {/if}
     <div class="field_wrapper">
         <div class="codemirror-wrapper" bind:this={elementLeft} />
         {#if $showError}

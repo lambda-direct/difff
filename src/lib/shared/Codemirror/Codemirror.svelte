@@ -4,12 +4,19 @@
     import Header from "~/lib/shared/Codemirror/components/Header.svelte";
     import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
     import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
-    import { errorMessage, isSettingsOpen, showError, storageSettings } from "~/storage/store";
+    import {
+        errorMessage,
+        isSearchOpen,
+        isSettingsOpen,
+        showError,
+        storageSettings
+    } from "~/storage/store";
     import Footer from "~/lib/shared/Codemirror/components/Footer.svelte";
+    import SearchField from "~/lib/shared/Codemirror/components/SearchField.svelte";
     import LocalStorage from "~/storage/LocalStorage";
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
-    import type { CursorPosition, Formats, UploadEvent } from "~/types";
+    import type { CursorPosition, Formats, SearchData, UploadEvent } from "~/types";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
 
@@ -25,10 +32,15 @@
     let isMinifyClicked: boolean = false;
     let storage: LocaleStorageResponce;
     let cursorPosition: CursorPosition = { line: 0, col: 0 };
-    let openSettings: () => void;
-    let closeSettings: () => void;
     let useTabs: boolean;
     let indentationLevel: number;
+    let performSearch: (searchData: SearchData) => void;
+    let nextSearchValue: () => void;
+    let previousSearchValue: () => void;
+    let selectAllMatches: () => void;
+    let replaceNext: () => void;
+    let replaceAll: () => void;
+    let closeSearch: () => void;
 
     const formatter = new Formatter(format);
 
@@ -139,8 +151,15 @@
             format,
             readOnly: false
         });
-        openSettings = codemirror.open;
-        closeSettings = codemirror.close;
+
+        performSearch = codemirror.performSearch;
+        nextSearchValue = codemirror.nextSearchValue;
+        previousSearchValue = codemirror.previousSearchValue;
+        selectAllMatches = codemirror.selectAllMatches;
+        replaceNext = codemirror.replace;
+        replaceAll = codemirror.replaceAll;
+        closeSearch = codemirror.closeSearch;
+
         storage = LocalStorage.get(format);
         useTabs = storage?.tab || useTabs;
         indentationLevel = storage?.spaces || indentationLevel;
@@ -165,15 +184,25 @@
 </script>
 
 <Header
-    bind:open={openSettings}
-    bind:close={closeSettings}
     formats={[format]}
     {handleFileChange}
     tool="formatter"
     handleClick={handleFormatClick}
+    {closeSearch}
 />
 <div class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
+    {#if $isSearchOpen}
+        <SearchField
+            {performSearch}
+            {nextSearchValue}
+            {previousSearchValue}
+            {selectAllMatches}
+            {replaceNext}
+            {replaceAll}
+            {closeSearch}
+        />
+    {/if}
     {#if $isSettingsOpen}
         <SettingsModal formats={[format]} />
     {/if}

@@ -8,7 +8,7 @@
     import DropDownIcon from "~/lib/icons/DropDownIcon.svelte";
     import DropDownOpenIcon from "~/lib/icons/DropDownOpenIcon.svelte";
     import ConvertIcon from "~/lib/icons/ConvertIcon.svelte";
-    import { isSettingsOpen } from "~/storage/store";
+    import { isSearchOpen, isSettingsOpen } from "~/storage/store";
     import { dropDownOptions } from "~/lib/shared/Codemirror/components/utils";
     import type { Formats, UploadEvent } from "~/types";
 
@@ -16,11 +16,9 @@
     export let formats: Formats[];
     export let handleFileChange: (event: UploadEvent) => void;
     export let handleClick: () => void;
-    export let open: () => void;
-    export let close: () => void;
+    export let closeSearch: () => void;
 
     let showDropDown: boolean = false;
-    let searchMenuOpened: boolean = false;
     let fileInput: HTMLInputElement;
 
     const handleDropDownClick = () => {
@@ -34,13 +32,13 @@
     };
 
     const handleSearchMenuClick = () => {
-        const newValue = !searchMenuOpened;
-        searchMenuOpened = newValue;
-        if (newValue) {
-            open();
+        if ($isSearchOpen) {
+            closeSearch();
         } else {
-            close();
+            $isSearchOpen = true;
+            $isSettingsOpen = false;
         }
+
         const closeBtn = document.querySelector("[name=close]");
         if (!closeBtn) return;
         closeBtn.addEventListener("click", () => {
@@ -70,10 +68,7 @@
 
     const openSettings = () => {
         $isSettingsOpen = !$isSettingsOpen;
-        if ($isSettingsOpen) {
-            searchMenuOpened = false;
-            close();
-        }
+        closeSearch();
     };
 
     onMount(() => {

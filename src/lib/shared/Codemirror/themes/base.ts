@@ -13,6 +13,10 @@ export const baseTheme: Extension = EditorView.baseTheme({
     ".cm-selectionMatch": {
         background: "#2945938a !important"
     },
+    ".cm-searchMatch": {
+        background: "#623315 !important"
+    },
+    ".cm-searchMatch-selected": { background: "#9E6A03 !important" },
     "@media (max-width: 768px)": {
         ".cm-content": {
             "white-space": "pre-wrap",
@@ -23,17 +27,18 @@ export const baseTheme: Extension = EditorView.baseTheme({
         background: "transparent !important"
     },
     ".cm-search": {
-        display: "grid",
-        "grid-template-columns": "repeat(3, 100px)",
-        position: "absolute !important",
-        top: "0px",
-        right: "0px",
-        margin: "8px !important",
-        padding: "16px !important",
-        background: "#040b1a !important",
-        "border-radius": "6px",
-        border: "1px solid #313345 !important",
-        color: "#e1e1e1"
+        display: "none"
+        // display: "grid",
+        // "grid-template-columns": "repeat(3, 100px)",
+        // position: "absolute !important",
+        // top: "0px",
+        // right: "0px",
+        // margin: "8px !important",
+        // padding: "16px !important",
+        // background: "#040b1a !important",
+        // "border-radius": "6px",
+        // border: "1px solid #313345 !important",
+        // color: "#e1e1e1"
     },
 
     ".cm-panels.cm-panels-top": {

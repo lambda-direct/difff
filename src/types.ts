@@ -55,3 +55,11 @@ export type Formats = "json" | "yaml" | "xml";
 
 type JSONvalues = string | string[] | object;
 export type PossibleJSON = { [key: string]: JSONvalues };
+
+export type SearchData = {
+    search: string;
+    replace: string;
+    caseSensitive: boolean;
+    regexp: boolean;
+    wholeWord: boolean;
+};

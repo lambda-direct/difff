@@ -6,14 +6,25 @@ import { json } from "@codemirror/lang-json";
 import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
 import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
 import { basicSetup } from "codemirror";
-import { closeSearchPanel, openSearchPanel, search } from "@codemirror/search";
-import type { CursorPosition } from "~/types";
+import {
+    closeSearchPanel,
+    openSearchPanel,
+    search,
+    SearchQuery,
+    setSearchQuery,
+    findNext,
+    findPrevious,
+    replaceNext,
+    replaceAll,
+    selectMatches
+} from "@codemirror/search";
+import type { CursorPosition, SearchData } from "~/types";
 import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
 import Highlight, {
     lineHighlightField,
     removeHighlightedLines
 } from "~/lib/shared/Codemirror/Highlight";
-import { errorMessage, showError } from "~/storage/store";
+import { errorMessage, isSearchOpen, showError } from "~/storage/store";
 import Validator from "~/utils/Validator";
 
 class Codemirror {
@@ -196,16 +207,39 @@ class Codemirror {
         URL.revokeObjectURL(url);
     };
 
-    public open = () => {
-        openSearchPanel(this.view);
-    };
-
-    public close = () => {
-        closeSearchPanel(this.view);
-    };
-
     public destroy = () => {
         this.view?.destroy();
+    };
+
+    public performSearch = (searchData: SearchData) => {
+        const searchOptions = new SearchQuery(searchData);
+        openSearchPanel(this.view);
+        this.view.dispatch({ effects: setSearchQuery.of(searchOptions) });
+    };
+
+    public nextSearchValue = () => {
+        findNext(this.view);
+    };
+
+    public previousSearchValue = () => {
+        findPrevious(this.view);
+    };
+
+    public selectAllMatches = () => {
+        selectMatches(this.view);
+    };
+
+    public replace = () => {
+        replaceNext(this.view);
+    };
+
+    public replaceAll = () => {
+        replaceAll(this.view);
+    };
+
+    public closeSearch = () => {
+        isSearchOpen.set(false);
+        closeSearchPanel(this.view);
     };
 }
 

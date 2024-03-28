@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { SearchData } from "~/types";
     import AllIcon from "~/lib/icons/searchFieldIcons/AllIcon.svelte";
     import NextIcon from "~/lib/icons/searchFieldIcons/NextIcon.svelte";
     import CloseIcon from "~/lib/icons/searchFieldIcons/CloseIcon.svelte";
@@ -11,103 +12,157 @@
     import DropDownIconOpen from "~/lib/icons/searchFieldIcons/OpenDropDOwnIcon.svelte";
     import RegularExpreIcon from "~/lib/icons/searchFieldIcons/RegularExpreIcon.svelte";
 
-    let performSearch: () => void;
+    export let performSearch: (searchData: SearchData) => void;
+    export let nextSearchValue: () => void;
+    export let previousSearchValue: () => void;
+    export let selectAllMatches: () => void;
+    export let replaceNext: () => void;
+    export let replaceAll: () => void;
+    export let closeSearch: () => void;
 
-    let searchValue: string = "";
-    let replaceValue: string = "";
-
-    let matchCaseChecked = false;
-    let wholeWordChecked = false;
-    let regexChecked = false;
+    let search: string = "";
+    let replace: string = "";
+    let caseSensitive = false;
+    let wholeWord = false;
+    let regexp = false;
 
     let showDropDown: boolean = false;
 
     const dropDownClick = () => {
         showDropDown = !showDropDown;
     };
+
+    $: {
+        const searchData = {
+            search,
+            replace,
+            caseSensitive,
+            regexp,
+            wholeWord
+        };
+        if (performSearch) performSearch(searchData);
+    }
 </script>
 
-<form class="form">
-    <div class="field-wrap" class:open={showDropDown} class:closed={!showDropDown}>
-        <button on:click={dropDownClick} class="dropdown">
-            {#if showDropDown}
-                <DropDownIconOpen />
-            {:else}
-                <DropDownIcon />
-            {/if}
-        </button>
-        <div class="search">
+<div class="field-wrap" class:open={showDropDown} class:closed={!showDropDown}>
+    <button on:click={dropDownClick} class="dropdown">
+        {#if showDropDown}
+            <DropDownIconOpen />
+        {:else}
+            <DropDownIcon />
+        {/if}
+    </button>
+    <div class="search">
+        <div class="search_row">
+            <div class="input_wrapper">
+                <input
+                    bind:value={search}
+                    autocomplete="off"
+                    id="searchInput"
+                    placeholder="Find"
+                    class="input-field"
+                    type="text"
+                    name="search"
+                />
+                <div class="icon-wrapper">
+                    <button
+                        on:click={() => (caseSensitive = !caseSensitive)}
+                        aria-labelledby="Match case"
+                        aria-label="Match case"
+                        class="icon_buttons secondary"
+                        class:checked={caseSensitive}
+                        ><input type="checkbox" bind:checked={caseSensitive} /><MatchCaseIcon />
+                    </button>
+                    <button
+                        on:click={() => (wholeWord = !wholeWord)}
+                        aria-labelledby="Match whole word"
+                        aria-label="Match whole word"
+                        class="icon_buttons secondary"
+                        class:checked={wholeWord}
+                    >
+                        <input type="checkbox" bind:checked={wholeWord} />
+                        <WholeWordIcon />
+                    </button>
+                    <button
+                        on:click={() => (regexp = !regexp)}
+                        aria-labelledby="Use Regular Expression"
+                        aria-label="Use Regular Expression"
+                        class="icon_buttons secondary"
+                        class:checked={regexp}
+                    >
+                        <input type="checkbox" bind:checked={regexp} />
+                        <RegularExpreIcon />
+                    </button>
+                </div>
+            </div>
+            <button
+                on:click={previousSearchValue}
+                aria-labelledby="Previous Match"
+                aria-label="Previous Match"
+                class="icon_buttons main"
+            >
+                <PreciousIcon />
+            </button>
+            <button
+                on:click={nextSearchValue}
+                aria-labelledby="Next Match"
+                aria-label="Next Match"
+                class="icon_buttons main"
+            >
+                <NextIcon />
+            </button>
+            <button
+                on:click={selectAllMatches}
+                aria-labelledby="Select All Matches"
+                aria-label="Select All Matches"
+                class="icon_buttons main"
+            >
+                <AllIcon />
+            </button>
+            <button
+                on:click={closeSearch}
+                aria-labelledby="Close"
+                aria-label="Close"
+                class="icon_buttons main"
+            >
+                <CloseIcon />
+            </button>
+        </div>
+        {#if showDropDown}
             <div class="search_row">
                 <div class="input_wrapper">
                     <input
-                        bind:value={searchValue}
-                        on:input={performSearch}
+                        bind:value={replace}
                         autocomplete="off"
-                        id="searchInput"
-                        placeholder="Find"
+                        placeholder="Replace"
+                        id="replaceInput"
                         class="input-field"
                         type="text"
-                        name="search"
+                        name="replace"
                     />
-                    <div class="icon-wrapper">
-                        <button
-                            class="icon_buttons secondary"
-                            class:checked={matchCaseChecked}
-                            on:click={() => (matchCaseChecked = !matchCaseChecked)}
-                            ><input type="checkbox" bind:checked={matchCaseChecked} /><MatchCaseIcon
-                            />
-                        </button>
-                        <button
-                            class="icon_buttons secondary"
-                            class:checked={wholeWordChecked}
-                            on:click={() => (wholeWordChecked = !wholeWordChecked)}
-                        >
-                            <input type="checkbox" bind:checked={wholeWordChecked} />
-                            <WholeWordIcon />
-                        </button>
-                        <button
-                            class="icon_buttons secondary"
-                            class:checked={regexChecked}
-                            on:click={() => (regexChecked = !regexChecked)}
-                        >
-                            <input type="checkbox" bind:checked={regexChecked} />
-                            <RegularExpreIcon />
-                        </button>
-                    </div>
                 </div>
-                <button class="icon_buttons main">
-                    <PreciousIcon />
+                <button
+                    on:click={replaceNext}
+                    aria-labelledby="Replace Next"
+                    aria-label="Replace Next"
+                    disabled={replace.length < 1}
+                    class="icon_buttons main"
+                >
+                    <ReplaceIcon />
                 </button>
-                <button class="icon_buttons main"> <NextIcon /> </button>
-                <button class="icon_buttons main">
-                    <AllIcon />
+                <button
+                    on:click={replaceAll}
+                    aria-labelledby="Replace All"
+                    aria-label="Replace All"
+                    disabled={replace.length < 1}
+                    class="icon_buttons main"
+                >
+                    <ReplaceAllIcon />
                 </button>
-                <button class="icon_buttons main"> <CloseIcon /> </button>
             </div>
-            {#if showDropDown}
-                <div class="search_row">
-                    <div class="input_wrapper">
-                        <input
-                            bind:value={replaceValue}
-                            autocomplete="off"
-                            placeholder="Replace"
-                            id="replaceInput"
-                            class="input-field"
-                            type="text"
-                            name="replace"
-                        />
-                    </div>
-                    <button disabled={replaceValue.length < 1} class="icon_buttons main">
-                        <ReplaceIcon />
-                    </button>
-                    <button disabled={replaceValue.length < 1} class="icon_buttons main">
-                        <ReplaceAllIcon />
-                    </button>
-                </div>
-            {/if}
-        </div>
+        {/if}
     </div>
-</form>
+</div>
 
 <style lang="scss">
     button {
@@ -116,13 +171,10 @@
         background: transparent;
         border: none;
         color: #b1b1b1;
-        &:hover {
+        &:hover:enabled {
             background: #535353;
         }
         &:disabled {
-            &:hover {
-                background: transparent;
-            }
             cursor: default;
         }
         input[type="checkbox"] {
@@ -130,19 +182,25 @@
         }
     }
 
-    .form {
-        position: absolute;
-        z-index: 100;
-    }
-
     .field-wrap {
-        display: inline-flex;
+        position: absolute;
+        top: 6px;
+        right: 24px;
+        z-index: 5;
+        display: flex;
         align-items: center;
-        padding: 0 6px;
+        padding: 0 6px 0 4px;
         border: 1px solid #2c2c2c;
         border-radius: 4px;
         background: #252526;
         color: #b1b1b1;
+        animation: floatIn 0.2s ease-in-out 0s forwards;
+    }
+
+    @keyframes floatIn {
+        to {
+            top: 12px;
+        }
     }
 
     .input_wrapper {
@@ -168,7 +226,7 @@
 
     .input-field {
         height: 26px;
-        padding: 0 72px 0 4px;
+        padding: 0 76px 0 4px;
         background: #3c3c3c;
         outline: none;
         border: 1px solid transparent;

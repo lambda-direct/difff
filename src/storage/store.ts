@@ -9,6 +9,8 @@ export const errorMessage = writable("");
 
 export const isSettingsOpen = writable(false);
 
+export const isSearchOpen = writable(false);
+
 export const storageSettings = writable({
     json: (browser && LocalStorage.get("json")) || {
         spaces: 4,
