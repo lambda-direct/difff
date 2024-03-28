@@ -271,19 +271,19 @@
     {closeSearch}
 />
 <div class="double_field_wrapper" style={`--pos: ${dividerPos}%;`}>
-    {#if $isSearchOpen}
-        <SearchField
-            {performSearch}
-            {nextSearchValue}
-            {previousSearchValue}
-            {selectAllMatches}
-            {replaceNext}
-            {replaceAll}
-            {closeSearch}
-        />
-    {/if}
     <div class="field_wrapper">
         <div class="codemirror-wrapper" bind:this={elementLeft} />
+        {#if $isSearchOpen}
+            <SearchField
+                {performSearch}
+                {nextSearchValue}
+                {previousSearchValue}
+                {selectAllMatches}
+                {replaceNext}
+                {replaceAll}
+                {closeSearch}
+            />
+        {/if}
         {#if $showError}
             <ErrorModal />
         {/if}
