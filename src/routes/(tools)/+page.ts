@@ -4,7 +4,7 @@ import type { PageLoad } from "./$types";
 export const load: PageLoad = async () => {
     try {
         const json = "json";
-        const data = await import(`../../articles/content/pages/${json}.md`);
+        const data = await import(`../../articles/content/pages/formatters/${json}.md`);
         return { content: data.default };
     } catch (e) {
         error(404, `Not found`);

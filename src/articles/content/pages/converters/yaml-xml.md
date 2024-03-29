@@ -1,8 +1,8 @@
-## How does the converter work?
+## How does the YAML/XML converter work?
 
 When you paste, drag and drop, or upload a [YAML](/formatter/yaml#yamlAnchor) file, it will be formatted and validated automatically. After conversion, declaration with version 1.0 and encoding UTF-8 will be added and everything will be wrapped in a root tag. All whitespace in the keys will be removed. Tags must start with a letter, an underscore '\_', or a colon ':', followed by letters, digits, hyphens '-', underscores '\_', colons ':', and periods '.' . Any invalid characters will be replaced with an underscore. The output in the right read-only field, formatted as [XML](/formatter/xml#xmlAnchor), will already adhere to the specified indentation settings.
 
-YAML:
+Input:
 
 <pre>
 
@@ -27,7 +27,7 @@ YAML:
 </code>
 </pre>
 
-XML:
+Output:
 
 <pre>
 

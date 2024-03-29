@@ -10,12 +10,13 @@
     import ConvertIcon from "~/lib/icons/ConvertIcon.svelte";
     import { isSearchOpen, isSettingsOpen } from "~/storage/store";
     import { dropDownOptions } from "~/lib/shared/Codemirror/components/utils";
-    import type { Formats, UploadEvent } from "~/types";
+    import type { Formats, Tools, UploadEvent } from "~/types";
+    import MinifyIcon from "~/lib/icons/MinifyIcon.svelte";
 
-    export let tool: "formatter" | "converter";
+    export let tool: Tools;
     export let formats: Formats[];
     export let handleFileChange: (event: UploadEvent) => void;
-    export let handleClick: () => void;
+    export let handleMainClick: () => void;
     export let closeSearch: () => void;
 
     let showDropDown: boolean = false;
@@ -38,19 +39,14 @@
             $isSearchOpen = true;
             $isSettingsOpen = false;
         }
-
-        const closeBtn = document.querySelector("[name=close]");
-        if (!closeBtn) return;
-        closeBtn.addEventListener("click", () => {
-            handleSearchMenuClick();
-            closeBtn.removeEventListener("click", handleSearchMenuClick);
-        });
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
         const { metaKey, ctrlKey, key } = event;
-        if (!(metaKey || ctrlKey) || key !== "f") return;
-        handleSearchMenuClick();
+        if ((metaKey || ctrlKey) && key === "f") {
+            event.preventDefault();
+            handleSearchMenuClick();
+        }
     };
 
     const handleEnterClick = (event: KeyboardEvent) => {
@@ -93,7 +89,7 @@
                 class="dropdown_content"
             >
                 {#each dropDownOptions as options}
-                    <div>
+                    <div class="dropdown_content_options">
                         <p class="content_label">
                             {options.title}
                         </p>
@@ -112,15 +108,20 @@
         </div>
         <button
             on:click|stopPropagation={handleDropDownClick}
-            aria-labelledby="Formats dropdown"
-            aria-label="Formats dropdown"
+            title="Navigation"
+            aria-labelledby="Navigation dropdown"
+            aria-label="Navigation dropdown"
             class="button text"
         >
             {#if tool === "formatter"}
                 <span class="btn_title">{`${formats[0].toUpperCase()} Formatter`}</span>
             {:else if tool === "converter"}
                 <span class="btn_title">
-                    {`${formats[0].toUpperCase()}-${formats[1].toUpperCase()} Converter`}
+                    {`${formats[0].toUpperCase()}/${formats[1].toUpperCase()} Converter`}
+                </span>
+            {:else if tool === "minifier"}
+                <span class="btn_title">
+                    {`${formats[0].toUpperCase()} Minifier`}
                 </span>
             {/if}
             {#if showDropDown}
@@ -130,12 +131,23 @@
             {/if}
         </button>
     </nav>
+    <!-- <button
+        on:click|stopPropagation={() => {
+            goto(`/converter/${formats[1]}-to-${formats[0]}`);
+        }}
+        aria-labelledby="SwitchLanguages"
+        aria-label="SwitchLanguages"
+        class="button"
+    >
+        <ChangeConvertors />
+    </button> -->
     <button
-        on:click={handleClick}
-        class="button text format-button"
-        aria-label="format"
-        aria-labelledby="format"
-        name="format"
+        on:click={handleMainClick}
+        class="button text main-button"
+        title={tool + " click"}
+        aria-label={tool + "click"}
+        aria-labelledby={tool + "click"}
+        name={tool + "click"}
     >
         {#if tool === "formatter"}
             <span class="header_btn">
@@ -147,12 +159,17 @@
                 <ConvertIcon />
                 Convert
             </span>
+        {:else if tool === "minifier"}
+            <span class="header_btn">
+                <MinifyIcon />
+                Minify
+            </span>
         {/if}
     </button>
     <div class="button-wrapper">
         <button
             class="button"
-            title="search"
+            title="Search"
             aria-label="search"
             aria-labelledby="search"
             name="search"
@@ -162,7 +179,7 @@
         </button>
         <button
             class="button"
-            title="upload"
+            title="Upload"
             aria-label="upload"
             aria-labelledby="upload"
             name="upload"
@@ -178,7 +195,7 @@
         </button>
         <button
             class="button"
-            title="settings"
+            title="Settings"
             aria-label="settings"
             aria-labelledby="settings"
             name="settings"
@@ -195,6 +212,9 @@
         background: transparent;
         font-size: 16px;
         color: #7d8799;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .dropdown_options:hover {
@@ -230,22 +250,27 @@
     }
 
     .dropdown_content {
-        z-index: 4;
+        z-index: 6;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         position: absolute;
         text-align: center;
         top: 42px;
-        width: 100%;
-        padding: 8px;
+        width: fit-content;
+        padding: 10px 8px;
         background: #040b1a;
         border: 1px solid #313345;
         border-radius: 6px;
         box-shadow: 0px 8px 16px #000;
         user-select: none;
         @media (max-width: 420px) {
-            width: fit-content;
+            flex-direction: column;
+            padding: 12px;
         }
+    }
+    .dropdown_content_options {
+        width: 100%;
+        padding: 0px 2px;
     }
 
     .header {
@@ -305,7 +330,7 @@
         padding: 0 12px;
     }
 
-    .format-button {
+    .main-button {
         margin: auto;
     }
 

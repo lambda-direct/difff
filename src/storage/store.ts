@@ -16,6 +16,10 @@ export const storageSettings = writable({
         spaces: 4,
         tab: false
     },
+    js: (browser && LocalStorage.get("js")) || {
+        spaces: 4,
+        tab: false
+    },
     yaml: (browser && LocalStorage.get("yaml")) || {
         spaces: 2
     },

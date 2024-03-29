@@ -4,7 +4,7 @@ import type { PageLoad } from "./$types";
 export const load: PageLoad = async () => {
     try {
         const file = "xml-json";
-        const data = await import(`../../../../articles/content/pages/${file}.md`);
+        const data = await import(`../../../../articles/content/pages/converters/${file}.md`);
         return { content: data.default };
     } catch (e) {
         error(404, `Not found`);

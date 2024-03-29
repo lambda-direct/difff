@@ -3,8 +3,8 @@ import { EditorView } from "@codemirror/view";
 
 export const baseTheme: Extension = EditorView.baseTheme({
     ".cm-scroller": {
-        marginLeft: "12px",
-        paddingRight: "12px",
+        margin: "0 0 0 10px",
+        padding: " 0 10px 0 0",
 
         "&:focus": {
             outline: "none"

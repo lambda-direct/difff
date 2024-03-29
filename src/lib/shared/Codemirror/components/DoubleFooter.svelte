@@ -169,7 +169,7 @@
     .divider {
         position: absolute;
         left: var(--pos);
-        width: 1px;
+        width: 2px;
         height: 100%;
         background-color: #313345;
         z-index: 5;

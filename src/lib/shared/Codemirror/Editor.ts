@@ -18,7 +18,7 @@ import {
     replaceAll,
     selectMatches
 } from "@codemirror/search";
-import type { CursorPosition, SearchData } from "~/types";
+import type { CursorPosition, Formats, SearchData } from "~/types";
 import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
 import Highlight, {
     lineHighlightField,
@@ -26,6 +26,7 @@ import Highlight, {
 } from "~/lib/shared/Codemirror/Highlight";
 import { errorMessage, isSearchOpen, showError } from "~/storage/store";
 import Validator from "~/utils/Validator";
+import { javascript } from "@codemirror/lang-javascript";
 
 class Codemirror {
     view: EditorView;
@@ -33,7 +34,7 @@ class Codemirror {
     outerValueChange: (newValue: string, cursorPos: CursorPosition) => void;
     placeholder: string;
     label: string;
-    format: "json" | "xml" | "yaml";
+    format: Formats;
     highlighter: Highlight;
     validator: Validator;
     readOnly: boolean;
@@ -49,7 +50,7 @@ class Codemirror {
         outerValueChange: (newValue: string, cursorPos: CursorPosition) => void;
         placeholder: string;
         label: string;
-        format: "json" | "xml" | "yaml";
+        format: Formats;
         readOnly: boolean;
     }) {
         this.element = element;
@@ -63,11 +64,11 @@ class Codemirror {
         this.highlighter = new Highlight(this.view);
     }
 
-    private getFileFormat = (
-        format: "json" | "yaml" | "xml"
-    ): LanguageSupport | StreamLanguage<unknown> => {
+    private getFileFormat = (format: Formats): LanguageSupport | StreamLanguage<unknown> => {
+        if (format === "js") return javascript();
         if (format === "json") return json();
         if (format === "yaml") return StreamLanguage.define(yamlMode.yaml);
+
         return StreamLanguage.define(xmlMode.xml);
     };
 

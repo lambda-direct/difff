@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { browser } from "$app/environment";
     import { isSettingsOpen, storageSettings } from "~/storage/store";
     import type { Formats } from "~/types";
     import type { ChosenSetting, LocaleStorageSchema } from "~/storage/types";
+    import { browser } from "$app/environment";
+    import { onMount } from "svelte";
 
     export let formats: Formats[];
 
@@ -49,56 +49,61 @@
         const select = event.target as HTMLSelectElement;
         handleSettingChange(format, setting, parseInt(select.value));
     };
+
     onMount(() => {
         document.addEventListener("click", handleMenuClose);
     });
 </script>
 
-<div class="settings">
-    {#each formats as format}
-        <span>{format.toUpperCase()}</span>
-        {#if format === "json"}
-            <div class="setting_option">
-                <p class="option_label">Tabs:</p>
-                <div class="switch">
-                    <input
-                        checked={$storageSettings[format].tab}
-                        class="switch-checkbox"
-                        id="toggler"
-                        type="checkbox"
-                        on:change={(event) => handleCheckboxChange(format, "tab", event)}
-                    />
-                    <label
-                        class="toggler-inner"
-                        for="toggler"
-                        style="background: {$storageSettings[format].tab ? '#e1e1e1' : '#F5F5f014'}"
-                    >
-                        <span class="toggler-switcher" />
-                    </label>
+{#if $isSettingsOpen}
+    <div class="settings">
+        {#each formats as format}
+            <span>{format.toUpperCase()}</span>
+            {#if format === "json" || format === "js"}
+                <div class="setting_option">
+                    <p class="option_label">Tabs:</p>
+                    <div class="switch">
+                        <input
+                            checked={$storageSettings[format].tab}
+                            class="switch-checkbox"
+                            id="toggler"
+                            type="checkbox"
+                            on:change={(event) => handleCheckboxChange(format, "tab", event)}
+                        />
+                        <label
+                            class="toggler-inner"
+                            for="toggler"
+                            style="background: {$storageSettings[format].tab
+                                ? '#e1e1e1'
+                                : '#F5F5f014'}"
+                        >
+                            <span class="toggler-switcher" />
+                        </label>
+                    </div>
                 </div>
-            </div>
-        {/if}
+            {/if}
 
-        <div class="setting_option">
-            <p class="option_label">Indentation-level:</p>
-            <select
-                value={$storageSettings[format].spaces}
-                on:change={(event) => handleSelectChange(format, "spaces", event)}
-                name="indentationLevel"
-                class="indentation_select"
-            >
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-                <option value={6}>6</option>
-                <option value={7}>7</option>
-                <option value={8}>8</option>
-            </select>
-        </div>
-    {/each}
-</div>
+            <div class="setting_option">
+                <p class="option_label">Indentation-level:</p>
+                <select
+                    value={$storageSettings[format].spaces}
+                    on:change={(event) => handleSelectChange(format, "spaces", event)}
+                    name="indentationLevel"
+                    class="indentation_select"
+                >
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                </select>
+            </div>
+        {/each}
+    </div>
+{/if}
 
 <style>
     .settings {

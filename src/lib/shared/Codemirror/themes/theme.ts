@@ -3,6 +3,7 @@ import { type Extension } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { tags as t } from "@lezer/highlight";
 import { baseTheme } from "./base";
+import type { Formats } from "~/types";
 
 const invalid = "#eaeaea";
 const cyan = "#56b6c2";
@@ -239,8 +240,8 @@ const themeExtensionsYaml: Extension = [
     syntaxHighlighting(themeHighlightStyleYaml)
 ];
 
-export const getThemeExtention = (format: "json" | "yaml" | "xml"): Extension => {
-    if (format === "json") return themeExtensionsJson;
+export const getThemeExtention = (format: Formats): Extension => {
+    if (format === "json" || format === "js") return themeExtensionsJson;
     if (format === "yaml") return themeExtensionsYaml;
     return themeExtensionsXML;
 };

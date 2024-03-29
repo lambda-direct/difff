@@ -1,8 +1,8 @@
-## How does the converter work?
+## How does the XML/JSON converter work?
 
 In conversion, comments will be ignored, but declarations will not.If an element has more than one attribute, after conversion, the key is '\_attributes', and the value represents all attributes as key-value pairs. If there was only one key/value pair, it will be unnested. If there is tag and content inside the element, the key '\_text' represents the content as a string. If there are multiple identical tags, they will be converted into an array with the same schema. The [JSON](/#jsonAnchor) output in a read-only field will be formatted according to the specified settings for indentation, type, and width.
 
-XML:
+Input:
 
 <pre>
 
@@ -25,7 +25,7 @@ XML:
 </code>
 </pre>
 
-JSON:
+Output:
 
 <pre>
 

@@ -51,8 +51,9 @@ export type OGCard = {
     type: string;
 };
 
-export type Formats = "json" | "yaml" | "xml";
+export type Formats = "json" | "yaml" | "xml" | "js";
 
+export type Tools = "formatter" | "converter" | "minifier";
 type JSONvalues = string | string[] | object;
 export type PossibleJSON = { [key: string]: JSONvalues };
 

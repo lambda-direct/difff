@@ -5,8 +5,9 @@
     import SuccessIcon from "~/lib/icons/SuccessIcon.svelte";
     import { getColumn, getLine } from "~/lib/shared/Codemirror/components/utils";
     import { showError } from "~/storage/store";
-    import type { Formats } from "~/types";
+    import type { Formats, Tools } from "~/types";
 
+    export let tool: Tools;
     export let format: Formats;
     export let cursorPosition: { line: number; col: number };
     export let useTabs: boolean;
@@ -32,14 +33,14 @@
         </span>
     </div>
     <div class="icon-btn-wrap">
-        {#if format === "json" || format === "xml"}
+        {#if (format === "json" || format === "xml") && tool === "formatter"}
             <button
                 disabled={$showError}
                 on:click={handleMinifyClick}
-                title="download"
-                aria-label="download"
-                aria-labelledby="download"
-                name="download"
+                title="Minify"
+                aria-label="Minify"
+                aria-labelledby="Minify"
+                name="Minify"
                 class="icon-button"
             >
                 {#if isMinifyClicked}
@@ -52,10 +53,10 @@
         {/if}
         <button
             on:click={handleDownloadClick}
-            title="download"
-            aria-label="download"
-            aria-labelledby="download"
-            name="download"
+            title="Download"
+            aria-label="Download"
+            aria-labelledby="Download"
+            name="Download"
             class="icon-button"
         >
             {#if isDownloadClicked}
@@ -67,10 +68,10 @@
         </button>
         <button
             on:click={handleCopyClick}
-            title="copy"
-            aria-label="copy"
-            aria-labelledby="copy"
-            name="copy"
+            title="Copy"
+            aria-label="Copy"
+            aria-labelledby="Copy"
+            name="Copy"
             class="icon-button"
         >
             {#if isCopyClicked}

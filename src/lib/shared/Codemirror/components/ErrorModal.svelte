@@ -1,6 +1,6 @@
 <script lang="ts">
     import AlertIcon from "~/lib/icons/AlertIcon.svelte";
-    import { errorMessage } from "~/storage/store";
+    import { errorMessage, showError } from "~/storage/store";
     import { onMount } from "svelte";
 
     let showErrorMessage = true;
@@ -23,23 +23,25 @@
     });
 </script>
 
-<div
-    role="button"
-    tabindex="0"
-    aria-labelledby="showErrorMessage"
-    aria-label="showErrorMessage"
-    on:click={handleShowErrorClick}
-    on:keydown={handleEnterClick}
-    class="modal"
-    class:gap={showErrorMessage}
->
-    <p class="title">
-        {#if showErrorMessage}
-            {$errorMessage === "" ? "Invalid format" : $errorMessage}
-        {/if}
-    </p>
-    <AlertIcon color={"#eaeaea"} />
-</div>
+{#if $showError}
+    <div
+        role="button"
+        tabindex="0"
+        aria-labelledby="showErrorMessage"
+        aria-label="showErrorMessage"
+        on:click={handleShowErrorClick}
+        on:keydown={handleEnterClick}
+        class="modal"
+        class:gap={showErrorMessage}
+    >
+        <p class="title">
+            {#if showErrorMessage}
+                {$errorMessage === "" ? "Invalid format" : $errorMessage}
+            {/if}
+        </p>
+        <AlertIcon color={"#eaeaea"} />
+    </div>
+{/if}
 
 <style>
     .title {

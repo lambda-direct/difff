@@ -190,9 +190,19 @@ export class Converter {
             .replace(/\s*(?=<)/g, "");
     };
 
+    private minifyJS = (js: string): string => {
+        return js
+            .replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "") // rm comments
+            .replace(/\s+/g, " ")
+            .replace(/\s*([{}()[\];,.!+-=*\\/%<>?:&|])\s*/g, "$1");
+    };
+
     public minify = (format: Formats) => {
         if (format === "json") {
             return this.minifyJSON;
+        }
+        if (format === "js") {
+            return this.minifyJS;
         }
         if (format === "xml") {
             return this.minifyXML;

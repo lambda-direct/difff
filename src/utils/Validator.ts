@@ -1,11 +1,12 @@
 import { XMLValidator, type ValidationError } from "fast-xml-parser";
 import * as yaml from "js-yaml";
 import * as prettier from "prettier/standalone";
-import { prettierSettings } from "./settings";
+import { prettierJSSettings, prettierSettings } from "~/utils/settings";
+import type { Formats } from "~/types";
 
 class Validator {
-    format: "json" | "yaml" | "xml";
-    constructor(format: "json" | "yaml" | "xml") {
+    format: Formats;
+    constructor(format: Formats) {
         this.format = format;
     }
 
@@ -38,6 +39,17 @@ class Validator {
             });
     };
 
+    private validateJS = (input: string): true | unknown => {
+        return prettier
+            .format(input, prettierJSSettings)
+            .then(() => {
+                return true;
+            })
+            .catch((err) => {
+                return err;
+            });
+    };
+
     public validate = (userInput: string) => {
         if (this.format === "json") {
             return this.validateJSON(userInput);
@@ -47,6 +59,9 @@ class Validator {
         }
         if (this.format === "yaml") {
             return this.validateYAML(userInput);
+        }
+        if (this.format === "js") {
+            return this.validateJS(userInput);
         }
     };
 }

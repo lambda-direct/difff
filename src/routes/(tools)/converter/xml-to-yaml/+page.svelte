@@ -2,7 +2,15 @@
     import Head from "~/lib/shared/Head.svelte";
     import DoubleCodeMirror from "~/lib/shared/Codemirror/DoublecCodemirrorField.svelte";
     import Converter from "~/utils/Converter";
+    import hljs from "highlight.js";
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
+
     export let data;
+
+    onMount(() => {
+        if (browser) hljs.highlightAll();
+    });
 </script>
 
 <Head

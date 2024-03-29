@@ -2,14 +2,16 @@ import { XMLValidator } from "fast-xml-parser";
 import * as yaml from "js-yaml";
 import * as prettier from "prettier/standalone";
 import Converter from "~/utils/Converter";
-import { prettierSettings } from "~/utils/settings";
+import { prettierJSSettings, prettierSettings } from "~/utils/settings";
 import xmlFormat from "xml-formatter";
+import type { Formats } from "~/types";
 
 class Formatter {
-    private format: "json" | "yaml" | "xml";
-    constructor(format: "json" | "yaml" | "xml") {
+    private format: Formats;
+    constructor(format: Formats) {
         this.format = format;
     }
+
     private formatJson = async (
         userInput: string,
         options?: { tabWidth?: number; useTabs?: boolean }
@@ -30,6 +32,32 @@ class Formatter {
             });
 
             if (originalCode === formattedResult) return originalCode;
+
+            return formattedResult;
+        } catch (err) {
+            return err;
+        }
+    };
+
+    private formatJs = async (
+        userInput: string,
+        options?: { tabWidth?: number; useTabs?: boolean }
+    ) => {
+        if (!options || (!options.tabWidth && !options.useTabs))
+            options = { tabWidth: 4, useTabs: false };
+
+        if (!options.tabWidth) options = { tabWidth: 4, useTabs: options.useTabs };
+
+        if (!options.useTabs) {
+            options = { tabWidth: options.tabWidth, useTabs: false };
+        }
+        try {
+            const formattedResult = await prettier.format(userInput, {
+                ...prettierJSSettings,
+                ...options
+            });
+
+            if (userInput === formattedResult) return userInput;
 
             return formattedResult;
         } catch (err) {
@@ -81,7 +109,11 @@ class Formatter {
                 const options = { tabWidth: spaces, useTabs: tab };
                 return await this.formatJson(userInput, options);
             }
-            return this.formatXml(userInput, spaces);
+            if (this.format === "js") {
+                const options = { tabWidth: spaces, useTabs: tab };
+                return await this.formatJs(userInput, options);
+            }
+            if (this.format === "xml") return this.formatXml(userInput, spaces);
         }
         return userInput;
     };

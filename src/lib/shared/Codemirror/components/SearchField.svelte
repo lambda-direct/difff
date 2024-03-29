@@ -1,5 +1,7 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import type { SearchData } from "~/types";
+    import { browser } from "$app/environment";
     import AllIcon from "~/lib/icons/searchFieldIcons/AllIcon.svelte";
     import NextIcon from "~/lib/icons/searchFieldIcons/NextIcon.svelte";
     import CloseIcon from "~/lib/icons/searchFieldIcons/CloseIcon.svelte";
@@ -11,6 +13,7 @@
     import ReplaceAllIcon from "~/lib/icons/searchFieldIcons/ReplaceAllIcon.svelte";
     import DropDownIconOpen from "~/lib/icons/searchFieldIcons/OpenDropDOwnIcon.svelte";
     import RegularExpreIcon from "~/lib/icons/searchFieldIcons/RegularExpreIcon.svelte";
+    import { isSearchOpen } from "~/storage/store";
 
     export let performSearch: (searchData: SearchData) => void;
     export let nextSearchValue: () => void;
@@ -25,11 +28,25 @@
     let caseSensitive = false;
     let wholeWord = false;
     let regexp = false;
-
     let showDropDown: boolean = false;
 
     const dropDownClick = () => {
         showDropDown = !showDropDown;
+    };
+
+    const handleSearchClose = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+
+        const isSettingsButton =
+            target.closest("[name=search]") !== null ||
+            target.closest("[name=search] svg") !== null;
+
+        const isInsideModal = target.closest(".field-wrap") === null;
+
+        if (!isSettingsButton && isInsideModal) {
+            $isSearchOpen = false;
+            if (browser) document.body.removeEventListener("click", handleSearchClose);
+        }
     };
 
     $: {
@@ -42,127 +59,143 @@
         };
         if (performSearch) performSearch(searchData);
     }
+
+    onMount(() => {
+        if (browser) document.addEventListener("click", handleSearchClose);
+    });
 </script>
 
-<div class="field-wrap" class:open={showDropDown} class:closed={!showDropDown}>
-    <button on:click={dropDownClick} class="dropdown">
-        {#if showDropDown}
-            <DropDownIconOpen />
-        {:else}
-            <DropDownIcon />
-        {/if}
-    </button>
-    <div class="search">
-        <div class="search_row">
-            <div class="input_wrapper">
-                <input
-                    bind:value={search}
-                    autocomplete="off"
-                    id="searchInput"
-                    placeholder="Find"
-                    class="input-field"
-                    type="text"
-                    name="search"
-                />
-                <div class="icon-wrapper">
-                    <button
-                        on:click={() => (caseSensitive = !caseSensitive)}
-                        aria-labelledby="Match case"
-                        aria-label="Match case"
-                        class="icon_buttons secondary"
-                        class:checked={caseSensitive}
-                        ><input type="checkbox" bind:checked={caseSensitive} /><MatchCaseIcon />
-                    </button>
-                    <button
-                        on:click={() => (wholeWord = !wholeWord)}
-                        aria-labelledby="Match whole word"
-                        aria-label="Match whole word"
-                        class="icon_buttons secondary"
-                        class:checked={wholeWord}
-                    >
-                        <input type="checkbox" bind:checked={wholeWord} />
-                        <WholeWordIcon />
-                    </button>
-                    <button
-                        on:click={() => (regexp = !regexp)}
-                        aria-labelledby="Use Regular Expression"
-                        aria-label="Use Regular Expression"
-                        class="icon_buttons secondary"
-                        class:checked={regexp}
-                    >
-                        <input type="checkbox" bind:checked={regexp} />
-                        <RegularExpreIcon />
-                    </button>
-                </div>
-            </div>
-            <button
-                on:click={previousSearchValue}
-                aria-labelledby="Previous Match"
-                aria-label="Previous Match"
-                class="icon_buttons main"
-            >
-                <PreciousIcon />
-            </button>
-            <button
-                on:click={nextSearchValue}
-                aria-labelledby="Next Match"
-                aria-label="Next Match"
-                class="icon_buttons main"
-            >
-                <NextIcon />
-            </button>
-            <button
-                on:click={selectAllMatches}
-                aria-labelledby="Select All Matches"
-                aria-label="Select All Matches"
-                class="icon_buttons main"
-            >
-                <AllIcon />
-            </button>
-            <button
-                on:click={closeSearch}
-                aria-labelledby="Close"
-                aria-label="Close"
-                class="icon_buttons main"
-            >
-                <CloseIcon />
-            </button>
-        </div>
-        {#if showDropDown}
+{#if $isSearchOpen}
+    <div class="field-wrap" class:open={showDropDown} class:closed={!showDropDown}>
+        <button on:click|stopPropagation={dropDownClick} class="dropdown">
+            {#if showDropDown}
+                <DropDownIconOpen />
+            {:else}
+                <DropDownIcon />
+            {/if}
+        </button>
+        <div class="search">
             <div class="search_row">
                 <div class="input_wrapper">
                     <input
-                        bind:value={replace}
+                        bind:value={search}
                         autocomplete="off"
-                        placeholder="Replace"
-                        id="replaceInput"
+                        id="searchInput"
+                        placeholder="Find"
                         class="input-field"
                         type="text"
-                        name="replace"
+                        name="search"
+                        autofocus={$isSearchOpen}
                     />
+                    <div class="icon-wrapper">
+                        <button
+                            on:click={() => (caseSensitive = !caseSensitive)}
+                            title="Match case"
+                            aria-labelledby="Match case"
+                            aria-label="Match case"
+                            class="icon_buttons secondary"
+                            class:checked={caseSensitive}
+                            ><input type="checkbox" bind:checked={caseSensitive} /><MatchCaseIcon />
+                        </button>
+                        <button
+                            on:click={() => (wholeWord = !wholeWord)}
+                            title="Match whole word"
+                            aria-labelledby="Match whole word"
+                            aria-label="Match whole word"
+                            class="icon_buttons secondary"
+                            class:checked={wholeWord}
+                        >
+                            <input type="checkbox" bind:checked={wholeWord} />
+                            <WholeWordIcon />
+                        </button>
+                        <button
+                            on:click={() => (regexp = !regexp)}
+                            title="Use Regular Expression"
+                            aria-labelledby="Use Regular Expression"
+                            aria-label="Use Regular Expression"
+                            class="icon_buttons secondary"
+                            class:checked={regexp}
+                        >
+                            <input type="checkbox" bind:checked={regexp} />
+                            <RegularExpreIcon />
+                        </button>
+                    </div>
                 </div>
                 <button
-                    on:click={replaceNext}
-                    aria-labelledby="Replace Next"
-                    aria-label="Replace Next"
-                    disabled={replace.length < 1}
+                    on:click={previousSearchValue}
+                    title="Previous Match"
+                    aria-labelledby="Previous Match"
+                    aria-label="Previous Match"
                     class="icon_buttons main"
                 >
-                    <ReplaceIcon />
+                    <PreciousIcon />
                 </button>
                 <button
-                    on:click={replaceAll}
-                    aria-labelledby="Replace All"
-                    aria-label="Replace All"
-                    disabled={replace.length < 1}
+                    on:click={nextSearchValue}
+                    title="Next Match"
+                    aria-labelledby="Next Match"
+                    aria-label="Next Match"
                     class="icon_buttons main"
                 >
-                    <ReplaceAllIcon />
+                    <NextIcon />
+                </button>
+                <button
+                    on:click={selectAllMatches}
+                    title="Select All Matches"
+                    aria-labelledby="Select All Matches"
+                    aria-label="Select All Matches"
+                    class="icon_buttons main"
+                >
+                    <AllIcon />
+                </button>
+                <button
+                    on:click={closeSearch}
+                    title="Close"
+                    aria-labelledby="Close"
+                    aria-label="Close"
+                    class="icon_buttons main"
+                >
+                    <CloseIcon />
                 </button>
             </div>
-        {/if}
+            {#if showDropDown}
+                <div class="search_row">
+                    <div class="input_wrapper">
+                        <input
+                            bind:value={replace}
+                            autocomplete="off"
+                            placeholder="Replace"
+                            id="replaceInput"
+                            class="input-field"
+                            type="text"
+                            name="replace"
+                        />
+                    </div>
+                    <button
+                        on:click={replaceNext}
+                        title="Replace Next"
+                        aria-labelledby="Replace Next"
+                        aria-label="Replace Next"
+                        disabled={replace.length < 1}
+                        class="icon_buttons main"
+                    >
+                        <ReplaceIcon />
+                    </button>
+                    <button
+                        on:click={replaceAll}
+                        title="Replace All"
+                        aria-labelledby="Replace All"
+                        aria-label="Replace All"
+                        disabled={replace.length < 1}
+                        class="icon_buttons main"
+                    >
+                        <ReplaceAllIcon />
+                    </button>
+                </div>
+            {/if}
+        </div>
     </div>
-</div>
+{/if}
 
 <style lang="scss">
     button {
@@ -189,7 +222,6 @@
         z-index: 5;
         display: flex;
         align-items: center;
-        padding: 0 6px 0 4px;
         border: 1px solid #2c2c2c;
         border-radius: 4px;
         background: #252526;
@@ -210,11 +242,13 @@
     }
 
     .open {
-        height: 76px;
+        height: 68px;
+        padding: 0 6px 2px 4px;
     }
 
     .closed {
         height: 36px;
+        padding: 0 6px 0 4px;
     }
 
     .icon-wrapper {

@@ -1,8 +1,15 @@
 <script lang="ts">
     import CodeMirror from "~/lib/shared/Codemirror/Codemirror.svelte";
     import Head from "~/lib/shared/Head.svelte";
+    import hljs from "highlight.js";
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
 
     export let data;
+
+    onMount(() => {
+        if (browser) hljs.highlightAll();
+    });
 </script>
 
 <Head
@@ -18,6 +25,7 @@
     </header>
     <section class="formatter_field-wrapper">
         <CodeMirror
+            tool="formatter"
             format="xml"
             placeholder="Put your XML or Drag & Drop a file"
             label="XML format field"

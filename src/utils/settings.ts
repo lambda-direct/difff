@@ -11,3 +11,15 @@ export const prettierSettings = {
     parser: "json-stringify",
     plugins: [parserBabel, prettierPluginEstree]
 };
+
+export const prettierJSSettings = {
+    semi: true,
+    singleQuote: false,
+    trailingComma: "none" as const,
+    endOfLine: "lf" as const,
+    printWidth: 80,
+    bracketSameLine: true,
+    bracketSpacing: true,
+    parser: "babel",
+    plugins: [parserBabel, prettierPluginEstree]
+};

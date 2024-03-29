@@ -2,6 +2,7 @@ export type LocaleStorageSchema = {
     json: Options;
     yaml: Options;
     xml: Options;
+    js: Options;
 };
 
 type Options = {

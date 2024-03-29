@@ -13,13 +13,11 @@
     } from "~/storage/store";
     import DoubleFooter from "~/lib/shared/Codemirror/components/DoubleFooter.svelte";
     import LocalStorage from "~/storage/LocalStorage";
-    import ChangeConvertors from "~/lib/icons/ChangeConvertors.svelte";
     import type { CursorPosition, Formats, SearchData, UploadEvent } from "~/types";
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
-    import { goto } from "$app/navigation";
     import SearchField from "~/lib/shared/Codemirror/components/SearchField.svelte";
 
     export let formatLeft: Formats;
@@ -288,18 +286,14 @@
             <ErrorModal />
         {/if}
     </div>
-    <div class="divider" role="button" tabindex="0" on:mousedown={handleMouseDown}>
-        <button
-            aria-labelledby="SwitchLanguages"
-            aria-label="SwitchLanguages"
-            class="icon-button"
-            on:click|stopPropagation={() => {
-                goto(`/converter/${formatRight}-to-${formatLeft}`);
-            }}
-        >
-            <ChangeConvertors />
-        </button>
-    </div>
+    <div
+        on:mousedown={handleMouseDown}
+        aria-labelledby="Windows divider"
+        aria-label="Windows divider"
+        class="divider"
+        role="button"
+        tabindex="0"
+    />
     <div class="field_wrapper">
         {#if $isSettingsOpen}
             <SettingsModal formats={[formatLeft, formatRight]} />
@@ -344,26 +338,13 @@
         justify-content: center;
         align-items: center;
         left: var(--pos);
-        width: 1px;
+        width: 2px;
         height: 100%;
         background: #313345;
         cursor: ew-resize;
-    }
-
-    .icon-button {
-        display: flex;
-        align-items: center;
-        height: 36px;
-        gap: 4px;
-        padding: 0 8px;
-        background: #030711;
-        border: 1px solid #313345;
-        border-radius: 8px;
-        color: #7d8799;
-        transition: all 0.2s;
         &:hover {
-            background: #040f1e;
-            color: #e1e1e1;
+            width: 2px;
+            background: #525675;
         }
     }
 

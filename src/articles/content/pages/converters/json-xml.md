@@ -1,4 +1,4 @@
-## How does the converter work?
+## How does the JSON/XML converter work?
 
 ### XML element names rules:
 
@@ -9,7 +9,7 @@
 
 If [JSON](/#jsonAnchor) is valid, after conversion, we add a declaration with version 1.0 and encoding UTF-8, wrap everything in a root tag. All whitespace is removed, and invalid characters will be replaced by an underscore. [XML](/formatter/xml#xmlAnchor) will be formatted with the indentation specified in the settings.
 
-JSON:
+Input:
 
 <pre>
 
@@ -42,7 +42,7 @@ JSON:
 </code>
 </pre>
 
-XML:
+Output:
 
 <pre>
 

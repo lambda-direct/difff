@@ -13,7 +13,6 @@
             hljs.registerLanguage("xml", xml);
             hljs.registerLanguage("yaml", yaml);
             hljs.registerLanguage("json", json);
-            hljs.highlightAll();
         }
     });
 </script>

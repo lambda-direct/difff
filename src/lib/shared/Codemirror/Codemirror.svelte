@@ -4,25 +4,20 @@
     import Header from "~/lib/shared/Codemirror/components/Header.svelte";
     import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
     import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
-    import {
-        errorMessage,
-        isSearchOpen,
-        isSettingsOpen,
-        showError,
-        storageSettings
-    } from "~/storage/store";
+    import { errorMessage, showError, storageSettings } from "~/storage/store";
     import Footer from "~/lib/shared/Codemirror/components/Footer.svelte";
     import SearchField from "~/lib/shared/Codemirror/components/SearchField.svelte";
     import LocalStorage from "~/storage/LocalStorage";
     import type { LocaleStorageResponce } from "~/storage/types";
     import Editor from "~/lib/shared/Codemirror/Editor";
-    import type { CursorPosition, Formats, SearchData, UploadEvent } from "~/types";
+    import type { CursorPosition, Formats, SearchData, Tools, UploadEvent } from "~/types";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
 
     export let format: Formats;
     export let placeholder: string;
     export let label: string;
+    export let tool: Tools;
 
     let codemirror: Editor;
     let value: string = "";
@@ -64,9 +59,19 @@
             codemirror.updateCodemirrorValue(minifiedData);
         }
     };
-    const handleFormatClick = async () => {
-        const formattedData = await formatter.formatInput(value, useTabs, indentationLevel);
-        codemirror.setFormattingResult(formattedData);
+
+    const handleMainClick = async () => {
+        if (tool === "formatter") {
+            const formattedData = await formatter.formatInput(value, useTabs, indentationLevel);
+            codemirror.setFormattingResult(formattedData);
+        }
+        if (tool === "minifier") {
+            const minify = Converter.minify(format);
+            if (minify) {
+                const minifiedData = minify(value);
+                codemirror.updateCodemirrorValue(minifiedData);
+            }
+        }
     };
 
     const handlePaste = async () => {
@@ -183,32 +188,20 @@
     });
 </script>
 
-<Header
-    formats={[format]}
-    {handleFileChange}
-    tool="formatter"
-    handleClick={handleFormatClick}
-    {closeSearch}
-/>
+<Header formats={[format]} {handleFileChange} {tool} {handleMainClick} {closeSearch} />
 <div class="field_wrapper">
     <div class="codemirror-wrapper" bind:this={element} />
-    {#if $isSearchOpen}
-        <SearchField
-            {performSearch}
-            {nextSearchValue}
-            {previousSearchValue}
-            {selectAllMatches}
-            {replaceNext}
-            {replaceAll}
-            {closeSearch}
-        />
-    {/if}
-    {#if $isSettingsOpen}
-        <SettingsModal formats={[format]} />
-    {/if}
-    {#if $showError}
-        <ErrorModal />
-    {/if}
+    <SearchField
+        {performSearch}
+        {nextSearchValue}
+        {previousSearchValue}
+        {selectAllMatches}
+        {replaceNext}
+        {replaceAll}
+        {closeSearch}
+    />
+    <SettingsModal formats={[format]} />
+    <ErrorModal />
 </div>
 <Footer
     bind:useTabs
@@ -221,6 +214,7 @@
     {isDownloadClicked}
     {isMinifyClicked}
     {format}
+    {tool}
 />
 
 <style lang="scss">

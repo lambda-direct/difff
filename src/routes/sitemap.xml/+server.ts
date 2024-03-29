@@ -81,6 +81,27 @@ export async function GET() {
                 <changefreq>yearly</changefreq>
                 <priority>1.0</priority>
             </url>
+
+            <url>
+                <loc>https://difff.app/minifier/json</loc>
+                <lastmod>2024-03-29</lastmod>
+                <changefreq>yearly</changefreq>
+                <priority>0.9</priority>
+            </url>
+
+            <url>
+                <loc>https://difff.app/minifier/js</loc>
+                <lastmod>2024-03-29</lastmod>
+                <changefreq>yearly</changefreq>
+                <priority>0.9</priority>
+            </url>
+
+            <url>
+                <loc>https://difff.app/minifier/xml</loc>
+                <lastmod>2024-03-29</lastmod>
+                <changefreq>yearly</changefreq>
+                <priority>0.9</priority>
+            </url>
         </urlset> `.trim(),
         {
             headers: {

@@ -17,6 +17,21 @@ export const toolsRoutes: ToolsRoute[] = [
         path: "/formatter/xml"
     },
     {
+        name: "JSON",
+        group: "Minifier",
+        path: "/minifier/json"
+    },
+    {
+        name: "XML",
+        group: "Minifier",
+        path: "/minifier/xml"
+    },
+    {
+        name: "JavaScript",
+        group: "Minifier",
+        path: "/minifier/js"
+    },
+    {
         name: "Change & Decision log",
         group: "Blog",
         path: "/changelog"

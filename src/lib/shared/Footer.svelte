@@ -13,7 +13,7 @@
         <h2 class="footer-title">Other tools</h2>
         <div class="lists-wrapper">
             <div class="list_column">
-                <h3>Formatter</h3>
+                <h3>Formatters</h3>
                 <ul class="list_column_link-group">
                     {#each routesToShow.filter((element) => element.group === "Formatter") as route}
                         <li>
@@ -25,7 +25,19 @@
                 </ul>
             </div>
             <div class="list_column">
-                <h3>Converter</h3>
+                <h3>Minifiers</h3>
+                <ul class="list_column_link-group">
+                    {#each routesToShow.filter((element) => element.group === "Minifier") as route}
+                        <li>
+                            <a href={route.path}>
+                                <NavLink name={route.name} />
+                            </a>
+                        </li>
+                    {/each}
+                </ul>
+            </div>
+            <div class="list_column">
+                <h3>Converters</h3>
                 <ul class="list_column_link-group">
                     {#each routesToShow.filter((element) => element.group === "Converter") as route}
                         <li>
@@ -72,9 +84,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        @media (min-width: 768px) {
-            flex-direction: row;
-        }
     }
 
     .list_column {
@@ -88,19 +97,17 @@
 
     .list_column_link-group {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        margin: 0 0 24px 0;
         gap: 12px;
         list-style: none;
         list-style-image: none;
-        @media (max-width: 768px) {
-            flex-wrap: wrap;
-            flex-direction: row;
-            justify-content: center;
-        }
     }
 
     .footer-title {
         text-align: center;
-        margin: 0 auto 16px;
+        margin: 0 auto 18px;
     }
 </style>
