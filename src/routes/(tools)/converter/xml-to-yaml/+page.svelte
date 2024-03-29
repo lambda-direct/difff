@@ -14,15 +14,17 @@
 </script>
 
 <Head
-    title="Difff | XML to YAML Converter Online Tool"
-    description="Converter XML to YAML Online with difff.app. Our online tool provides YAML and XML  pretty print, beautifies, and converts it."
+    title="XML to YAML Converter Online Tool | Difff"
+    description="Online XML to YAML converting with difff.app. Tool provides YAML validate, beautify and converting to XML with output formatting."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
 <main class="main">
     <header>
         <h1 class="main_title">XML to YAML Converter Online</h1>
-        <h2 class="main_subtitle">Convert XML to YAML, Validate and Prettify it.</h2>
+        <h2 class="main_subtitle">
+            Transform XML into YAML format, with validation, the output beautify.
+        </h2>
     </header>
     <section class="converter_field-wrapper">
         <DoubleCodeMirror

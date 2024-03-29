@@ -4,15 +4,15 @@
 </script>
 
 <Head
-    title="Difff | XML Minifier Online Tool. Beautify, minify, format & validate"
-    description="Minify, formatted XML Online with difff.app. Our online tool provides XML pretty print, minifies, beautifies, and converts text files."
+    title="XML Minifier Online Tool. Minify & Validate"
+    description="Minify, formatted XML Online with Our online tool. Difff.app offers XML pretty-printing, minification, beautification, and text file conversion."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
 <main class="main">
     <header>
         <h1 class="main_title">XML Minifier Online</h1>
-        <h2 class="main_subtitle">Validate and Minify your XML</h2>
+        <h2 class="main_subtitle">Confirm XML's Validity and Reduce its Size.</h2>
     </header>
     <section class="formatter_field-wrapper">
         <CodeMirror

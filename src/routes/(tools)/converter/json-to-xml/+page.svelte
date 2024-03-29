@@ -14,8 +14,8 @@
 </script>
 
 <Head
-    title="Difff | JSON to XML Converter Online Tool"
-    description="Converter JSON to XML Online with difff.app. Our online tool provides JSON and XML pretty print, beautifies, and converts it."
+    title="JSON to XML Converter Online Tool | Difff"
+    description="Convert JSON to XML Online with difff.app. Our online tool will provide JSON and XML pretty print, beautifies, and validate it."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 

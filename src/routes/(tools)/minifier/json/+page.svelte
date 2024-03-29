@@ -4,15 +4,15 @@
 </script>
 
 <Head
-    title="Difff | JSON Minifier Online Tool. Beautify, minify, format & validate"
-    description="Minify, formatted JSON Online with difff.app. Our online tool provides JSON pretty print, minifies, beautifies, and converts text files."
+    title="Online JSON Minify, Validator, Minifier Tool | Difff"
+    description="Using difff.app minify JSON. Get formatted and beautified output result."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
 <main class="main">
     <header>
         <h1 class="main_title">JSON Minifier Online</h1>
-        <h2 class="main_subtitle">Validate and Minify your JSON</h2>
+        <h2 class="main_subtitle">Minimize the size of valid JSON.</h2>
     </header>
     <section class="formatter_field-wrapper">
         <CodeMirror

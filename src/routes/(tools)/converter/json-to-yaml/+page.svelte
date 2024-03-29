@@ -7,15 +7,17 @@
 </script>
 
 <Head
-    title="Difff | JSON to YAML Converter Online Tool"
-    description="Converter JSON to YAML Online with difff.app. Our online tool provides JSON and YAML pretty print, beautifies, and converts it."
+    title="JSON to YAML Converter Online Tool | Difff"
+    description="Convert JSON to YAML Online with difff.app. Online tool provides JSON validation and formatting, convert it to YAML with pretty print."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
 <main class="main">
     <header>
         <h1 class="main_title">JSON to YAML Converter Online</h1>
-        <h2 class="main_subtitle">Convert JSON to YAML, Validate and Prettify it.</h2>
+        <h2 class="main_subtitle">
+            Convert JSON format into YAML, with formatted and beautified output.
+        </h2>
     </header>
     <section class="converter_field-wrapper">
         <DoubleCodeMirror

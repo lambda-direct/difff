@@ -14,15 +14,17 @@
 </script>
 
 <Head
-    title="Difff | XML to JSON Converter Online Tool"
-    description="Converter XML to JSON Online with difff.app. Our online tool provides XML and JSON pretty print, beautifies, and converts it."
+    title="XML to JSON Converter Online Tool | Difff"
+    description="XML to JSON Online converter. Our online tool provides XML validation and formatting, converting to JSON."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
 <main class="main">
     <header>
         <h1 class="main_title">XML to JSON Converter Online</h1>
-        <h2 class="main_subtitle">Convert XML to JSON, Validate and Prettify it.</h2>
+        <h2 class="main_subtitle">
+            Convert XML to JSON, after validation with pretty formatted output.
+        </h2>
     </header>
     <section class="converter_field-wrapper">
         <DoubleCodeMirror

@@ -13,7 +13,7 @@
 </script>
 
 <Head
-    title="YAML Formatter Online Tool, Beautifier & Validator - Difff"
+    title="YAML Formatter Online Tool, Beautifier & Validator | Difff"
     description="Format & Validate YAML Online with difff.app. Our online tool provides YAML pretty print, beautifies, and converts text files effortlessly."
     openGraph={{ type: "website", locale: "en_US" }}
 />
@@ -21,7 +21,7 @@
 <main class="main">
     <header>
         <h1 class="main_title">YAML Formatter Online</h1>
-        <h2 class="main_subtitle">Validate, Format & Prettify your YAML</h2>
+        <h2 class="main_subtitle">Validate, Format and Prettify your YAML</h2>
     </header>
     <section class="formatter_field-wrapper">
         <CodeMirror

@@ -4,15 +4,15 @@
 </script>
 
 <Head
-    title="Difff | JavaScript Minifier Online Tool. Beautify, minify, format & validate"
-    description="Minify, formatted JavaScript Online with difff.app. Our online tool provides JavaScript pretty print, minifies, beautifies, and converts text files."
+    title="JavaScript Minifier Online, Minify Tool | Difff"
+    description="Minify, formatted JavaScript Online with difff.app. Our online tool provides minified JavaScript pretty print."
     openGraph={{ type: "website", locale: "en_US" }}
 />
 
 <main class="main">
     <header>
         <h1 class="main_title">JavaScript Minifier Online</h1>
-        <h2 class="main_subtitle">Validate and Minify your JavaScript</h2>
+        <h2 class="main_subtitle">Validate and Minify your JavaScript.</h2>
     </header>
     <section class="formatter_field-wrapper">
         <CodeMirror
