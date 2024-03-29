@@ -15,87 +15,84 @@ const tooltipColor = "#373530";
 
 const theme = [
     baseTheme,
-    EditorView.theme(
-        {
-            "&": {
-                height: "60vh",
-                color: "var(--cursor, #abb2bf)",
-                background: "var(--editor-background, #030711)"
-            },
-            "&.cm-focused": {
-                outline: "unset"
-            },
-            ".cm-content": {
-                caretColor: "var(--cursor, #abb2bf)"
-            },
-            "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground": {
-                backgroundColor: "#3e445157"
-            },
-            ".cm-cursor, .cm-dropCursor": {
-                borderLeftColor: "var(--cursor, #abb2bf)"
-            },
-
-            ".cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
-                {
-                    background: "var(--selection, #3e4451)"
-                },
-
-            ".cm-panels": {
-                background: darkBackground,
-                color: "var(--cursor, #abb2bf)"
-            },
-            ".cm-panels.cm-panels-top": {
-                borderBottom: "2px solid black"
-            },
-            ".cm-panels.cm-panels-bottom": {
-                borderTop: "2px solid black"
-            },
-
-            ".cm-activeLine": {
-                background: "var(--highlight-background, #f5f5f014)"
-            },
-
-            ".cm-gutters": {
-                background: "var(--editor-background, #030711)",
-                color: "var(--line-number, #7d8799)",
-                border: "none"
-            },
-
-            ".cm-activeLineGutter": {
-                background: "var(--highlight-background, #f5f5f014)"
-            },
-
-            ".cm-foldPlaceholder": {
-                background: "transparent",
-                border: "none",
-                color: "#ddd"
-            },
-
-            ".cm-tooltip": {
-                border: "none",
-                color: tooltipColor,
-                background: tooltipBackground
-            },
-
-            ".cm-tooltip .cm-tooltip-arrow:before": {
-                borderTopColor: "transparent",
-                borderBottomColor: "transparent"
-            },
-
-            ".cm-tooltip .cm-tooltip-arrow:after": {
-                borderTopColor: tooltipBackground,
-                borderBottomColor: tooltipBackground
-            },
-
-            ".cm-tooltip-autocomplete": {
-                "& > ul > li[aria-selected]": {
-                    background: "var(--highlight-background, #f5f5f014)",
-                    color: "var(--cursor, #abb2bf)"
-                }
-            }
+    EditorView.theme({
+        "&": {
+            height: "60vh",
+            color: "var(--cursor, #abb2bf)",
+            background: "var(--editor-background, #030711)"
         },
-        { dark: true }
-    )
+        "&.cm-focused": {
+            outline: "unset"
+        },
+        ".cm-content": {
+            caretColor: "var(--cursor, #abb2bf)"
+        },
+        "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground": {
+            backgroundColor: "#3e445157"
+        },
+        ".cm-cursor, .cm-dropCursor": {
+            borderLeftColor: "var(--cursor, #abb2bf)"
+        },
+
+        ".cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
+            {
+                background: "var(--selection, #3e4451)"
+            },
+
+        ".cm-panels": {
+            background: darkBackground,
+            color: "var(--cursor, #abb2bf)"
+        },
+        ".cm-panels.cm-panels-top": {
+            borderBottom: "2px solid black"
+        },
+        ".cm-panels.cm-panels-bottom": {
+            borderTop: "2px solid black"
+        },
+
+        ".cm-activeLine": {
+            background: "var(--highlight-background, #f5f5f014)"
+        },
+
+        ".cm-gutters": {
+            background: "var(--editor-background, #030711)",
+            color: "var(--line-number, #7d8799)",
+            border: "none"
+        },
+
+        ".cm-activeLineGutter": {
+            background: "var(--highlight-background, #f5f5f014)"
+        },
+
+        ".cm-foldPlaceholder": {
+            background: "transparent",
+            border: "none",
+            color: "#ddd"
+        },
+
+        ".cm-tooltip": {
+            border: "none",
+            color: tooltipColor,
+            background: tooltipBackground
+        },
+
+        ".cm-tooltip .cm-tooltip-arrow:before": {
+            borderTopColor: "transparent",
+            borderBottomColor: "transparent"
+        },
+
+        ".cm-tooltip .cm-tooltip-arrow:after": {
+            borderTopColor: tooltipBackground,
+            borderBottomColor: tooltipBackground
+        },
+
+        ".cm-tooltip-autocomplete": {
+            "& > ul > li[aria-selected]": {
+                background: "var(--highlight-background, #f5f5f014)",
+                color: "var(--cursor, #abb2bf)"
+            }
+        }
+    })
 ];
 
 const themeHighlightStyleJSON = HighlightStyle.define([

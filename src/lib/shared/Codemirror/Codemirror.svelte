@@ -1,18 +1,18 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
-    import { onDestroy, onMount } from "svelte";
-    import Header from "~/lib/shared/Codemirror/components/Header.svelte";
-    import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
-    import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
-    import { errorMessage, showError, storageSettings } from "~/storage/store";
-    import Footer from "~/lib/shared/Codemirror/components/Footer.svelte";
-    import SearchField from "~/lib/shared/Codemirror/components/SearchField.svelte";
-    import LocalStorage from "~/storage/LocalStorage";
-    import type { LocaleStorageResponce } from "~/storage/types";
-    import Editor from "~/lib/shared/Codemirror/Editor";
-    import type { CursorPosition, Formats, SearchData, Tools, UploadEvent } from "~/types";
     import Formatter from "~/utils/Formatter";
     import Converter from "~/utils/Converter";
+    import { browser } from "$app/environment";
+    import { onDestroy, onMount } from "svelte";
+    import LocalStorage from "~/storage/LocalStorage";
+    import Editor from "~/lib/shared/Codemirror/Editor";
+    import Header from "~/lib/shared/Codemirror/components/Header.svelte";
+    import Footer from "~/lib/shared/Codemirror/components/Footer.svelte";
+    import ErrorModal from "~/lib/shared/Codemirror/components/ErrorModal.svelte";
+    import SearchField from "~/lib/shared/Codemirror/components/SearchField.svelte";
+    import SettingsModal from "~/lib/shared/Codemirror/components/SettingsModal.svelte";
+    import { errorMessage, showError, storageSettings } from "~/storage/store";
+    import type { LocaleStorageResponce } from "~/storage/types";
+    import type { CursorPosition, Formats, SearchData, Tools, UploadEvent } from "~/types";
 
     export let format: Formats;
     export let placeholder: string;
@@ -24,7 +24,6 @@
     let element: HTMLDivElement;
     let isDownloadClicked: boolean = false;
     let isCopyClicked: boolean = false;
-    let isMinifyClicked: boolean = false;
     let storage: LocaleStorageResponce;
     let cursorPosition: CursorPosition = { line: 0, col: 0 };
     let useTabs: boolean;
@@ -47,18 +46,6 @@
             $errorMessage = "";
         }
     }
-
-    const handleMinifyClick = () => {
-        isMinifyClicked = true;
-        setTimeout(() => {
-            isMinifyClicked = false;
-        }, 1000);
-        const minify = Converter.minify(format);
-        if (minify) {
-            const minifiedData = minify(value);
-            codemirror.updateCodemirrorValue(minifiedData);
-        }
-    };
 
     const handleMainClick = async () => {
         if (tool === "formatter") {
@@ -208,13 +195,9 @@
     bind:indentationLevel
     {handleCopyClick}
     {handleDownloadClick}
-    {handleMinifyClick}
     {isCopyClicked}
     {cursorPosition}
     {isDownloadClicked}
-    {isMinifyClicked}
-    {format}
-    {tool}
 />
 
 <style lang="scss">

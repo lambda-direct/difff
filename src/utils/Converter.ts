@@ -160,27 +160,22 @@ export class Converter {
     };
 
     private minifyJSON = (json: string): string => {
-        return json
-            .replace(/\s{0,}\{\s{1,}/g, "{")
-            .replace(/\s{0,}\[$/g, "[")
-            .replace(/\[\s{0,}/g, "[")
-            .replace(/:\s{0,}\[/g, ":[")
-            .replace(/\s{1,}\}\s{0,}/g, "}")
-            .replace(/\s{0,}\]\s{0,}/g, "]")
-            .replace(/\\"\s{0,}\\,/g, '",')
-            .replace(/\\,\s{0,}\\"/g, ',"')
-            .replace(/\s{0,}"\s{0,}/g, '"')
-            .replace(/\\"\s{0,}:/g, '":')
-            .replace(/:\s{0,}\\"/g, ':"')
-            .replace(/:\s{0,}\[/g, ":[")
-            .replace(/\\,\s{0,}\[/g, ",[")
-            .replace(/\\,\s{2,}/g, ", ")
-            .replace(/\]\s{0,},\s{0,}\[/g, "],[")
-            .replace(/\n/g, "")
-            .replace(/:\s{1,}(?=\{\s*})/g, ":") // rm if after col => []
-            .replace(/:\s{1,}(?=\[\s*])/g, ":") // rm if after col => {}
-            .replace(/:\s{1,}(?=null)/g, ":") // rm if after col => null
-            .replace(/:\s{1,}([0-9]+|true|false)/g, ":$1"); // rm if after col => bool or num
+        const stringRegex = /"([^"\\]|\\.)*"/g;
+        const placeholders: string[] = [];
+        let modifiedJSON = json.replace(stringRegex, (match) => {
+            placeholders.push(match);
+            return `PhNum${placeholders.length - 1}`;
+        });
+        modifiedJSON = modifiedJSON
+            .replace(/\s+/g, "")
+            .replace(/":\[/g, '":[')
+            .replace(/\]\s*,\s*\[/g, "],[");
+
+        placeholders.forEach((placeholder, index) => {
+            modifiedJSON = modifiedJSON.replace(`PhNum${index}`, placeholder);
+        });
+
+        return modifiedJSON;
     };
 
     private minifyXML = (xml: string): string => {

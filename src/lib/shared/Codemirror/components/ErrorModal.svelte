@@ -49,6 +49,7 @@
         font-size: 14px;
         font-family: "JetBrainsMono-Regular", monospace;
     }
+
     .modal {
         display: flex;
         align-items: center;

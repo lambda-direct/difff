@@ -268,6 +268,7 @@
             padding: 12px;
         }
     }
+
     .dropdown_content_options {
         width: 100%;
         padding: 0px 2px;
