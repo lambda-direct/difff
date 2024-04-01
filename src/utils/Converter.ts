@@ -187,7 +187,8 @@ export class Converter {
 
     private minifyJS = (js: string): string => {
         return js
-            .replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "") // rm comments
+            .replace(/(^\s*\/\/.*(?:\r\n|\r|\n|$))/gm, "") // rm comment //
+            .replace(/\/\*[\s\S]*?\*\//g, "") // rm comment  /* */
             .replace(/\s+/g, " ")
             .replace(/\s*([{}()[\];,.!+-=*\\/%<>?:&|])\s*/g, "$1");
     };
