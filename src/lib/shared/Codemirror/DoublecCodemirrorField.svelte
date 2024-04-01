@@ -265,7 +265,7 @@
     formats={[formatLeft, formatRight]}
     {handleFileChange}
     tool="converter"
-    handleClick={handleMainClick}
+    {handleMainClick}
     {closeSearch}
 />
 <div class="double_field_wrapper" style={`--pos: ${dividerPos}%;`}>

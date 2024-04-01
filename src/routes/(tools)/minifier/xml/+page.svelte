@@ -1,6 +1,8 @@
 <script lang="ts">
     import Head from "~/lib/shared/Head.svelte";
     import CodeMirror from "~/lib/shared/Codemirror/Codemirror.svelte";
+
+    export let data;
 </script>
 
 <Head
@@ -22,6 +24,9 @@
             label="XML format field"
         />
     </section>
+    <article>
+        <svelte:component this={data.content} />
+    </article>
 </main>
 
 <style>
