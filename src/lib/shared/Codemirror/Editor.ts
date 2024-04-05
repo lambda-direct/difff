@@ -1,7 +1,7 @@
 import { EditorState, SelectionRange, StateField, type Extension } from "@codemirror/state";
 import { EditorView, placeholder as placeholderSet, type DecorationSet } from "@codemirror/view";
 import { getThemeExtention } from "~/lib/shared/Codemirror/themes/theme";
-import { StreamLanguage, type LanguageSupport } from "@codemirror/language";
+import { foldGutter, StreamLanguage, type LanguageSupport } from "@codemirror/language";
 import { json } from "@codemirror/lang-json";
 import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
 import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
@@ -9,7 +9,6 @@ import { basicSetup } from "codemirror";
 import {
     closeSearchPanel,
     openSearchPanel,
-    search,
     SearchQuery,
     setSearchQuery,
     findNext,
@@ -27,6 +26,8 @@ import Highlight, {
 import { errorMessage, isSearchOpen, showError } from "~/storage/store";
 import Validator from "~/utils/Validator";
 import { javascript } from "@codemirror/lang-javascript";
+import CloseIcon from "~/lib/icons/gutter/DropDownClosed.svelte";
+import OpenIcon from "~/lib/icons/gutter/DropDownOpen.svelte";
 
 class Codemirror {
     view: EditorView;
@@ -72,18 +73,34 @@ class Codemirror {
         return StreamLanguage.define(xmlMode.xml);
     };
 
-    private getGutters = () => {};
+    private getGuttersFold = () => {
+        const foldOptions = foldGutter({
+            markerDOM: (open) => {
+                const icon = document.createElement("div");
+                icon.style.display = "flex";
+                icon.style.alignItems = "center";
+                icon.style.justifyContent = "center";
+                icon.style.minWidth = "18px";
+                icon.style.minHeight = "18px";
+                if (open) new OpenIcon({ target: icon });
+                if (!open) new CloseIcon({ target: icon });
+                return icon;
+            }
+        });
+        return foldOptions;
+    };
 
     private getExtentions = () => {
         const fieldFormat = this.getFileFormat(this.format);
         const themeExtension = getThemeExtention(this.format);
+        const gutterElements = this.getGuttersFold();
         return [
             EditorView.contentAttributes.of({ "aria-label": `${this.label}` }),
             EditorView.lineWrapping,
             EditorState.readOnly.of(this.readOnly),
             basicSetup,
+            gutterElements,
             lineHighlightField,
-            search({ top: true }),
             themeExtension,
             placeholderSet(this.placeholder),
             fieldFormat

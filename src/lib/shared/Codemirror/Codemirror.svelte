@@ -160,8 +160,8 @@
             document.addEventListener("drop", handleDrop);
             const cmDiv = document.getElementsByClassName("cm-content");
             if (cmDiv.length > 0) {
-                cmDiv[0].setAttribute("aria-label", "JSON input");
-                cmDiv[0].setAttribute("aria-labelledby", "JSON input");
+                cmDiv[0].setAttribute("aria-label", `${format.toUpperCase()} input`);
+                cmDiv[0].setAttribute("aria-labelledby", `${format.toUpperCase()} input`);
             }
         }
     });

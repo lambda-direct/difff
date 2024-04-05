@@ -28,108 +28,8 @@ export const baseTheme: Extension = EditorView.baseTheme({
     },
     ".cm-search": {
         display: "none"
-        // display: "grid",
-        // "grid-template-columns": "repeat(3, 100px)",
-        // position: "absolute !important",
-        // top: "0px",
-        // right: "0px",
-        // margin: "8px !important",
-        // padding: "16px !important",
-        // background: "#040b1a !important",
-        // "border-radius": "6px",
-        // border: "1px solid #313345 !important",
-        // color: "#e1e1e1"
     },
 
-    // ".cm-panels.cm-panels-top": {
-    //     "z-index": "10",
-    //     border: "none !important"
-    // },
-    // ".cm-textfield": {
-    //     margin: "4px !important",
-    //     padding: "3px 5px !important",
-    //     "border-radius": "4px",
-    //     border: "1px solid #4e5279 !important",
-    //     "line-height": "120%"
-    // },
-    // ".cm-textfield[name=search]": {
-    //     "grid-column-start": 1,
-    //     "grid-column-end": 4,
-    //     "grid-row-start": 1
-    // },
-    // ".cm-textfield[name=replace]": {
-    //     "grid-column-start": 1,
-    //     "grid-column-end": 3,
-    //     "grid-row-start": 4
-    // },
-    // ".cm-button[name=replace]": {
-    //     "grid-column-start": 1,
-    //     "grid-row-start": 5
-    // },
-    // ".cm-button[name=replaceAll]": {
-    //     "grid-column-start": 2,
-    //     "grid-row-start": 5
-    // },
-    // ".cm-textfield:focus-visible": {
-    //     border: "1px solid #4e5279 !important",
-    //     outline: "1px solid #4e5279 !important"
-    // },
-    // ".cm-button": {
-    //     display: "flex",
-    //     "align-items": "center",
-    //     "justify-content": "center",
-    //     height: "20px",
-    //     margin: "4px !important",
-    //     padding: "0",
-    //     background: "#040b1a",
-    //     border: "1px solid #313345",
-    //     "border-radius": "4px",
-    //     transition: "all 0.2s",
-    //     "line-height": "120%",
-    //     color: "#7d8799",
-    //     "&:hover": {
-    //         background: "#040f1e",
-    //         color: "#e1e1e1"
-    //     }
-    // },
-    // ".cm-panel.cm-search [name=close]": {
-    //     color: "#e1e1e1",
-    //     padding: "1px 4px"
-    // },
-    // ".cm-panel.cm-search label": {
-    //     display: "inline-flex",
-    //     "align-items": "center",
-    //     "justify-content": "center",
-    //     margin: "4px !important",
-    //     color: "#7d8799",
-    //     cursor: "pointer",
-    //     "user-select": "none",
-    //     "&:hover": {
-    //         color: "#e1e1e1"
-    //     }
-    // },
-
-    // ".cm-panel.cm-search input[type=checkbox]": {
-    //     "border-radius": "2px !important",
-    //     border: "1px solid #313345",
-    //     cursor: "pointer",
-    //     width: "12px",
-    //     height: "12px",
-    //     appearance: "none",
-    //     "accent-color": "#2a3c53",
-    //     margin: "0 4px"
-    // },
-
-    // ".cm-panel.cm-search input[type=checkbox]:checked": {
-    //     "border-radius": "2px !important",
-    //     border: "1px solid #2a3c53",
-    //     cursor: "pointer",
-    //     width: "12px",
-    //     height: "12px",
-    //     appearance: "auto",
-    //     "accent-color": "#2a3c53",
-    //     margin: "0 4px"
-    // },
     "::-webkit-scrollbar": {
         padding: "0",
         margin: "0",
@@ -213,7 +113,7 @@ export const baseTheme: Extension = EditorView.baseTheme({
         borderBottomLeftRadius: "0.375rem"
     },
     ".cm-lineNumbers .cm-gutterElement": {
-        fontSize: "12.8px",
+        fontSize: "12px",
         padding: "0",
         "user-select": "none",
         cursor: "default",
@@ -224,6 +124,9 @@ export const baseTheme: Extension = EditorView.baseTheme({
             padding: "0 0 0 4px"
         }
     },
+    ".cm-foldGutter span": {
+        display: "none"
+    }, // to hide basic gutters
     ".cm-gutter-lint .cm-gutterElement": {
         display: "flex",
         alignItems: "center",
