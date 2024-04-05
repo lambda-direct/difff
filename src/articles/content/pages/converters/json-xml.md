@@ -7,7 +7,8 @@
 -   Characters cannot be used in element names `<`, `>`, `&`, `"`, and `'`.
 -   Cannot contain whitespace characters (spaces, tabs, etc.).
 
-If [JSON](/#jsonAnchor) is valid, after conversion, we add a declaration with version 1.0 and encoding UTF-8, wrap everything in a root tag. All whitespace is removed, and invalid characters will be replaced by an underscore. [XML](/formatter/xml#xmlAnchor) will be formatted with the indentation specified in the settings.
+If [JSON](/#jsonAnchor) is valid, after conversion, we add a declaration with version 1.0 and encoding UTF-8, wrap everything in a root tag. All whitespace is removed, and invalid
+characters will be replaced by an underscore. [XML](/formatter/xml#xmlAnchor) will be formatted with the indentation specified in the settings.
 
 Input:
 

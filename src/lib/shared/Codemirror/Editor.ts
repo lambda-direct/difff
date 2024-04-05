@@ -72,6 +72,8 @@ class Codemirror {
         return StreamLanguage.define(xmlMode.xml);
     };
 
+    private getGutters = () => {};
+
     private getExtentions = () => {
         const fieldFormat = this.getFileFormat(this.format);
         const themeExtension = getThemeExtention(this.format);

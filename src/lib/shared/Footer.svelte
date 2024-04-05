@@ -99,7 +99,7 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         margin: 0 0 24px 0;
         gap: 12px;
         list-style: none;

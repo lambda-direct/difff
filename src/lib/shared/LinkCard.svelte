@@ -12,7 +12,7 @@
         justify-content: center;
         align-items: center;
         height: 36px;
-        min-width: 240px;
+        min-width: 235px;
         border: 1px solid #292828;
         border-radius: 4px;
         background: #171717;
