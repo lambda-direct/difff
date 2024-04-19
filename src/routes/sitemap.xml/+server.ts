@@ -41,6 +41,13 @@ export async function GET() {
             </url>
 
             <url>
+                <loc>https://difff.app/formatter/sql</loc>
+                <lastmod>2024-04-19</lastmod>
+                <changefreq>yearly</changefreq>
+                <priority>1.0</priority>
+            </url>
+
+            <url>
                 <loc>https://difff.app/converter/json-to-xml</loc>
                 <lastmod>2024-03-25</lastmod>
                 <changefreq>yearly</changefreq>
