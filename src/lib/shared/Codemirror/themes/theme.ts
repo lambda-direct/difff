@@ -221,9 +221,43 @@ export const themeHighlightStyleXML = HighlightStyle.define([
     }
 ]);
 
+export const themeHighlightStyleSQL = HighlightStyle.define([
+    { tag: t.keyword, color: "#F87683" },
+    {
+        tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName],
+        color: "var(--property-name, #e5c07b)"
+    },
+    { tag: [t.function(t.variableName), t.labelName], color: malibu },
+    { tag: [t.definition(t.name), t.separator], color: "var(--cursor, #abb2bf)" },
+    {
+        tag: [
+            t.typeName,
+            t.className,
+            t.number,
+            t.changed,
+            t.annotation,
+            t.modifier,
+            t.self,
+            t.namespace
+        ],
+        color: "var(--number-color, #e06c75)"
+    },
+    { tag: [t.meta, t.comment], color: "var(--line-number, #888)" },
+    {
+        tag: [t.atom],
+        color: "var(--boolean-value, #e5c07b)"
+    },
+    {
+        tag: [t.processingInstruction, t.string, t.inserted, t.regexp],
+        color: "#91bae9"
+    }
+]);
+
 const themeExtensionsJson: Extension = [theme, syntaxHighlighting(themeHighlightStyleJSON)];
 
 const themeExtensionsXML: Extension = [theme, syntaxHighlighting(themeHighlightStyleXML)];
+
+const themeExtensionsSQL: Extension = [theme, syntaxHighlighting(themeHighlightStyleSQL)];
 
 const themeExtensionsYaml: Extension = [
     [
@@ -238,7 +272,9 @@ const themeExtensionsYaml: Extension = [
 ];
 
 export const getThemeExtention = (format: Formats): Extension => {
+    console.log("format:", format);
     if (format === "json" || format === "js") return themeExtensionsJson;
+    if (format === "sql") return themeExtensionsSQL;
     if (format === "yaml") return themeExtensionsYaml;
     return themeExtensionsXML;
 };

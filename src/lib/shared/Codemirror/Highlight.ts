@@ -64,6 +64,22 @@ class Highlight {
         }
     };
 
+    public highlightErrorLine = (lineNumber: number) => {
+        removeHighlightedLines(this.view);
+        const line = this.view.state.doc.line(lineNumber);
+        errorMessage.set(`Invalid format.`);
+
+        this.view.dispatch({
+            effects: [
+                addHighlight.of({
+                    from: line.from,
+                    to: line.to
+                }),
+                EditorView.scrollIntoView(line.from, { y: "nearest", x: "start" })
+            ]
+        });
+    };
+
     public highlightErrorYAML = (lineNumber: number, reason: string) => {
         removeHighlightedLines(this.view);
         const line = this.view.state.doc.line(lineNumber === 0 ? 1 : lineNumber);

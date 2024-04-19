@@ -13,7 +13,8 @@ export const dropDownOptions = [
         values: [
             { name: "JSON", path: "/" },
             { name: "YAML", path: "/formatter/yaml" },
-            { name: "XML", path: "/formatter/xml" }
+            { name: "XML", path: "/formatter/xml" },
+            { name: "SQL", path: "/formatter/sql" }
         ]
     },
     {

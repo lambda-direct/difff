@@ -25,6 +25,10 @@ export const storageSettings = writable({
     },
     xml: (browser && LocalStorage.get("xml")) || {
         spaces: 2
+    },
+    sql: (browser && LocalStorage.get("sql")) || {
+        spaces: 2,
+        tab: false
     }
 });
 

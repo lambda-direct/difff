@@ -2,15 +2,36 @@ import { XMLValidator } from "fast-xml-parser";
 import * as yaml from "js-yaml";
 import * as prettier from "prettier/standalone";
 import Converter from "~/utils/Converter";
-import { prettierJSSettings, prettierSettings } from "~/utils/settings";
+import { prettierJSSettings, prettierJSONSettings, prettierSQLSettings } from "~/utils/settings";
 import xmlFormat from "xml-formatter";
 import type { Formats } from "~/types";
+import { format as formatSQL } from "sql-formatter";
 
 class Formatter {
     private format: Formats;
     constructor(format: Formats) {
         this.format = format;
     }
+
+    private formatSql = (userInput: string, options?: { tabWidth?: number; useTabs?: boolean }) => {
+        if (!options || (!options.tabWidth && !options.useTabs))
+            options = { tabWidth: 2, useTabs: false };
+        if (!options.tabWidth) options = { tabWidth: 2, useTabs: options.useTabs };
+        if (!options.useTabs) options = { tabWidth: options.tabWidth, useTabs: false };
+
+        try {
+            const originalCode = userInput;
+            const formattedResult = formatSQL(originalCode, {
+                ...prettierSQLSettings,
+                ...options
+            });
+
+            if (originalCode === formattedResult) return originalCode;
+            return formattedResult;
+        } catch (err) {
+            return err;
+        }
+    };
 
     private formatJson = async (
         userInput: string,
@@ -27,7 +48,7 @@ class Formatter {
         try {
             const originalCode = await Converter.urlToJson(userInput);
             const formattedResult = await prettier.format(originalCode, {
-                ...prettierSettings,
+                ...prettierJSONSettings,
                 ...options
             });
 
@@ -108,6 +129,11 @@ class Formatter {
             if (this.format === "json") {
                 const options = { tabWidth: spaces, useTabs: tab };
                 return await this.formatJson(userInput, options);
+                return await this.formatSql(userInput);
+            }
+            if (this.format === "sql") {
+                //const options = { tabWidth: spaces, useTabs: tab };
+                return await this.formatSql(userInput);
             }
             if (this.format === "js") {
                 const options = { tabWidth: spaces, useTabs: tab };

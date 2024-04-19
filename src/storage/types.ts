@@ -3,6 +3,7 @@ export type LocaleStorageSchema = {
     yaml: Options;
     xml: Options;
     js: Options;
+    sql: Options;
 };
 
 type Options = {

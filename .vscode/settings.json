@@ -1,3 +1,4 @@
 {
-    "cSpell.words": ["Extention", "Extentions", "performsearch", "Responce"]
+    "cSpell.words": ["Extention", "Extentions", "performsearch", "Responce"],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
 }

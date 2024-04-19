@@ -1,7 +1,8 @@
 import { XMLValidator, type ValidationError } from "fast-xml-parser";
 import * as yaml from "js-yaml";
 import * as prettier from "prettier/standalone";
-import { prettierJSSettings, prettierSettings } from "~/utils/settings";
+import { prettierJSSettings, prettierJSONSettings, prettierSQLSettings } from "~/utils/settings";
+import { format as formatSQL } from "sql-formatter";
 import type { Formats } from "~/types";
 
 class Validator {
@@ -30,7 +31,7 @@ class Validator {
 
     private validateJSON = (input: string): true | unknown => {
         return prettier
-            .format(input, prettierSettings)
+            .format(input, prettierJSONSettings)
             .then(() => {
                 return true;
             })
@@ -50,19 +51,25 @@ class Validator {
             });
     };
 
+    private validateSQL = (input: string): true | unknown => {
+        try {
+            formatSQL(input, prettierSQLSettings);
+            return true;
+        } catch (err) {
+            return err;
+        }
+    };
+
     public validate = (userInput: string) => {
-        if (this.format === "json") {
-            return this.validateJSON(userInput);
-        }
-        if (this.format === "xml") {
-            return this.validateXML(userInput);
-        }
-        if (this.format === "yaml") {
-            return this.validateYAML(userInput);
-        }
-        if (this.format === "js") {
-            return this.validateJS(userInput);
-        }
+        if (this.format === "json") return this.validateJSON(userInput);
+
+        if (this.format === "xml") return this.validateXML(userInput);
+
+        if (this.format === "yaml") return this.validateYAML(userInput);
+
+        if (this.format === "js") return this.validateJS(userInput);
+
+        if (this.format === "sql") return this.validateSQL(userInput);
     };
 }
 

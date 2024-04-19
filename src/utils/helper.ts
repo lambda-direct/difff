@@ -32,3 +32,9 @@ export const isURL = (url: string) => {
         return false;
     }
 };
+
+export const getErrorLine = (error: Error) => {
+    const matchLineNum = error.message.match(/line (\d+)/);
+    if (matchLineNum && matchLineNum[1]) return +matchLineNum[1];
+    return 0;
+};

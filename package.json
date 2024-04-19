@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "dev": "vite dev",
+        "dev": "vite dev --port 3000",
         "build": "vite build",
         "preview": "vite preview",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -52,6 +52,7 @@
         "fast-xml-parser": "^4.3.5",
         "highlight.js": "^11.9.0",
         "js-yaml": "^4.1.0",
+        "sql-formatter": "^15.3.0",
         "xml-formatter": "^3.6.2",
         "xml-js": "^1.6.11"
     }

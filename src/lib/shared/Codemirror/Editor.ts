@@ -5,6 +5,7 @@ import { foldGutter, StreamLanguage, type LanguageSupport } from "@codemirror/la
 import { json } from "@codemirror/lang-json";
 import * as xmlMode from "@codemirror/legacy-modes/mode/xml";
 import * as yamlMode from "@codemirror/legacy-modes/mode/yaml";
+import * as sqlMode from "@codemirror/legacy-modes/mode/sql";
 import { basicSetup } from "codemirror";
 import {
     closeSearchPanel,
@@ -18,7 +19,7 @@ import {
     selectMatches
 } from "@codemirror/search";
 import type { CursorPosition, Formats, SearchData } from "~/types";
-import { isJSONError, isXMLError, isYamlError } from "~/utils/helper";
+import { getErrorLine, isJSONError, isXMLError, isYamlError } from "~/utils/helper";
 import Highlight, {
     lineHighlightField,
     removeHighlightedLines
@@ -69,7 +70,7 @@ class Codemirror {
         if (format === "js") return javascript();
         if (format === "json") return json();
         if (format === "yaml") return StreamLanguage.define(yamlMode.yaml);
-
+        if (format === "sql") return StreamLanguage.define(sqlMode.standardSQL);
         return StreamLanguage.define(xmlMode.xml);
     };
 
@@ -173,15 +174,11 @@ class Codemirror {
     };
 
     public formatInput = async (userInput: string) => {
-        if (userInput) {
-            this.setFormattingResult(userInput);
-        }
+        if (userInput) this.setFormattingResult(userInput);
     };
 
     public validateInput = async (validationResult: unknown) => {
-        if (validationResult) {
-            this.setValidationResult(validationResult);
-        }
+        if (validationResult) this.setValidationResult(validationResult);
     };
 
     private setValidationResult = (value: unknown) => {
@@ -205,6 +202,10 @@ class Codemirror {
                 this.highlighter.highlightErrorYAML(value.mark.line, value.reason);
                 return;
             }
+        }
+        if (value instanceof Error) {
+            const line = getErrorLine(value);
+            this.highlighter.highlightErrorLine(line);
         }
     };
 

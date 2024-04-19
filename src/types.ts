@@ -51,7 +51,7 @@ export type OGCard = {
     type: string;
 };
 
-export type Formats = "json" | "yaml" | "xml" | "js";
+export type Formats = "json" | "yaml" | "xml" | "js" | "sql";
 
 export type Tools = "formatter" | "converter" | "minifier";
 type JSONvalues = string | string[] | object;

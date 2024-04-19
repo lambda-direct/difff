@@ -17,6 +17,11 @@ export const toolsRoutes: ToolsRoute[] = [
         path: "/formatter/xml"
     },
     {
+        name: "SQL",
+        group: "Formatter",
+        path: "/formatter/sql"
+    },
+    {
         name: "JSON",
         group: "Minifier",
         path: "/minifier/json"

@@ -59,7 +59,7 @@
     <div class="settings">
         {#each formats as format}
             <span>{format.toUpperCase()}</span>
-            {#if format === "json" || format === "js"}
+            {#if format === "json" || format === "js" || format === "sql"}
                 <div class="setting_option">
                     <p class="option_label">Tabs:</p>
                     <div class="switch">
