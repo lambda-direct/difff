@@ -1,4 +1,4 @@
-import { type Extension } from "@codemirror/state";
+import type { Extension } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 
 export const baseTheme: Extension = EditorView.baseTheme({
@@ -86,8 +86,8 @@ export const baseTheme: Extension = EditorView.baseTheme({
     span: {
         fontSize: "14px",
         display: "inline-block",
-        minHeight: "18px !important",
-        lineHeight: "18px !important"
+        minHeight: "16.5px !important",
+        lineHeight: "16.5px !important"
     },
     ".cm-focused": {
         outline: "none !important"
@@ -148,8 +148,8 @@ export const baseTheme: Extension = EditorView.baseTheme({
         }
     },
     ".cm-line": {
-        minHeight: "18px !important",
-        lineHeight: "18px !important"
+        minHeight: "16.5px !important",
+        lineHeight: "16.5px !important"
     },
     ".cm-gutter": {
         overflow: "visible"
