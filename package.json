@@ -52,6 +52,7 @@
         "fast-xml-parser": "^4.3.5",
         "highlight.js": "^11.9.0",
         "js-yaml": "^4.1.0",
+        "onedollarstats": "^0.0.10",
         "sql-formatter": "^15.3.0",
         "xml-formatter": "^3.6.2",
         "xml-js": "^1.6.11"

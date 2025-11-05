@@ -1,6 +1,12 @@
 <script lang="ts">
-    import "~/styles/index.css";
+    import { configure } from "onedollarstats";
+    import { onMount } from "svelte";
     import Footer from "~/lib/shared/Footer.svelte";
+    import "~/styles/index.css";
+
+    onMount(() => {
+        configure();
+    });
 </script>
 
 <div class="page">
